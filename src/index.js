@@ -106,6 +106,8 @@ async function streamView(viewEl) {
 
 init();
 initGlobe();
+initImageSlideshow();
+initSmoothCursor();
 onWindowResize();
 animate();
 
@@ -131,6 +133,82 @@ setTimeout(() => {
   }
   requestAnimationFrame(raf);
 }, 100);
+
+function initImageSlideshow() {
+  const photos = [
+    'assets/src/files/1.jpg',
+    'assets/src/files/2.jpg',
+    'assets/src/files/3.jpg',
+    'assets/src/files/4.jpg',
+    'assets/src/files/5.jpg',
+  ];
+
+  const circle = document.querySelector('.profile-photo-circle');
+  if (!circle) return;
+
+  const imgEls = photos.map((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.className = 'slideshow-img';
+    img.alt = '';
+    if (i === 0) img.classList.add('active');
+    circle.appendChild(img);
+    return img;
+  });
+
+  let current = 0;
+  setInterval(() => {
+    const prev = current;
+    current = (current + 1) % photos.length;
+    imgEls[prev].classList.remove('active');
+    imgEls[current].classList.add('active');
+  }, 3500);
+}
+
+function initSmoothCursor() {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  document.body.classList.add('has-smooth-cursor');
+
+  const cursor = document.createElement('div');
+  cursor.className = 'smooth-cursor';
+  document.body.appendChild(cursor);
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+  let vx = 0, vy = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+    cursor.style.opacity = '1';
+  });
+
+  document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+  document.addEventListener('mouseover', (e) => {
+    const el = e.target;
+    if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.closest('a') || el.closest('button')) {
+      cursor.classList.add('hovering');
+    } else {
+      cursor.classList.remove('hovering');
+    }
+  });
+
+  (function animate() {
+    const stiffness = 0.1;
+    const damping = 0.78;
+    vx = vx * damping + (targetX - currentX) * stiffness;
+    vy = vy * damping + (targetY - currentY) * stiffness;
+    currentX += vx;
+    currentY += vy;
+    cursor.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animate);
+  })();
+}
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
@@ -196,7 +274,29 @@ function init() {
       streamView(newView);
     });
   });
-  
+
+  const menuTrigger = document.getElementById('menu-trigger');
+  const mobileDropdown = document.getElementById('mobile-dropdown');
+  if (menuTrigger && mobileDropdown) {
+    menuTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mobileDropdown.classList.toggle('open');
+      menuTrigger.textContent = isOpen ? 'Close' : 'Menu';
+    });
+    mobileDropdown.addEventListener('click', () => {
+      mobileDropdown.classList.remove('open');
+      menuTrigger.textContent = 'Menu';
+    });
+    document.addEventListener('click', (e) => {
+      if (mobileDropdown.classList.contains('open') &&
+          !mobileDropdown.contains(e.target) &&
+          e.target !== menuTrigger) {
+        mobileDropdown.classList.remove('open');
+        menuTrigger.textContent = 'Menu';
+      }
+    });
+  }
+
 }
 
 function updateGlobeMaterial() {

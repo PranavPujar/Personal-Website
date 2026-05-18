@@ -1,0 +1,153 @@
+<script>
+  import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
+  import { theme } from '$lib/stores/theme.js';
+  import ThreeGlobe from 'three-globe';
+  import {
+    WebGLRenderer, Scene, Color, Fog,
+    PerspectiveCamera, AmbientLight, DirectionalLight
+  } from 'three';
+  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+  import countries from '../files/globe-data-min.json';
+  import travelHistory from '../files/my-flights.json';
+  import airportHistory from '../files/my-airports.json';
+
+  let container;
+
+  function updateGlobeMaterial(globe, isLight) {
+    if (!globe) return;
+    const mat = globe.globeMaterial();
+    globe.showAtmosphere(false);
+    mat.transparent = true;
+    if (isLight) {
+      mat.opacity = 0;
+      globe.hexPolygonColor(() => '#000000');
+    } else {
+      mat.opacity = 1.0;
+      mat.color = new Color(0xffffff);
+      globe.hexPolygonColor(() => '#003366');
+    }
+  }
+
+  onMount(() => {
+    let renderer, camera, scene, controls, globe;
+    let rafId, raf1, raf2, resizeTimer, arcsTimer;
+    let onResize;
+    let active = true;
+
+    const unsubTheme = theme.subscribe(t => updateGlobeMaterial(globe, t === 'light'));
+
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        if (!active) return;
+
+        const w = container.clientWidth || window.innerWidth;
+        const h = container.clientHeight || 600;
+
+        renderer = new WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(w, h);
+        renderer.setClearColor(0x000000, 0);
+        container.appendChild(renderer.domElement);
+
+        scene = new Scene();
+        scene.add(new AmbientLight(0xbbbbbb, 0.3));
+
+        camera = new PerspectiveCamera();
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+
+        const dLight = new DirectionalLight(0xffffff, 0.8);
+        dLight.position.set(-800, 2000, 400);
+        camera.add(dLight);
+
+        const dLight1 = new DirectionalLight(0x7982f6, 1);
+        dLight1.position.set(-200, 500, 200);
+        camera.add(dLight1);
+
+        camera.position.z = 400;
+        scene.add(camera);
+        scene.fog = new Fog(0x535ef3, 400, 2000);
+
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.enableZoom = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.5;
+
+        globe = new ThreeGlobe({ waitForGlobeReady: true, animateIn: true })
+          .hexPolygonsData(countries.features)
+          .hexPolygonResolution(3)
+          .hexPolygonMargin(0.7)
+          .showAtmosphere(true)
+          .atmosphereColor('#3a228a')
+          .atmosphereAltitude(0.25)
+          .hexPolygonColor(() => 'rgba(255,255,255, 0.7)');
+
+        arcsTimer = setTimeout(() => {
+          if (!active) return;
+          globe
+            .arcsData(travelHistory.flights)
+            .arcColor(e => e.status ? '#9cff00' : '#FF4000')
+            .arcAltitude(e => e.arcAlt)
+            .arcStroke(e => e.status ? 0.5 : 0.3)
+            .arcDashLength(0.9)
+            .arcDashGap(4)
+            .arcDashAnimateTime(1000)
+            .arcsTransitionDuration(1000)
+            .labelsData(airportHistory.airports)
+            .labelColor(() => '#ffcb21')
+            .labelText('city')
+            .labelSize(2)
+            .pointsData(airportHistory.airports)
+            .pointColor(() => '#ffffff')
+            .pointRadius(0.05);
+        }, 1000);
+
+        globe.rotateY(-Math.PI * (5 / 9));
+        globe.rotateZ(-Math.PI / 6);
+        updateGlobeMaterial(globe, get(theme) === 'light');
+        scene.add(globe);
+
+        function animate() {
+          if (!active) return;
+          rafId = requestAnimationFrame(animate);
+          camera.lookAt(scene.position);
+          controls.update();
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        onResize = function () {
+          if (!container || !active) return;
+          const rw = container.clientWidth;
+          const rh = container.clientHeight;
+          if (rw > 0 && rh > 0) {
+            camera.aspect = rw / rh;
+            camera.updateProjectionMatrix();
+            renderer.setSize(rw, rh);
+          }
+        };
+        window.addEventListener('resize', onResize);
+        resizeTimer = setTimeout(onResize, 150);
+      });
+    });
+
+    return () => {
+      active = false;
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      if (rafId) cancelAnimationFrame(rafId);
+      clearTimeout(arcsTimer);
+      clearTimeout(resizeTimer);
+      unsubTheme();
+      if (onResize) window.removeEventListener('resize', onResize);
+      if (renderer) {
+        renderer.dispose();
+        renderer.domElement?.remove();
+      }
+    };
+  });
+</script>
+
+<div bind:this={container} id="globe-container"></div>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&family=Montserrat:wght@400;700&family=Onest:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/emirates-essentials" rel="stylesheet" />
+  <script>
+    try {
+      const isLight = localStorage.getItem('theme') === 'light';
+      document.documentElement.style.background = isLight ? '#ffffff' : '#040d21';
+      if (isLight) document.documentElement.classList.add('light-mode');
+    } catch (e) {
+      document.documentElement.style.background = '#040d21';
+    }
+  </script>
+  %sveltekit.head%
+</head>
+<body data-sveltekit-preload-data="hover">
+  <div style="display: contents">%sveltekit.body%</div>
+</body>
+</html>
