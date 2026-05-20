@@ -42,13 +42,13 @@ body.light-mode {
 }
 
 ::selection {
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.95);
   color: var(--bg);
 }
 
 html.light-mode ::selection,
 body.light-mode ::selection {
-  background-color: #040d21;
+  background-color: #000000;
   color: #ffffff;
 }
 
