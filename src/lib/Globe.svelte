@@ -88,7 +88,7 @@
         globe = new ThreeGlobe({ waitForGlobeReady: true, animateIn: true })
           .hexPolygonsData(countries.features)
           .hexPolygonResolution(3)
-          .hexPolygonMargin(0.7)
+          .hexPolygonMargin(0.65)
           .showAtmosphere(true)
           .atmosphereColor('#3a228a')
           .atmosphereAltitude(0.25)

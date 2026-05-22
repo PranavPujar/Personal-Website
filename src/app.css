@@ -596,8 +596,13 @@ html:has(body.pointer-active) {
   }
 
   #theme-toggle {
-    top: calc(1.5rem + clamp(1.84rem, 0.46rem + 3.22vw, 3.22rem) - 1.125rem);
+    top: calc(1.5rem + clamp(1.84rem, 0.46rem + 3.22vw, 3.22rem) - 14.5px);
     right: var(--side-margin);
+  }
+
+  #theme-toggle svg {
+    width: 21px;
+    height: 21px;
   }
 
   .view-content { padding-top: 1.5rem; }
