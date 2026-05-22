@@ -10,15 +10,19 @@ function createTheme() {
       if (!browser) return;
       const saved = localStorage.getItem('theme') || 'dark';
       set(saved);
-      document.body.classList.toggle('light-mode', saved === 'light');
+      const isLight = saved === 'light';
+      document.documentElement.classList.toggle('light-mode', isLight);
+      document.body.classList.toggle('light-mode', isLight);
     },
     toggle() {
       update(mode => {
         const next = mode === 'dark' ? 'light' : 'dark';
         if (browser) {
           localStorage.setItem('theme', next);
+          const isLight = next === 'light';
           document.body.classList.add('theme-switching');
-          document.body.classList.toggle('light-mode', next === 'light');
+          document.documentElement.classList.toggle('light-mode', isLight);
+          document.body.classList.toggle('light-mode', isLight);
           requestAnimationFrame(() => requestAnimationFrame(() => {
             document.body.classList.remove('theme-switching');
           }));

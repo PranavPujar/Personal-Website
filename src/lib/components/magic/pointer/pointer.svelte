@@ -18,9 +18,16 @@
 	onMount(() => {
 		if (window.matchMedia('(pointer: coarse)').matches) return;
 
-		document.body.classList.add('pointer-active');
+		const activate = () => document.body.classList.add('pointer-active');
+		const deactivate = () => {
+			document.body.classList.remove('pointer-active');
+			isActive = false;
+		};
+
+		if (window.innerWidth > 1280) activate();
 
 		const onMove = (e: MouseEvent) => {
+			if (window.innerWidth <= 1280) return;
 			x.set(e.clientX);
 			y.set(e.clientY);
 			if (!isActive) isActive = true;
@@ -28,13 +35,20 @@
 
 		const onLeave = () => { isActive = false; };
 
+		const onResize = () => {
+			if (window.innerWidth <= 1280) deactivate();
+			else activate();
+		};
+
 		document.addEventListener('mousemove', onMove);
 		document.addEventListener('mouseleave', onLeave);
+		window.addEventListener('resize', onResize);
 
 		return () => {
-			document.body.classList.remove('pointer-active');
+			deactivate();
 			document.removeEventListener('mousemove', onMove);
 			document.removeEventListener('mouseleave', onLeave);
+			window.removeEventListener('resize', onResize);
 		};
 	});
 </script>

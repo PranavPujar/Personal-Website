@@ -139,12 +139,11 @@
       "_index-server.js",
       "_internal.js",
       "_client.js",
-      "_index-server2.js",
       "_stream.js",
       "_theme.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.E2MUBk7c.css"
+      "_app/immutable/assets/_layout.C00nrQ_v.css"
     ]
   },
   "src/routes/+page.svelte": {

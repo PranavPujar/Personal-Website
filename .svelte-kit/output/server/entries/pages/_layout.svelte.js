@@ -1,5 +1,4 @@
-import { $ as escape_html, Q as clsx, c as derived, dt as getContext, et as ATTACHMENT_KEY, ft as hasContext, g as unsubscribe_stores, h as stringify, i as attr_class, l as element, m as store_get, o as attributes, p as spread_props, pt as setContext, s as bind_props, u as ensure_array_like, ut as run } from "../../chunks/index-server.js";
-import "../../chunks/index-server2.js";
+import { $ as clsx, Q as attr, c as derived, dt as run, et as escape_html, ft as getContext, g as unsubscribe_stores, h as stringify, i as attr_class, l as element, m as store_get, mt as setContext, o as attributes, p as spread_props, pt as hasContext, s as bind_props, tt as ATTACHMENT_KEY, u as ensure_array_like } from "../../chunks/index-server.js";
 import "../../chunks/internal.js";
 import { t as beforeNavigate } from "../../chunks/client.js";
 import { t as theme } from "../../chunks/theme.js";
@@ -8,136 +7,34 @@ import { calcGeneratorDuration, cancelFrame, clamp, complex, distance2D, findVal
 import { AsyncMotionValueAnimation, DOMKeyframesResolver, JSAnimation, KeyframeResolver, activeAnimations, attachFollow, cancelFrame as cancelFrame$1, collectMotionValues, complex as complex$1, defaultTransformValue, findValueType as findValueType$1, frame as frame$1, frameData as frameData$1, frameSteps, getAnimatableNone, getDefaultValueType, getValueAsType, getValueTransition, isCSSVariableName as isCSSVariableName$1, isMotionValue as isMotionValue$1, isSVGElement, isSVGSVGElement, makeAnimationInstant, microtask, mixNumber as mixNumber$1, motionValue as motionValue$1, numberValueTypes, percent as percent$1, positionalKeys, px as px$1, readTransformValue, statsBuffer, time, transform, transformPropOrder, transformProps } from "motion-dom";
 import { MotionGlobalConfig, SubscriptionManager, addUniqueItem, circOut, clamp as clamp$1, isNumericalString, isZeroValueString, noop as noop$1, progress as progress$1, removeItem, secondsToMilliseconds as secondsToMilliseconds$1, warnOnce } from "motion-utils";
 import { invariant, warning } from "hey-listen";
-//#region node_modules/@lucide/svelte/dist/defaultAttributes.js
-/**
-* @file
-* @license @lucide/svelte v1.16.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var defaultAttributes = {
-	xmlns: "http://www.w3.org/2000/svg",
-	width: 24,
-	height: 24,
-	viewBox: "0 0 24 24",
-	fill: "none",
-	stroke: "currentColor",
-	"stroke-width": 2,
-	"stroke-linecap": "round",
-	"stroke-linejoin": "round"
-};
-//#endregion
-//#region node_modules/@lucide/svelte/dist/utils/hasA11yProp.js
-/**
-* @file
-* @license @lucide/svelte v1.16.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-/**
-* Check if a component has an accessibility prop
-*
-* @param {object} props
-* @returns {boolean} Whether the component has an accessibility prop
-*/
-var hasA11yProp = (props) => {
-	for (const prop in props) if (prop.startsWith("aria-") || prop === "role" || prop === "title") return true;
-	return false;
-};
-//#endregion
-//#region node_modules/@lucide/svelte/dist/context.js
-/**
-* @file
-* @license @lucide/svelte v1.16.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var LucideContext = Symbol("lucide-context");
-var getLucideContext = () => getContext(LucideContext);
-//#endregion
-//#region node_modules/@lucide/svelte/dist/Icon.svelte
-function Icon($$renderer, $$props) {
-	$$renderer.component(($$renderer) => {
-		const globalProps = getLucideContext() ?? {};
-		const { name, color = globalProps.color ?? "currentColor", size = globalProps.size ?? 24, strokeWidth = globalProps.strokeWidth ?? 2, absoluteStrokeWidth = globalProps.absoluteStrokeWidth ?? false, iconNode = [], children, $$slots, $$events, ...props } = $$props;
-		const calculatedStrokeWidth = derived(() => absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth);
-		$$renderer.push(`<svg${attributes({
-			...defaultAttributes,
-			...!children && !hasA11yProp(props) && { "aria-hidden": "true" },
-			...props,
-			width: size,
-			height: size,
-			stroke: color,
-			"stroke-width": calculatedStrokeWidth(),
-			class: clsx([
-				"lucide-icon lucide",
-				globalProps.class,
-				name && `lucide-${name}`,
-				props.class
-			])
-		}, void 0, void 0, void 0, 3)}><!--[-->`);
-		const each_array = ensure_array_like(iconNode);
-		for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
-			let [tag, attrs] = each_array[$$index];
-			element($$renderer, tag, () => {
-				$$renderer.push(`${attributes({ ...attrs }, void 0, void 0, void 0, 3)}`);
-			});
-		}
-		$$renderer.push(`<!--]-->`);
-		children?.($$renderer);
-		$$renderer.push(`<!----></svg>`);
-	});
-}
-//#endregion
-//#region node_modules/@lucide/svelte/dist/icons/moon.svelte
-function Moon($$renderer, $$props) {
-	let { $$slots, $$events, ...props } = $$props;
-	Icon($$renderer, spread_props([
-		{ name: "moon" },
-		props,
-		{ iconNode: [["path", { "d": "M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" }]] }
-	]));
-}
-//#endregion
-//#region node_modules/@lucide/svelte/dist/icons/sun.svelte
-function Sun($$renderer, $$props) {
-	let { $$slots, $$events, ...props } = $$props;
-	Icon($$renderer, spread_props([
-		{ name: "sun" },
-		props,
-		{ iconNode: [
-			["circle", {
-				"cx": "12",
-				"cy": "12",
-				"r": "4"
-			}],
-			["path", { "d": "M12 2v2" }],
-			["path", { "d": "M12 20v2" }],
-			["path", { "d": "m4.93 4.93 1.41 1.41" }],
-			["path", { "d": "m17.66 17.66 1.41 1.41" }],
-			["path", { "d": "M2 12h2" }],
-			["path", { "d": "M20 12h2" }],
-			["path", { "d": "m6.34 17.66-1.41 1.41" }],
-			["path", { "d": "m19.07 4.93-1.41 1.41" }]
-		] }
-	]));
-}
-//#endregion
 //#region src/lib/components/magic/animated-theme-toggler.svelte
 function Animated_theme_toggler($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
 		var $$store_subs;
 		let { class: className = "", duration = 400 } = $$props;
-		$$renderer.push(`<button id="theme-toggle"${attr_class(clsx(className))}>`);
+		const ANGLES = [
+			0,
+			45,
+			90,
+			135,
+			180,
+			225,
+			270,
+			315
+		];
+		$$renderer.push(`<button id="theme-toggle"${attr_class(clsx(className))} aria-label="Toggle theme">`);
 		if (store_get($$store_subs ??= {}, "$theme", theme) === "dark") {
 			$$renderer.push("<!--[0-->");
-			Sun($$renderer, { size: 22 });
+			$$renderer.push(`<svg class="sun-icon" viewBox="0 0 24 24" width="22" height="22" overflow="visible" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g transform="translate(12,12)"><circle cx="0" cy="0" r="4"></circle><g class="sun-rays"><!--[-->`);
+			const each_array = ensure_array_like(ANGLES);
+			for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+				let angle = each_array[$$index];
+				$$renderer.push(`<g${attr("transform", `rotate(${stringify(angle)})`)}><rect class="sun-ray" x="-1.1" y="-10" width="2.2" height="3.5" rx="1.1"></rect></g>`);
+			}
+			$$renderer.push(`<!--]--></g></g></svg>`);
 		} else {
 			$$renderer.push("<!--[-1-->");
-			Moon($$renderer, { size: 22 });
+			$$renderer.push(`<svg class="moon-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path><g class="moon-stars"><circle class="star star-1" cx="3.5" cy="5" r="1.3"></circle><circle class="star star-2" cx="20" cy="6.5" r="0.9"></circle><circle class="star star-3" cx="5" cy="19" r="1.1"></circle></g></svg>`);
 		}
 		$$renderer.push(`<!--]--> <span class="sr-only">Toggle theme</span></button>`);
 		if ($$store_subs) unsubscribe_stores($$store_subs);
@@ -6294,9 +6191,9 @@ function Nav($$renderer, $$props) {
 		beforeNavigate(() => {
 			mobileOpen = false;
 		});
-		$$renderer.push(`<nav id="main-nav"${attr_class("", void 0, { "visible": ready })}><a href="/" class="nav-name nav-link" style="text-decoration: none; color: inherit;"><span class="nav-name-text">Pranav Pujar</span> <span class="nav-subtitle">Software Engineer <span class="subtitle-amp"></span><span class="subtitle-toggle">`);
+		$$renderer.push(`<nav id="main-nav"${attr_class("", void 0, { "visible": ready })}><a href="/" class="nav-name nav-link" style="text-decoration: none; color: inherit;"><span class="nav-name-text">Pranav Pujar</span> <span class="nav-subtitle">Software Engineer &amp; ML Researcher</span></a> <div class="nav-right"><ul class="nav-links"><li><a href="/CV.pdf" target="_blank" rel="noopener noreferrer" class="nav-link">CV</a></li> <li><a href="/career" class="nav-link">Career</a></li> <li><a href="/featured" class="nav-link">Featured</a></li></ul> `);
 		AnimatedThemeToggler($$renderer, {});
-		$$renderer.push(`<!----></span> ML Researcher</span></a> <div class="nav-right"><ul class="nav-links"><li><a href="/CV.pdf" target="_blank" rel="noopener noreferrer" class="nav-link">CV</a></li> <li><a href="/career" class="nav-link">Career</a></li> <li><a href="/featured" class="nav-link">Featured</a></li></ul> <button class="menu-trigger" aria-label="Toggle menu">${escape_html(mobileOpen ? "Close" : "More")}</button></div> <div${attr_class("mobile-dropdown", void 0, { "open": mobileOpen })} role="presentation">`);
+		$$renderer.push(`<!----> <button class="menu-trigger" aria-label="Toggle menu">${escape_html(mobileOpen ? "Close" : "More")}</button></div> <div${attr_class("mobile-dropdown", void 0, { "open": mobileOpen })} role="presentation">`);
 		Dock($$renderer, {
 			children: ($$renderer) => {
 				Dock_icon($$renderer, {
@@ -6330,7 +6227,7 @@ function Nav($$renderer, $$props) {
 //#endregion
 //#region src/lib/Footer.svelte
 function Footer($$renderer) {
-	$$renderer.push(`<footer class="footer"><div class="social-icons"><a href="https://www.linkedin.com/in/pranavpujar/" target="_blank" class="social-icon" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg></a> <a href="https://www.instagram.com/pranavpujar" target="_blank" class="social-icon" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a> <a href="https://scholar.google.com/citations?user=b5yGCz8AAAAJ&amp;hl=en" target="_blank" class="social-icon" title="Google Scholar"><svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.828 3.38a7.001 7.001 0 0 1 14.344 0L24 9.5 12 0z"></path></svg></a> <a href="https://github.com/PranavPujar" target="_blank" class="social-icon" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div></footer>`);
+	$$renderer.push(`<footer class="footer"><div class="social-icons"><a href="https://www.linkedin.com/in/pranavpujar/" target="_blank" class="social-icon" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg></a> <a href="https://www.instagram.com/pranavpujar" target="_blank" class="social-icon" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a> <a href="https://scholar.google.com/citations?user=b5yGCz8AAAAJ&amp;hl=en" target="_blank" class="social-icon" title="Google Scholar"><svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.828 3.38a7.001 7.001 0 0 1 14.344 0L24 9.5 12 0z"></path></svg></a> <a href="https://github.com/PranavPujar" target="_blank" class="social-icon" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div> <div class="copyright">© 2026 Pranav Umakant Pujar</div></footer>`);
 }
 //#endregion
 //#region src/lib/components/magic/pointer/pointer.svelte

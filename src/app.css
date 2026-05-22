@@ -138,12 +138,13 @@ nav.visible {
   bottom: 9.75px;
   left: 0;
   width: 100%;
-  height: 1.5px;
+  height: 1px;
   background: currentColor;
   z-index: -1;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
+  will-change: transform;
 }
 
 .nav-name:hover .nav-name-text::after {
@@ -161,13 +162,6 @@ nav.visible {
   margin-top: -0.65rem;
 }
 
-.subtitle-toggle {
-  display: inline-flex;
-  align-items: center;
-  vertical-align: middle;
-  font-style: normal;
-  margin: 0 0.15em;
-}
 
 .nav-right {
   display: flex;
@@ -219,11 +213,12 @@ nav.visible {
   bottom: -3px;
   left: 0;
   width: 100%;
-  height: 1.5px;
+  height: 1px;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
+  will-change: transform;
 }
 
 .nav-links a:hover { opacity: 1; }
@@ -231,6 +226,7 @@ nav.visible {
 
 /* ── THEME TOGGLE ── */
 #theme-toggle {
+  position: relative;
   background: none;
   border: none;
   color: var(--text);
@@ -242,36 +238,42 @@ nav.visible {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: background 0.2s ease;
+  overflow: visible;
 }
 
-#theme-toggle:hover { background: rgba(255, 255, 255, 0.1); }
-
-html.light-mode #theme-toggle:hover,
-body.light-mode #theme-toggle:hover { background: rgba(0, 0, 0, 0.07); }
-
-.toggle-icon-wrap {
-  position: relative;
-  width: 22px;
-  height: 22px;
-}
-
-.sun-svg, .moon-svg {
+/* Issue 7: extend hit area 5px in all directions */
+#theme-toggle::before {
+  content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 22px;
-  height: 22px;
-  transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease;
+  inset: -5px;
 }
 
-.sun-svg { transform: rotate(90deg) scale(0); opacity: 0; }
-.moon-svg { transform: rotate(0deg) scale(1); opacity: 1; }
+/* Issue 5: sun ray animation */
+.sun-ray {
+  transform-origin: 50% 100%;
+  transform: scaleY(1);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#theme-toggle:hover .sun-ray {
+  transform: scaleY(3);
+}
 
-html.light-mode .sun-svg,
-body.light-mode .sun-svg { transform: rotate(0deg) scale(1); opacity: 1; }
+/* Issue 5: moon twinkling stars */
+.star {
+  opacity: 0;
+  transform-origin: center;
+}
+#theme-toggle:hover .star {
+  animation: twinkle 1s ease-in-out infinite;
+}
+#theme-toggle:hover .star-1 { animation-delay: 0s; }
+#theme-toggle:hover .star-2 { animation-delay: 0.33s; }
+#theme-toggle:hover .star-3 { animation-delay: 0.66s; }
 
-html.light-mode .moon-svg,
-body.light-mode .moon-svg { transform: rotate(-90deg) scale(0); opacity: 0; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
 
 /* ── MOBILE MENU ── */
 .menu-trigger { display: none; }
@@ -514,8 +516,16 @@ canvas {
 
 /* ── CURSOR ── */
 body.pointer-active,
-body.pointer-active * {
+body.pointer-active *,
+html:has(body.pointer-active) {
   cursor: none !important;
+}
+
+/* Issue 6: prevent native cursor from flashing during view transitions */
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-image-pair(root) {
+  cursor: none;
 }
 
 /* ── DESKTOP: layout ── */
@@ -584,13 +594,7 @@ body.pointer-active * {
     white-space: nowrap;
   }
 
-  .subtitle-toggle #theme-toggle {
-    width: 1.5rem;
-    height: 1.5rem;
-    padding: 2px;
-  }
-
-  .nav-right {
+.nav-right {
     margin-top: 0;
     gap: 0.5rem;
   }

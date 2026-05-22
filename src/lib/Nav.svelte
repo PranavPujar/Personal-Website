@@ -27,7 +27,7 @@
 <nav id="main-nav" class:visible={ready}>
   <a href="/" class="nav-name nav-link" style="text-decoration: none; color: inherit;" onclick={handleHome}>
     <span class="nav-name-text">Pranav Pujar</span>
-    <span class="nav-subtitle">Software Engineer <span class="subtitle-amp"></span><span class="subtitle-toggle"><AnimatedThemeToggler /></span> ML Researcher</span>
+    <span class="nav-subtitle">Software Engineer &amp; ML Researcher</span>
   </a>
 
   <div class="nav-right">
@@ -37,6 +37,7 @@
       <li><a href="/featured" class="nav-link">Featured</a></li>
     </ul>
 
+    <AnimatedThemeToggler />
 
     <button
       class="menu-trigger"
