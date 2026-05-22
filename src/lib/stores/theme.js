@@ -8,7 +8,8 @@ function createTheme() {
     subscribe,
     init() {
       if (!browser) return;
-      const saved = localStorage.getItem('theme') || 'dark';
+      const defaultTheme = window.innerWidth < 700 ? 'light' : 'dark';
+      const saved = localStorage.getItem('theme') || defaultTheme;
       set(saved);
       const isLight = saved === 'light';
       document.documentElement.classList.toggle('light-mode', isLight);

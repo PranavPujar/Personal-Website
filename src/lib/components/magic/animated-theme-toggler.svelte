@@ -53,7 +53,7 @@
 <button bind:this={buttonRef} onclick={toggleTheme} id="theme-toggle" class={className} aria-label="Toggle theme">
 	{#if $theme === "dark"}
 		<!-- Sun with animatable rays -->
-		<svg class="sun-icon" viewBox="0 0 24 24" width="22" height="22" overflow="visible" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		<svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" overflow="visible" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			<g transform="translate(12,12)">
 				<circle cx="0" cy="0" r="4" />
 				<g class="sun-rays">
@@ -69,7 +69,7 @@
 		</svg>
 	{:else}
 		<!-- Moon with twinkling stars on hover -->
-		<svg class="moon-icon" viewBox="0 0 24 24" width="22" height="22" overflow="visible" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		<svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" overflow="visible" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
 			<g class="moon-stars">
 				<path class="star star-left star-1" d="M 3.5,3.7 Q 3.5,5 4.8,5 Q 3.5,5 3.5,6.3 Q 3.5,5 2.2,5 Q 3.5,5 3.5,3.7 Z" />
