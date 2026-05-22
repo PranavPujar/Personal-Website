@@ -74,15 +74,14 @@
         controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.enableZoom = false;
-        controls.autoRotate = !isMobile;
+        controls.enablePan = false;
+        controls.autoRotate = true;
         controls.autoRotateSpeed = 1.2;
 
-        // On mobile, fully disable OrbitControls so its touchstart handler returns
-        // early without calling preventDefault() — which was blocking Lenis scroll.
-        // Also reset touch-action so the browser treats vertical swipes as page scroll.
-        // The globe is rotated manually in the animation loop instead.
+        // On touch devices, set pan-y so the browser handles vertical swipes as
+        // page scroll even if OrbitControls calls preventDefault on touchmove.
+        // Horizontal touch drags are captured by OrbitControls for globe rotation.
         if (isMobile) {
-          controls.enabled = false;
           renderer.domElement.style.touchAction = 'pan-y';
         }
 
@@ -125,7 +124,6 @@
           rafId = requestAnimationFrame(animate);
           camera.lookAt(scene.position);
           controls.update();
-          if (isMobile) globe.rotation.y += 0.003;
           renderer.render(scene, camera);
         }
         animate();

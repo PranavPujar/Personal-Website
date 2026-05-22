@@ -19,23 +19,17 @@
     if (lenis) lenis.scrollTo(0, { immediate: true });
   });
 
-  onMount(async () => {
-    const { default: Lenis } = await import('lenis');
-
-    const timer = setTimeout(() => {
+  onMount(() => {
+    const timer = setTimeout(async () => {
       appReady.set(true);
 
-      // Skip Lenis on touch devices — Lenis v1 intercepts touchmove and calls
-      // preventDefault(), which causes scroll to stutter when changing direction.
-      // Native touch scroll is already smooth with momentum, so Lenis is only
-      // used on pointer:fine devices (mouse/trackpad).
       if (window.matchMedia('(pointer: coarse)').matches) return;
 
+      const { default: Lenis } = await import('lenis');
       lenis = new Lenis({
         lerp: 0.09,
         smoothWheel: true,
         wheelMultiplier: 0.9,
-        touchMultiplier: 1.4,
       });
 
       function raf(time) {

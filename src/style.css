@@ -124,11 +124,15 @@ nav.visible {
   font-style: italic;
   font-size: 1.2rem;
   font-weight: 400;
-  letter-spacing: 0.06em; 
+  letter-spacing: 0.06em;
   opacity: 0.85;
   white-space: nowrap;
   /* controls up-spacing of SWEMLE subtitle */
   margin-top: -0.65rem;
+}
+
+.subtitle-toggle {
+  display: none;
 }
 
 .nav-right {
@@ -501,7 +505,7 @@ canvas {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 615px) {
+@media (max-width: 700px) {
   :root { --side-margin: 5vw; }
 
   nav {
@@ -522,14 +526,39 @@ canvas {
   .nav-subtitle {
     font-size: 0.95rem;
     letter-spacing: 0.06em;
-    white-space: normal;
+    white-space: nowrap;
   }
 
+  .subtitle-amp { display: none; }
+
+  .subtitle-toggle {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    font-style: normal;
+    margin: 0 0.15em;
+  }
+
+  .subtitle-toggle #theme-toggle {
+    display: inline-flex;
+  }
+
+  .nav-right-toggle { display: none; }
+
   .nav-right {
-    flex-direction: column;
-    align-items: flex-end;
+    position: absolute;
+    top: 0.9rem;
+    right: 1.5rem;
+    flex-direction: row;
+    align-items: center;
     margin-top: 0;
     gap: 0.5rem;
+  }
+
+  .footer {
+    padding: 0 1.5rem 3rem;
+    align-items: center;
+    text-align: center;
   }
 
   .view-content {

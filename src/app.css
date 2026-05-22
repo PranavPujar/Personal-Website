@@ -77,21 +77,17 @@ body.theme-switching * {
 }
 
 html {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
-
-html::-webkit-scrollbar { display: none; }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'EB Garamond', Garamond, serif;
-  font-size: 16px;
+  font-size: clamp(16px, 1vw + 10px, 20px);
   font-weight: 400;
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   min-height: 100vh;
 }
 
@@ -122,7 +118,7 @@ nav.visible {
   pointer-events: auto;
   font-family: 'EB Garamond', Garamond, serif;
   text-transform: capitalize;
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 0.5rem + 3.5vw, 3.5rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   display: flex;
@@ -157,12 +153,20 @@ nav.visible {
 .nav-subtitle {
   font-family: 'EB Garamond', Garamond, serif;
   font-style: italic;
-  font-size: 1.2rem;
+  font-size: clamp(0.95rem, 0.3rem + 1.3vw, 1.4rem);
   font-weight: 400;
   letter-spacing: 0.06em;
   opacity: 0.85;
   white-space: nowrap;
   margin-top: -0.65rem;
+}
+
+.subtitle-toggle {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  font-style: normal;
+  margin: 0 0.15em;
 }
 
 .nav-right {
@@ -200,7 +204,7 @@ nav.visible {
   opacity: 1;
   text-decoration: none;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 0.3rem + 1vw, 1.25rem);
   font-weight: 400;
   text-transform: capitalize;
   letter-spacing: 0.04em;
@@ -325,10 +329,11 @@ main {
 .bio p {
   color: var(--text);
   opacity: 0.85;
-  font-size: 1.225rem;
+  font-size: clamp(1.1rem, 0.4rem + 1.2vw, 1.45rem);
   font-weight: 300;
   line-height: 1.6;
   margin-bottom: 1.5rem;
+  text-align: justify;
 }
 
 /* ── INLINE LINKS ── */
@@ -508,120 +513,89 @@ canvas {
 }
 
 /* ── CURSOR ── */
+body.pointer-active,
+body.pointer-active * {
+  cursor: none !important;
+}
+
+/* ── DESKTOP: layout ── */
+@media (min-width: 700px) {
+  .section-title { font-size: clamp(1.325rem, 3vw, 1.925rem); }
+  .copyright    { font-size: 0.925rem; }
+  .footer       { margin-top: -20.4rem; }
+}
+
+/* ── SUB-1280: centered column nav (all viewports below desktop) ── */
+@media (max-width: 1280px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+    padding-right: clamp(1.5rem, 4vw, 3rem);
+  }
+  .nav-name  { align-items: center; }
+  .nav-right { margin-top: 0.5rem; justify-content: center; }
+}
+
+/* ── DESKTOP: hide scrollbars ── */
 @media (pointer: fine) {
-  html, body, body * {
-    cursor: none !important;
+  html, body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar { display: none; }
+}
+
+/* ── TOUCH: fix scroll blocking + tap highlight ── */
+@media (pointer: coarse) {
+  html, body {
+    overflow-x: clip;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
 /* ── MOBILE ── */
-@media (max-width: 615px) {
+@media (max-width: 700px) {
   :root { --side-margin: 5vw; }
 
   nav {
-    padding: 0.9rem 1.5rem 0.75rem;
-    gap: 0.3rem;
+    padding: 1.5rem 1.5rem 0.75rem;
   }
 
-  .nav-links { display: none; }
+  /* show inline links; hamburger no longer needed */
+  .nav-links { display: flex; }
+  .menu-trigger { display: none; }
+
+  /* tighten dot separators so links fit on narrow screens */
+  .nav-links li + li::before { margin: 0 0.5rem; }
 
   .nav-name {
     font-size: 2rem;
-    white-space: nowrap;
-    gap: 0.1rem;
     min-width: 0;
   }
 
   .nav-subtitle {
-    font-size: 0.95rem;
-    letter-spacing: 0.06em;
-    white-space: normal;
+    font-size: clamp(0.72rem, 3.2vw, 0.95rem);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .subtitle-toggle #theme-toggle {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 2px;
   }
 
   .nav-right {
-    flex-direction: column;
-    align-items: flex-end;
     margin-top: 0;
     gap: 0.5rem;
   }
 
   .view-content { padding-top: 1.5rem; }
 
-  .bio p { font-family: 'Montserrat', sans-serif; }
-
-  .menu-trigger {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: var(--text);
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    outline: none;
-    transition: background 0.2s, border-color 0.2s;
-  }
-
-  .menu-trigger:active { background: rgba(255, 255, 255, 0.07); }
-
-  .mobile-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 1.5rem;
-    background: var(--nav-bg);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 6px;
-    min-width: 150px;
-    z-index: 1001;
-    overflow: visible;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    transform: translateY(-8px) scale(0.97);
-    transform-origin: top right;
-    pointer-events: none;
-    transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .mobile-dropdown.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-  }
-
-  .nav-dock {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .nav-dock-item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  .dropdown-link {
-    color: var(--text);
-    text-decoration: none;
-    padding: 10px 16px;
-    border-radius: 9px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    transition: background 0.15s;
-    display: block;
-    white-space: nowrap;
-  }
-
-  .dropdown-link:hover,
-  .dropdown-link:active { background: rgba(255, 255, 255, 0.09); }
+  body { font-family: 'Montserrat', sans-serif; }
 }

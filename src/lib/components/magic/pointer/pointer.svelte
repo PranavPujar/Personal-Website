@@ -18,6 +18,8 @@
 	onMount(() => {
 		if (window.matchMedia('(pointer: coarse)').matches) return;
 
+		document.body.classList.add('pointer-active');
+
 		const onMove = (e: MouseEvent) => {
 			x.set(e.clientX);
 			y.set(e.clientY);
@@ -30,6 +32,7 @@
 		document.addEventListener('mouseleave', onLeave);
 
 		return () => {
+			document.body.classList.remove('pointer-active');
 			document.removeEventListener('mousemove', onMove);
 			document.removeEventListener('mouseleave', onLeave);
 		};
