@@ -4,7 +4,7 @@
   import { theme } from '$lib/stores/theme.js';
   import ThreeGlobe from 'three-globe';
   import {
-    WebGLRenderer, Scene, Color, Fog,
+    WebGLRenderer, Scene, Fog,
     PerspectiveCamera, AmbientLight, DirectionalLight
   } from 'three';
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -22,10 +22,16 @@
     if (isLight) {
       mat.opacity = 0;
       globe.hexPolygonColor(() => '#000000');
+      globe.arcColor(() => '#000000');
+      globe.labelColor(() => '#000000');
+      globe.pointColor(() => '#000000');
     } else {
-      mat.opacity = 1.0;
-      mat.color = new Color(0xffffff);
-      globe.hexPolygonColor(() => '#003366');
+      mat.opacity = 1;
+      mat.color.set('#ffffff');
+      globe.hexPolygonColor(() => '#040d21');
+      globe.arcColor(() => '#66E3FF');
+      globe.labelColor(() => '#66E3FF');
+      globe.pointColor(() => '#040d21');
     }
   }
 
@@ -98,21 +104,22 @@
           if (!active) return;
           globe
             .arcsData(travelHistory.flights)
-            .arcColor(() => '#000000')
+            .arcColor(() => get(theme) === 'light' ? '#000000' : '#66E3FF')
             .arcAltitude(e => e.arcAlt)
             .arcStroke(e => e.status ? 0.5 : 0.3)
-            .arcDashLength(0.9)
-            .arcDashGap(4)
-            .arcDashAnimateTime(1000)
+            .arcDashLength(e => e.dashLength)
+            .arcDashGap(e => e.dashGap)
+            .arcDashInitialGap(e => e.dashInitialGap)
+            .arcDashAnimateTime(7000)
             .arcsTransitionDuration(1000)
             .labelsData(airportHistory.airports.filter(a => a.showLabel))
-            .labelColor(() => '#000000')
+            .labelColor(() => get(theme) === 'light' ? '#000000' : '#66E3FF')
             .labelText('text')
             .labelSize(2)
             .pointsData(airportHistory.airports)
-            .pointColor(() => '#ffffff')
+            .pointColor(() => get(theme) === 'light' ? '#000000' : '#040d21')
             .pointRadius(0.1)
-            .pointAltitude(d => d.alt ?? 0.18);
+            .pointAltitude(d => d.alt ?? 0.07);
         }, 1000);
 
         globe.rotateY(-Math.PI * (5 / 9));
@@ -162,3 +169,9 @@
 </script>
 
 <div bind:this={container} id="globe-container"></div>
+
+<style>
+  :global(#globe-container canvas) {
+    cursor: default !important;
+  }
+</style>
