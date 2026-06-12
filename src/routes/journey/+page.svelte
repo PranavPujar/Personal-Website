@@ -10,8 +10,7 @@
   <Streamer speedDiv={0.8}>
     <h2 class="section-title">Journey</h2>
     <p class="section-description">
-      My experience spans Software Engineering, ML Research, Education & Customer Service. 
-      Browse the roles below, or view a concise <a href="/CV.pdf" target="_blank" rel="noopener noreferrer" class="text-link">CV</a> here.
+      I've worked many roles over the past few years, across different countries and industries. Check them out below!
     </p>
     <div style="margin-top: 2rem;">
       <h3 class="section-subtitle">Coming Soon</h3>
