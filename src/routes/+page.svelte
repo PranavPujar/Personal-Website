@@ -2,6 +2,9 @@
   import Globe from "$lib/Globe.svelte";
   import ImageSlideshow from "$lib/ImageSlideshow.svelte";
   import Streamer from "$lib/Streamer.svelte";
+  import { browser } from '$app/environment';
+
+  const speedDiv = browser && window.innerWidth <= 1280 ? 1.9 / 1.3 : 1.9;
 </script>
 
 <svelte:head>
@@ -9,7 +12,7 @@
 </svelte:head>
 
 <div class="view-content">
-  <Streamer speedDiv={1.9}>
+  <Streamer {speedDiv}>
     <ImageSlideshow />
     <div class="bio">
       <p>

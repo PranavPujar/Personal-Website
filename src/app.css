@@ -27,6 +27,11 @@ a::before { content: ''; position: absolute; inset: -10px; }
   --nav-title-size: clamp(2rem, 0.5rem + 3.5vw, 2.8rem);
   --nav-subtitle-size: clamp(0.95rem, 0.5rem + 1.05vw, 1.12rem);
   --nav-link-size: clamp(1rem, 0.55rem + 1.05vw, 1.16rem);
+
+  /* Nav title + word colours (theme-aware). Selected words shine via the glow. */
+  --nav-text: #ffffff;
+  --nav-glow: rgba(255, 255, 255, 0.5);
+  --nav-bracket: rgba(255, 255, 255, 0.85);
 }
 
 html.light-mode {
@@ -35,6 +40,10 @@ html.light-mode {
   --accent: #0071e3;
   --border: rgba(0,0,0,0.1);
   --card-bg: rgba(255,255,255,0.7);
+
+  --nav-text: #000000;
+  --nav-glow: rgba(0, 0, 0, 0.5);
+  --nav-bracket: rgba(0, 0, 0, 0.85);
 }
 
 ::selection {
@@ -119,8 +128,12 @@ nav.visible {
 .nav-name-text {
   position: relative;
   width: fit-content;
+  color: var(--nav-text);
+  transition: text-shadow 0.3s ease;
 }
 
+/* Underline draws in from the left, but its base origin is the right edge so
+   that when it is removed it retracts smoothly toward the right (left-to-right). */
 .nav-name-text::after {
   content: '';
   position: absolute;
@@ -131,13 +144,14 @@ nav.visible {
   background: currentColor;
   z-index: -1;
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+  transform-origin: right;
+  transition: transform 0.45s ease;
   will-change: transform;
 }
 
 .nav-name:hover .nav-name-text::after {
   transform: scaleX(1);
+  transform-origin: left;
 }
 
 .nav-subtitle {
@@ -174,21 +188,20 @@ nav.visible {
 .nav-links li + li::before {
   content: '•';
   font-weight: 700;
-  opacity: 0.4;
+  opacity: 0.52;
   margin: 0 0.8rem;
   line-height: 1;
 }
 
 .nav-links a {
   position: relative;
-  color: var(--text);
-  opacity: 1;
+  color: var(--nav-text);
   text-decoration: none;
   font-family: 'Montserrat', sans-serif;
   font-size: var(--nav-link-size);
   font-weight: 300;
   letter-spacing: 0.04em;
-  transition: opacity 0.2s;
+  transition: text-shadow 0.3s ease;
   outline: none;
 }
 
@@ -201,13 +214,148 @@ nav.visible {
   height: 1px;
   background: currentColor;
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+  transform-origin: right;
+  transition: transform 0.45s ease;
   will-change: transform;
 }
 
-.nav-links a:hover { opacity: 1; }
-.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ── NAV UNDERLINE + ACTIVE STATE ──
+   The persistent active state is driven purely by base style + transition
+   (no keyframes) so toggling .nav-active on navigation never restarts an
+   animation. The load stream below is a one-time generic intro. */
+
+/* Brightened item (active page, hover, or click): the text shines.
+   The text itself is always pure white; the glow is what makes it brighter. */
+.nav-name:hover .nav-name-text,
+.nav-name.nav-active .nav-name-text,
+.nav-links a:hover,
+.nav-links a:active,
+.nav-links a.nav-active {
+  text-shadow: 0 0 10px var(--nav-glow);
+}
+
+/* Active item keeps its underline persistently. Drawn from the left; the
+   right-anchored base origin makes it retract left-to-right when removed. */
+.nav-name.nav-active .nav-name-text::after,
+.nav-links a.nav-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ── PRESS BRACKET ──
+   Bottom border of a box around each nav word, revealed only during the
+   button-press animation (non-laptop). Hidden (opacity 0) otherwise. */
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  right: -7px;
+  top: -3px;
+  bottom: -3px;
+  border-bottom: 2px solid var(--nav-bracket);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── ONE-TIME LOAD STREAM ──
+   Gated by `nav.intro`, a class present only during the initial load (added
+   on mount, removed by JS once the intro finishes). This lets the active item
+   use a different keyframe WITHOUT the navigation re-trigger bug: after the
+   intro the rules stop matching, so toggling .nav-active later never restarts
+   an animation — the persistent state is then pure base-style + transition.
+
+   Non-active words: underline draws in from the left, holds, then sweeps OUT
+   to the right (smooth left-to-right removal, baked into the keyframe so it
+   never depends on a flaky animation-end transition).
+   Active word: draws in from the left and stays. */
+@keyframes nav-underline-stream {
+  0%   { transform-origin: left;  transform: scaleX(0); }
+  35%  { transform-origin: left;  transform: scaleX(1); }
+  55%  { transform-origin: left;  transform: scaleX(1); }
+  56%  { transform-origin: right; transform: scaleX(1); }
+  100% { transform-origin: right; transform: scaleX(0); }
+}
+@keyframes nav-underline-instay {
+  0%   { transform-origin: left; transform: scaleX(0); }
+  35%  { transform-origin: left; transform: scaleX(1); }
+  100% { transform-origin: left; transform: scaleX(1); }
+}
+
+@keyframes nav-text-glow {
+  0%   { text-shadow: 0 0 0 transparent; }
+  35%  { text-shadow: 0 0 10px var(--nav-glow); }
+  55%  { text-shadow: 0 0 10px var(--nav-glow); }
+  100% { text-shadow: 0 0 0 transparent; }
+}
+@keyframes nav-text-glow-instay {
+  0%   { text-shadow: 0 0 0 transparent; }
+  35%  { text-shadow: 0 0 10px var(--nav-glow); }
+  100% { text-shadow: 0 0 10px var(--nav-glow); }
+}
+
+/* Non-active default (sweep out). */
+nav.intro .nav-name-text::after            { animation: nav-underline-stream 1.6s ease-out 0.5s backwards; }
+nav.intro .nav-name-text                   { animation: nav-text-glow       1.6s ease-out 0.5s backwards; }
+nav.intro .nav-links li:nth-child(1) a::after { animation: nav-underline-stream 1.6s ease-out 0.65s backwards; }
+nav.intro .nav-links li:nth-child(1) a        { animation: nav-text-glow       1.6s ease-out 0.65s backwards; }
+nav.intro .nav-links li:nth-child(2) a::after { animation: nav-underline-stream 1.6s ease-out 0.8s backwards; }
+nav.intro .nav-links li:nth-child(2) a        { animation: nav-text-glow       1.6s ease-out 0.8s backwards; }
+nav.intro .nav-links li:nth-child(3) a::after { animation: nav-underline-stream 1.6s ease-out 0.95s backwards; }
+nav.intro .nav-links li:nth-child(3) a        { animation: nav-text-glow       1.6s ease-out 0.95s backwards; }
+
+/* Active word (current page): draws in and stays. */
+nav.intro .nav-name.nav-active .nav-name-text::after { animation: nav-underline-instay 1.6s ease-out 0.5s backwards; }
+nav.intro .nav-name.nav-active .nav-name-text        { animation: nav-text-glow-instay 1.6s ease-out 0.5s backwards; }
+nav.intro .nav-links li:nth-child(1) a.nav-active::after { animation: nav-underline-instay 1.6s ease-out 0.65s backwards; }
+nav.intro .nav-links li:nth-child(1) a.nav-active        { animation: nav-text-glow-instay 1.6s ease-out 0.65s backwards; }
+nav.intro .nav-links li:nth-child(2) a.nav-active::after { animation: nav-underline-instay 1.6s ease-out 0.8s backwards; }
+nav.intro .nav-links li:nth-child(2) a.nav-active        { animation: nav-text-glow-instay 1.6s ease-out 0.8s backwards; }
+nav.intro .nav-links li:nth-child(3) a.nav-active::after { animation: nav-underline-instay 1.6s ease-out 0.95s backwards; }
+nav.intro .nav-links li:nth-child(3) a.nav-active        { animation: nav-text-glow-instay 1.6s ease-out 0.95s backwards; }
+
+/* ── 45° BUTTON PRESS (non-laptop only) ──
+   After the underline intro fully completes (~2.55s), each NAV WORD (not the
+   title/subtitle) depresses diagonally toward the bottom-left and rebounds,
+   while its bottom bracket flashes. Press is applied to the <li> wrappers so
+   it never overrides the glow animation on the text; bracket on the ::before. */
+@keyframes nav-press {
+  0%   { transform: translate(0, 0); }
+  40%  { transform: translate(-5px, 5px); }
+  72%  { transform: translate(-1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes nav-bracket-flash {
+  0%   { opacity: 0; }
+  40%  { opacity: 1; }
+  72%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 1280px) {
+  nav.visible .nav-links li:nth-child(1) {
+    animation: nav-press 0.5s ease-in-out 2.7s backwards;
+  }
+  nav.visible .nav-links li:nth-child(1) a::before {
+    animation: nav-bracket-flash 0.5s ease-in-out 2.7s backwards;
+  }
+
+  nav.visible .nav-links li:nth-child(2) {
+    animation: nav-press 0.5s ease-in-out 2.8s backwards;
+  }
+  nav.visible .nav-links li:nth-child(2) a::before {
+    animation: nav-bracket-flash 0.5s ease-in-out 2.8s backwards;
+  }
+
+  nav.visible .nav-links li:nth-child(3) {
+    animation: nav-press 0.5s ease-in-out 2.9s backwards;
+  }
+  nav.visible .nav-links li:nth-child(3) a::before {
+    animation: nav-bracket-flash 0.5s ease-in-out 2.9s backwards;
+  }
+}
 
 /* ── THEME TOGGLE ── */
 #theme-toggle {
@@ -527,6 +675,8 @@ html:has(body.pointer-active) {
   }
   .nav-name  { align-items: center; }
   .nav-right { margin-top: 0.5rem; justify-content: center; }
+  /* Bigger separator dots on non-laptop viewports. */
+  .nav-links li + li::before { font-size: 1.45em; }
   .bio p {
     hyphens: auto;
     text-justify: inter-word;

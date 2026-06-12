@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>Career — Pranav Pujar</title>
+  <title>Fun Facts — Pranav Pujar</title>
 </svelte:head>
 
 <div class="view-content">

@@ -29,16 +29,18 @@ declare module "$app/types" {
 	type MatcherParam<M> = M extends (param : string) => param is (infer U extends string) ? U : string;
 
 	export interface AppTypes {
-		RouteId(): "/" | "/career" | "/featured";
+		RouteId(): "/" | "/blog" | "/featured" | "/fun-facts" | "/journey";
 		RouteParams(): {
 			
 		};
 		LayoutParams(): {
 			"/": Record<string, never>;
-			"/career": Record<string, never>;
-			"/featured": Record<string, never>
+			"/blog": Record<string, never>;
+			"/featured": Record<string, never>;
+			"/fun-facts": Record<string, never>;
+			"/journey": Record<string, never>
 		};
-		Pathname(): "/" | "/career" | "/featured";
+		Pathname(): "/" | "/blog" | "/featured" | "/fun-facts" | "/journey";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/CV.pdf" | "/favicon.png" | "/src/.DS_Store" | "/src/files/1.jpg" | "/src/files/2.jpg" | "/src/files/3.jpg" | "/src/files/4.jpg" | "/src/files/5.jpg" | "/src/files/6.jpg" | "/src/files/cropped.jpg" | "/src/files/final.png" | "/src/files/goldengate.jpeg" | "/src/files/slideshow.mp4" | string & {};
 	}

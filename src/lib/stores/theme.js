@@ -12,8 +12,7 @@ function createTheme() {
     subscribe,
     init() {
       if (!browser) return;
-      const isMobile = window.innerWidth < 700;
-      const defaultTheme = isMobile ? 'light' : 'dark';
+      const defaultTheme = 'dark';
       const saved = localStorage.getItem(storageKey()) || defaultTheme;
       set(saved);
       const isLight = saved === 'light';
