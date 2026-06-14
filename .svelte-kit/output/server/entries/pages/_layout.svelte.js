@@ -1,10 +1,10 @@
-import { $ as clsx, Q as attr, c as derived, dt as run, et as escape_html, ft as getContext, g as unsubscribe_stores, h as stringify, i as attr_class, l as element, m as store_get, mt as setContext, o as attributes, p as spread_props, pt as hasContext, s as bind_props, tt as ATTACHMENT_KEY, u as ensure_array_like } from "../../chunks/index-server.js";
-import "../../chunks/internal.js";
+import { $ as clsx, Q as attr, c as derived, et as escape_html, ft as run, g as unsubscribe_stores, h as stringify, ht as setContext, i as attr_class, l as element, m as store_get, mt as hasContext, o as attributes, p as spread_props, pt as getContext, s as bind_props, u as ensure_array_like } from "../../chunks/index-server.js";
 import { t as beforeNavigate } from "../../chunks/client.js";
 import { t as theme } from "../../chunks/theme.js";
+import { t as createAttachmentKey } from "../../chunks/attachments.js";
 import { r as appReady, t as cancelStream } from "../../chunks/stream.js";
-import { calcGeneratorDuration, cancelFrame, clamp, complex, distance2D, findValueType, frame, frameData, hover, inView, isCSSVariableName, isMotionValue, millisecondsToSeconds, mixNumber, motionValue, motionValue as useMotionValue, noop, percent, pipe, press, progress, px, secondsToMilliseconds, spring } from "framer-motion/dom";
-import { AsyncMotionValueAnimation, DOMKeyframesResolver, JSAnimation, KeyframeResolver, activeAnimations, attachFollow, cancelFrame as cancelFrame$1, collectMotionValues, complex as complex$1, defaultTransformValue, findValueType as findValueType$1, frame as frame$1, frameData as frameData$1, frameSteps, getAnimatableNone, getDefaultValueType, getValueAsType, getValueTransition, isCSSVariableName as isCSSVariableName$1, isMotionValue as isMotionValue$1, isSVGElement, isSVGSVGElement, makeAnimationInstant, microtask, mixNumber as mixNumber$1, motionValue as motionValue$1, numberValueTypes, percent as percent$1, positionalKeys, px as px$1, readTransformValue, statsBuffer, time, transform, transformPropOrder, transformProps } from "motion-dom";
+import { cancelFrame, clamp, complex, distance2D, frame, frameData, hover, inView, isCSSVariableName, isMotionValue, millisecondsToSeconds, mixNumber, motionValue, motionValue as useMotionValue, noop, percent, pipe, press, progress, px, secondsToMilliseconds } from "framer-motion/dom";
+import { AsyncMotionValueAnimation, DOMKeyframesResolver, JSAnimation, KeyframeResolver, activeAnimations, attachFollow, cancelFrame as cancelFrame$1, collectMotionValues, complex as complex$1, defaultTransformValue, findValueType, frame as frame$1, frameData as frameData$1, frameSteps, getAnimatableNone, getDefaultValueType, getValueAsType, getValueTransition, isCSSVariableName as isCSSVariableName$1, isMotionValue as isMotionValue$1, isSVGElement, isSVGSVGElement, makeAnimationInstant, microtask, mixNumber as mixNumber$1, motionValue as motionValue$1, numberValueTypes, percent as percent$1, positionalKeys, px as px$1, readTransformValue, statsBuffer, time, transform, transformPropOrder, transformProps } from "motion-dom";
 import { MotionGlobalConfig, SubscriptionManager, addUniqueItem, circOut, clamp as clamp$1, isNumericalString, isZeroValueString, noop as noop$1, progress as progress$1, removeItem, secondsToMilliseconds as secondsToMilliseconds$1, warnOnce } from "motion-utils";
 import { invariant, warning } from "hey-listen";
 //#region node_modules/@sveltejs/kit/src/runtime/app/stores.js
@@ -80,7 +80,7 @@ function AnimatedThemeToggler($$renderer) {
 /**
 * Timeout defined in ms
 */
-function delay$1(callback, timeout) {
+function delay(callback, timeout) {
 	const start = time.now();
 	const checkElapsed = ({ timestamp }) => {
 		const elapsed = timestamp - start;
@@ -196,34 +196,6 @@ function extract(value, defaultValue) {
 	}
 	if (value === void 0) return defaultValue;
 	return value;
-}
-if (typeof HTMLElement === "function");
-//#endregion
-//#region node_modules/svelte/src/attachments/index.js
-/**
-* Creates an object key that will be recognised as an attachment when the object is spread onto an element,
-* as a programmatic alternative to using `{@attach ...}`. This can be useful for library authors, though
-* is generally not needed when building an app.
-*
-* ```svelte
-* <script>
-* 	import { createAttachmentKey } from 'svelte/attachments';
-*
-* 	const props = {
-* 		class: 'cool',
-* 		onclick: () => alert('clicked'),
-* 		[createAttachmentKey()]: (node) => {
-* 			node.textContent = 'attached!';
-* 		}
-* 	};
-* <\/script>
-*
-* <button {...props}>click me</button>
-* ```
-* @since 5.29
-*/
-function createAttachmentKey() {
-	return Symbol(ATTACHMENT_KEY);
 }
 //#endregion
 //#region node_modules/motion-sv/dist/vendor/runed/index.js
@@ -655,14 +627,6 @@ function convertSvgStyleToAttributes(keyframes) {
 	};
 }
 //#endregion
-//#region node_modules/motion-sv/dist/vendor/framer-motion/dist/es/animation/sequence/create.mjs
-function getValueTransition$1(transition, key) {
-	return transition && transition[key] ? {
-		...transition,
-		...transition[key]
-	} : { ...transition };
-}
-//#endregion
 //#region node_modules/motion-sv/dist/vendor/framer-motion/dist/es/animation/utils/default-transitions.mjs
 var underDampedSpring = {
 	type: "spring",
@@ -700,138 +664,9 @@ var getDefaultTransition = (valueKey, { keyframes }) => {
 	return ease;
 };
 //#endregion
-//#region node_modules/motion-sv/dist/animation/transition.svelte.js
-function toMs(seconds) {
-	if (seconds == null) return void 0;
-	return seconds * 1e3;
-}
-function motionExit(node, params) {
-	const { transition: exitTransition, ...target } = params.definition || {};
-	const stateTransition = params.state?.options?.transition;
-	const baseTransition = exitTransition ?? stateTransition;
-	const baseDuration = toMs(baseTransition?.duration) ?? 200;
-	const baseDelay = toMs(baseTransition?.delay) ?? 0;
-	const SEEN_KEY = "__motion_sv_exit_seen__";
-	const seen = globalThis[SEEN_KEY] || (globalThis[SEEN_KEY] = /* @__PURE__ */ new WeakSet());
-	const isIntroCall = !seen.has(node);
-	const isExiting = node["__motion_exiting__"] === true;
-	if (isIntroCall) {
-		seen.add(node);
-		node.addEventListener("outroend", () => params.setAllowIntro(true), { once: true });
-	}
-	if (isIntroCall && !params.allowIntro && !isExiting) return null;
-	const state = params.state;
-	let overallDurationMs = 0;
-	function mergeValueTransition(base, key) {
-		try {
-			return getValueTransition$1(base || {}, key);
-		} catch {
-			return base || {};
-		}
-	}
-	function applyDefaultTransition(key, vt, fromValue, toValue) {
-		try {
-			return {
-				...getDefaultTransition(key, { keyframes: [fromValue, toValue] }),
-				...vt
-			};
-		} catch {
-			return vt;
-		}
-	}
-	function hasExplicitTransition(t) {
-		if (!t) return false;
-		return "type" in t || "stiffness" in t || "damping" in t || "duration" in t || "ease" in t || "velocity" in t || "repeat" in t || "repeatType" in t || "repeatDelay" in t;
-	}
-	for (const rawKey in target) {
-		let key = rawKey;
-		if (rawKey in transformAlias) key = transformAlias[rawKey];
-		const to = target[rawKey];
-		let vt = mergeValueTransition(baseTransition, rawKey) || {};
-		const transformDef = transformDefinitions.get(key);
-		const fromValueRaw = state.visualElement?.latestValues?.[rawKey] ?? (transformDef ? transformDef.initialValue : style.get(node, key));
-		const fromValueStr = String(fromValueRaw ?? "");
-		const toValueStr = String(to);
-		if (!hasExplicitTransition(vt)) vt = applyDefaultTransition(key, vt, transformDef ? typeof fromValueRaw === "number" ? fromValueRaw : parseFloat(fromValueStr) || 0 : fromValueStr, transformDef ? typeof to === "number" ? to : parseFloat(toValueStr) || 0 : toValueStr);
-		const delayMs = toMs(vt?.delay) ?? baseDelay;
-		if (transformDef) {
-			const fromNum = typeof fromValueRaw === "number" ? fromValueRaw : parseFloat(String(fromValueRaw)) || 0;
-			const toNum = typeof to === "number" ? to : parseFloat(String(to)) || 0;
-			const preferSpring = vt?.type === "spring" || vt?.stiffness !== void 0 || vt?.damping !== void 0 || !hasExplicitTransition(vt);
-			const vel = state?.visualElement?.getValue?.(key)?.getVelocity?.() ?? 0;
-			const baseDurMs = (() => {
-				const specified = toMs(vt?.duration);
-				if (specified != null) return specified;
-				if (preferSpring) try {
-					const approx = calcGeneratorDuration(spring({
-						from: fromNum,
-						to: toNum,
-						velocity: vel,
-						...vt
-					}));
-					if (approx != null && isFinite(approx)) return approx;
-					return 300;
-				} catch {
-					return 300;
-				}
-				return baseDuration;
-			})();
-			const repeatCount = Math.max(0, vt?.repeat ?? 0);
-			const repeatDelayMs = toMs(vt?.repeatDelay) ?? 0;
-			const durMs = baseDurMs * (repeatCount + 1) + repeatDelayMs * repeatCount;
-			overallDurationMs = Math.max(overallDurationMs, delayMs + durMs);
-			continue;
-		}
-		const fromStr = fromValueStr;
-		const toStr = toValueStr;
-		const valueType = findValueType(toStr) || findValueType(fromStr);
-		if (valueType) {
-			const parse = valueType.parse ?? ((v) => v);
-			const fromParsed = parse(fromStr);
-			const toParsed = parse(toStr);
-			const preferSpring = vt?.type === "spring" || vt?.stiffness !== void 0 || vt?.damping !== void 0 || !hasExplicitTransition(vt);
-			const vel = state?.visualElement?.getValue?.(key)?.getVelocity?.() ?? 0;
-			const baseDurMs = toMs(vt?.duration) ?? (preferSpring ? (() => {
-				try {
-					const approx = calcGeneratorDuration(spring({
-						from: fromParsed,
-						to: toParsed,
-						velocity: vel,
-						...vt
-					}));
-					return approx != null && isFinite(approx) ? approx : 300;
-				} catch {
-					return 300;
-				}
-			})() : baseDuration);
-			const repeatCount = Math.max(0, vt?.repeat ?? 0);
-			const repeatDelayMs = toMs(vt?.repeatDelay) ?? 0;
-			const durMs = baseDurMs * (repeatCount + 1) + repeatDelayMs * repeatCount;
-			overallDurationMs = Math.max(overallDurationMs, delayMs + durMs);
-		} else {
-			const durMs = toMs(vt?.duration) ?? baseDuration;
-			overallDurationMs = Math.max(overallDurationMs, delayMs + durMs);
-		}
-	}
-	return { duration: overallDurationMs };
-}
-//#endregion
 //#region node_modules/motion-sv/dist/components/animate-presence/presence.svelte.js
 var doneCallbacks = /* @__PURE__ */ new WeakMap();
-function removeDoneCallback(element) {
-	const prevDoneCallback = doneCallbacks.get(element);
-	if (prevDoneCallback) element.removeEventListener("motioncomplete", prevDoneCallback);
-	doneCallbacks.delete(element);
-}
 var AnimatePresenceContext = new Context("AnimatePresenceContext");
-function useAnimatePresence(props) {
-	const presenceContext = {
-		initial: props.initial,
-		custom: props.custom,
-		transition: motionExit
-	};
-	AnimatePresenceContext.set(presenceContext);
-}
 //#endregion
 //#region node_modules/motion-sv/dist/state/utils/is-variant-labels.js
 function isVariantLabels(value) {
@@ -1956,7 +1791,7 @@ var VisualElement = class {
 		let value = this.latestValues[key] !== void 0 || !this.current ? this.latestValues[key] : this.getBaseTargetFromProps(this.props, key) ?? this.readValueFromInstance(this.current, key, this.options);
 		if (value !== void 0 && value !== null) {
 			if (typeof value === "string" && (isNumericalString(value) || isZeroValueString(value))) value = parseFloat(value);
-			else if (!findValueType$1(value) && complex$1.test(target)) value = getAnimatableNone(key, target);
+			else if (!findValueType(value) && complex$1.test(target)) value = getAnimatableNone(key, target);
 			this.setBaseTarget(key, isMotionValue$1(value) ? value.get() : value);
 		}
 		return isMotionValue$1(value) ? value.get() : value;
@@ -3333,7 +3168,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
 					innerWidth = newInnerWidth;
 					this.root.updateBlockedByResize = true;
 					cancelDelay && cancelDelay();
-					cancelDelay = delay$1(resizeUnblockUpdate, 250);
+					cancelDelay = delay(resizeUnblockUpdate, 250);
 					if (globalProjectionState$1.hasAnimatedSinceResize) {
 						globalProjectionState$1.hasAnimatedSinceResize = false;
 						this.nodes.forEach(finishAnimation);
@@ -5480,231 +5315,6 @@ function useMotionConfig() {
 	return MotionConfigContext.getOr(() => defaultConfig);
 }
 //#endregion
-//#region node_modules/motion-sv/dist/components/animate-presence/use-pop-layout.js
-function usePopLayout(props) {
-	const styles = /* @__PURE__ */ new WeakMap();
-	const cachedPositions = /* @__PURE__ */ new WeakMap();
-	const trackedStates = /* @__PURE__ */ new Set();
-	let rafId = null;
-	const config = useMotionConfig();
-	/**
-	* Continuously capture positions of tracked elements.
-	* Runs every frame to ensure we always have the latest stable position.
-	*/
-	function updatePositions() {
-		for (const state of trackedStates) {
-			const element = state.element;
-			if (!element || !element.isConnected) continue;
-			const parent = element.offsetParent;
-			const parentWidth = parent instanceof HTMLElement ? parent.offsetWidth || 0 : 0;
-			const size = {
-				height: element.offsetHeight || 0,
-				width: element.offsetWidth || 0,
-				top: element.offsetTop,
-				left: element.offsetLeft,
-				right: 0
-			};
-			size.right = parentWidth - size.width - size.left;
-			cachedPositions.set(state, size);
-		}
-		if (trackedStates.size > 0) rafId = requestAnimationFrame(updatePositions);
-		else rafId = null;
-	}
-	/**
-	* Capture position for a single element synchronously.
-	*/
-	function capturePositionSync(state) {
-		const element = state.element;
-		if (!element || !element.isConnected) return;
-		const parent = element.offsetParent;
-		const parentWidth = parent instanceof HTMLElement ? parent.offsetWidth || 0 : 0;
-		const size = {
-			height: element.offsetHeight || 0,
-			width: element.offsetWidth || 0,
-			top: element.offsetTop,
-			left: element.offsetLeft,
-			right: 0
-		};
-		size.right = parentWidth - size.width - size.left;
-		cachedPositions.set(state, size);
-	}
-	/**
-	* Start tracking a state's position continuously.
-	*/
-	function trackPosition(state) {
-		if (props.mode !== "popLayout") return;
-		trackedStates.add(state);
-		capturePositionSync(state);
-		if (rafId === null) rafId = requestAnimationFrame(updatePositions);
-	}
-	/**
-	* Stop tracking a state's position.
-	*/
-	function untrackPosition(state) {
-		trackedStates.delete(state);
-		cachedPositions.delete(state);
-	}
-	function addPopStyle(state) {
-		if (props.mode !== "popLayout") return;
-		const element = state.element;
-		trackedStates.delete(state);
-		let size = cachedPositions.get(state);
-		if (!size) {
-			const parent = element.offsetParent;
-			const parentWidth = parent instanceof HTMLElement ? parent.offsetWidth || 0 : 0;
-			size = {
-				height: element.offsetHeight || 0,
-				width: element.offsetWidth || 0,
-				top: element.offsetTop,
-				left: element.offsetLeft,
-				right: 0
-			};
-			size.right = parentWidth - size.width - size.left;
-		}
-		cachedPositions.delete(state);
-		const x = props.anchorX === "left" ? `left: ${size.left}` : `right: ${size.right}`;
-		state.element.dataset.motionPopId = state.id;
-		const style = document.createElement("style");
-		if (config().nonce) style.nonce = config().nonce;
-		styles.set(state, style);
-		document.head.appendChild(style);
-		if (style.sheet) style.sheet.insertRule(`
-    [data-motion-pop-id="${state.id}"] {
-      position: absolute !important;
-      width: ${size.width}px !important;
-      height: ${size.height}px !important;
-      top: ${size.top}px !important;
-      ${x}px !important;
-      }
-      `);
-	}
-	function removePopStyle(state) {
-		const style = styles.get(state);
-		if (!style) return;
-		styles.delete(state);
-		frame.render(() => {
-			document.head.removeChild(style);
-		});
-	}
-	return {
-		addPopStyle,
-		removePopStyle,
-		trackPosition,
-		untrackPosition,
-		styles
-	};
-}
-//#endregion
-//#region node_modules/motion-sv/dist/utils/delay.js
-function delay(fn) {
-	return Promise.resolve().then(() => {
-		fn();
-	});
-}
-//#endregion
-//#region node_modules/motion-sv/dist/components/animate-presence/animate-presence.svelte
-function Animate_presence($$renderer, $$props) {
-	$$renderer.component(($$renderer) => {
-		let { mode = "sync", initial = true, anchorX = "left", as, custom, onExitComplete, children } = $$props;
-		useAnimatePresence({
-			mode,
-			initial,
-			get custom() {
-				return custom;
-			},
-			get anchorX() {
-				return anchorX;
-			}
-		});
-		const { addPopStyle, removePopStyle, trackPosition, untrackPosition, styles } = usePopLayout({
-			get mode() {
-				return mode;
-			},
-			get anchorX() {
-				return anchorX;
-			}
-		});
-		/**
-		* Track elements that are actively exiting.
-		* Key: The DOM element exiting.
-		* Value: { blocksExit: boolean } - whether this exit should block "wait" mode.
-		*
-		* This prevents double-handling of exit events and allows tracking specific element status.
-		*/
-		const exitDom = /* @__PURE__ */ new Map();
-		/**
-		* Track elements that are actively exiting AND blocking (have actual exit animations).
-		*
-		* This is crucial for `mode="wait"`. When this count is > 0, `isWaitBlocked` becomes true.
-		* Child `motion` components subscribe to this state via `PresenceManagerContext`.
-		*
-		* In `motion.svelte`, if `isWaitBlocked` is true:
-		* 1. The entering component is hidden (`display: none`) and its animation is paused.
-		* 2. When the count drops to 0, the component unhides and starts its "animate" state.
-		*/
-		let blockingExitCount = 0;
-		const exitStartSubscribers = /* @__PURE__ */ new Set();
-		function subscribeToExitStart(callback) {
-			exitStartSubscribers.add(callback);
-			return () => exitStartSubscribers.delete(callback);
-		}
-		const notifyExitStart = (exitingEl) => exitStartSubscribers.forEach((cb) => cb(exitingEl));
-		const isWaitBlocked = () => mode === "wait" && blockingExitCount > 0;
-		function handleIntroStart(el) {
-			const state = mountedStates.get(el);
-			if (!state) return;
-			const entry = exitDom.get(el);
-			if (entry) {
-				exitDom.delete(el);
-				if (entry.blocksExit && blockingExitCount > 0) blockingExitCount--;
-			}
-			removePopStyle(state);
-			trackPosition(state);
-			removeDoneCallback(el);
-			state.setActive("exit", false, false);
-			state.startAnimation();
-		}
-		function handleOutroStart(el) {
-			const state = mountedStates.get(el);
-			if (!state) return;
-			if (exitDom.has(el)) return;
-			addPopStyle(state);
-			const blocksExit = !!state.options.exit;
-			exitDom.set(el, { blocksExit });
-			if (blocksExit) {
-				blockingExitCount++;
-				notifyExitStart(el);
-			}
-			delay(() => {
-				state.setActive?.("exit", true);
-			});
-		}
-		function handleOutroEnd(el) {
-			const state = mountedStates.get(el);
-			if (!state) return;
-			const entry = exitDom.get(el);
-			if (entry) {
-				exitDom.delete(el);
-				if (entry.blocksExit && blockingExitCount > 0) blockingExitCount--;
-			}
-			if (exitDom.size === 0) onExitComplete?.();
-			if (!styles?.has(state)) state.willUpdate("done");
-			else removePopStyle(state);
-		}
-		PresenceManagerContext.set({
-			trackPosition,
-			untrackPosition,
-			isWaitBlocked,
-			subscribeToExitStart,
-			onIntroStart: handleIntroStart,
-			onOutroStart: handleOutroStart,
-			onOutroEnd: handleOutroEnd
-		});
-		children($$renderer);
-		$$renderer.push(`<!---->`);
-	});
-}
-//#endregion
 //#region node_modules/motion-sv/dist/components/animate-presence/context.js
 var PresenceManagerContext = new Context("PresenceManagerContext", {});
 //#endregion
@@ -6264,29 +5874,6 @@ function Footer($$renderer) {
 	$$renderer.push(`<footer class="footer"><div class="social-icons"><a href="https://www.linkedin.com/in/pranavpujar/" target="_blank" class="social-icon" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg></a> <a href="https://scholar.google.com/citations?user=b5yGCz8AAAAJ&amp;hl=en" target="_blank" class="social-icon" title="Google Scholar"><svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.828 3.38a7.001 7.001 0 0 1 14.344 0L24 9.5 12 0z"></path></svg></a> <a href="https://github.com/PranavPujar" target="_blank" class="social-icon" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a> <a href="https://www.instagram.com/pranavpujar/" target="_blank" class="social-icon" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a></div> <div class="copyright">© 2026 Pranav Umakant Pujar</div></footer>`);
 }
 //#endregion
-//#region src/lib/components/magic/pointer/pointer.svelte
-function Pointer($$renderer, $$props) {
-	$$renderer.component(($$renderer) => {
-		var $$store_subs;
-		let { children, class: className } = $$props;
-		useMotionValue(-200);
-		useMotionValue(-200);
-		Animate_presence($$renderer, {
-			children: ($$renderer) => {
-				$$renderer.push("<!--[-1-->");
-				$$renderer.push(`<!--]-->`);
-			},
-			$$slots: { default: true }
-		});
-		if ($$store_subs) unsubscribe_stores($$store_subs);
-	});
-}
-//#endregion
-//#region src/lib/SmoothCursor.svelte
-function SmoothCursor($$renderer) {
-	Pointer($$renderer, {});
-}
-//#endregion
 //#region src/routes/+layout.svelte
 function _layout($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
@@ -6296,8 +5883,6 @@ function _layout($$renderer, $$props) {
 		beforeNavigate(() => {
 			cancelStream();
 		});
-		SmoothCursor($$renderer, {});
-		$$renderer.push(`<!----> `);
 		Nav($$renderer, { ready: store_get($$store_subs ??= {}, "$appReady", appReady) });
 		$$renderer.push(`<!----> <main id="scroll-container"${attr_class("", void 0, { "ready": store_get($$store_subs ??= {}, "$appReady", appReady) })}>`);
 		children($$renderer);

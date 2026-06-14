@@ -1,4 +1,8 @@
-create a clean claude.md file to adhere to 
+SEO 
+posthog etc for observability 
+add resume to journey
+journey section needs to finish 
+add more deets to featured 
 
 featured add:
 
@@ -39,10 +43,8 @@ Developed AI-powered monitoring tools that proactively detected customer journey
 Built production APIs and data pipelines used across Adobe Experience Platform.
 Learned how enterprise software is designed, deployed, and scaled for millions of users.
 
-Publication & Research Recognition
+Publication & Research Recognition - published a paper accepted at AAAI
 
-Presented research at academic conferences and university research showcases.
-Continued advancing GeneSieve and AI-driven bioinformatics research.
 4. AMD Software Engineering Intern ⚡
 
 Advanced Micro Devices (AMD)
@@ -53,8 +55,9 @@ Built real-time workflow tracking systems using Kafka, FastAPI, and Python.
 Reduced execution times from nearly a minute to just seconds through automation and optimization.
 Learned how software engineering drives efficiency across large hardware organizations.
 
-Milestone: Graduated with B.S. in Computer Science
+5. University of Texas at Arlington
 
+Milestone: Graduated with B.S. in Computer Science Magna Cum Laude
 Honors: Freshman Distinction Roll, Dean's List (Spring '22, Spring '23, Spring '24, Fall '24)
 
 5. IDIR Lab Undergraduate Research Assistant 🧬
@@ -68,14 +71,10 @@ Learned how modern AI techniques can accelerate scientific discovery.
 
 Learning Assistant Center
 
-Helped students build confidence in technical subjects while strengthening my own communication skills.
-
-Guided students through challenging programming, math, and computer science concepts.
-Learned how to explain complex ideas in simple and intuitive ways.
+Tutored students with mental disabilities on various math and finance courses.
 Discovered a passion for mentoring and helping others succeed.
-7. IE Lab Undergraduate Research Assistant 🧪
 
-UTA College of Engineering Research Lab
+7. UTA College of Engineering  
 
 My first exposure to academic research and machine learning.
 
@@ -85,20 +84,11 @@ Learned how large-scale datasets, automation, and AI can be applied to biologica
 
 Publication: Research contribution on CRISPR-CAS protein classification and prediction.
 
-8. Research Presentations & Publications 
-
-Sharing research became just as rewarding as conducting it.
-
-Presented projects at university research symposiums and academic events.
-Collaborated with faculty, graduate researchers, and industry professionals.
-Developed skills in technical communication, storytelling, and scientific presentation.
 9. Mathematics Tutor 
-
-Teaching became one of the most rewarding parts of my undergraduate experience.
 
 Tutored students in Linear Algebra, Calculus I & II, Algebra, and related mathematics courses.
 Helped students strengthen problem-solving skills and build confidence in quantitative reasoning.
-Learned patience, communication, and the value of breaking down complex concepts.
+
 10. Dean's Office Student Assistant ☕
 
 My first university role and introduction to professional responsibility.

@@ -259,6 +259,16 @@ function deferred() {
 		reject
 	};
 }
+/**
+* @template V
+* @param {V} value
+* @param {V | (() => V)} fallback
+* @param {boolean} [lazy]
+* @returns {V}
+*/
+function fallback(value, fallback, lazy = false) {
+	return value === void 0 ? lazy ? fallback() : fallback : value;
+}
 var CLEAN = 1024;
 var DIRTY = 2048;
 var MAYBE_DIRTY = 4096;
@@ -4395,4 +4405,4 @@ function fork() {
 async function tick() {}
 async function settled() {}
 //#endregion
-export { clsx$1 as $, get_next_sibling as A, pop as B, component_root as C, create_element as D, clear_text_content as E, flushSync as F, set_hydrate_node as G, hydrate_next as H, get$1 as I, lifecycle_double_unmount as J, set_hydrating as K, readable as L, mutable_source as M, set as N, create_text as O, boundary as P, attr as Q, writable as R, set_active_reaction as S, render_effect as T, hydrate_node as U, push as V, hydrating as W, hydration_failed as X, state_proxy_unmount as Y, rune_outside_svelte as Z, is_passive_event as _, attr_style as a, REACTION_RAN as at, get as b, derived as c, define_property as ct, head as d, run as dt, escape_html as et, render as f, getContext as ft, unsubscribe_stores as g, stringify as h, __commonJSMin as ht, attr_class as i, LEGACY_PROPS as it, init_operations as j, get_first_child as k, element as l, noop as lt, store_get as m, setContext as mt, tick as n, HYDRATION_ERROR as nt, attributes as o, STATE_SYMBOL as ot, spread_props as p, hasContext as pt, hydration_mismatch as q, hydratable as r, async_mode_flag as rt, bind_props as s, array_from as st, index_server_exports as t, ATTACHMENT_KEY as tt, ensure_array_like as u, object_keys as ut, active_effect as v, effect_root as w, set_active_effect as x, active_reaction as y, component_context as z };
+export { clsx$1 as $, get_next_sibling as A, pop as B, component_root as C, create_element as D, clear_text_content as E, flushSync as F, set_hydrate_node as G, hydrate_next as H, get$1 as I, lifecycle_double_unmount as J, set_hydrating as K, readable as L, mutable_source as M, set as N, create_text as O, boundary as P, attr as Q, writable as R, set_active_reaction as S, render_effect as T, hydrate_node as U, push as V, hydrating as W, hydration_failed as X, state_proxy_unmount as Y, rune_outside_svelte as Z, is_passive_event as _, attr_style as a, REACTION_RAN as at, get as b, derived as c, define_property as ct, head as d, object_keys as dt, escape_html as et, render as f, run as ft, unsubscribe_stores as g, __commonJSMin as gt, stringify as h, setContext as ht, attr_class as i, LEGACY_PROPS as it, init_operations as j, get_first_child as k, element as l, fallback as lt, store_get as m, hasContext as mt, tick as n, HYDRATION_ERROR as nt, attributes as o, STATE_SYMBOL as ot, spread_props as p, getContext as pt, hydration_mismatch as q, hydratable as r, async_mode_flag as rt, bind_props as s, array_from as st, index_server_exports as t, ATTACHMENT_KEY as tt, ensure_array_like as u, noop as ut, active_effect as v, effect_root as w, set_active_effect as x, active_reaction as y, component_context as z };

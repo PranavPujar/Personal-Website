@@ -69,7 +69,7 @@
   }
 
   function onCardEnter(e) {
-    if (e.pointerType === 'touch') return; // follow is a fine-pointer affordance
+    if (e.pointerType === 'touch') return; // follow is a fine-pointer affordce
     hovering = true;
     trackCursor(e);
     pos.x = target.x; // appear at the cursor, no slide-in from a stale spot

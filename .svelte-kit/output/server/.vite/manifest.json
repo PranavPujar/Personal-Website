@@ -18,6 +18,14 @@
       "_stream.js"
     ]
   },
+  "_attachments.js": {
+    "file": "chunks/attachments.js",
+    "name": "attachments",
+    "imports": [
+      "_index-server.js",
+      "_legacy-client.js"
+    ]
+  },
   "_client.js": {
     "file": "chunks/client.js",
     "name": "client",
@@ -54,7 +62,15 @@
     "name": "internal",
     "imports": [
       "_index-server.js",
-      "_environment.js"
+      "_environment.js",
+      "_legacy-client.js"
+    ]
+  },
+  "_legacy-client.js": {
+    "file": "chunks/legacy-client.js",
+    "name": "legacy-client",
+    "imports": [
+      "_index-server.js"
     ]
   },
   "_shared.js": {
@@ -137,13 +153,13 @@
     "isEntry": true,
     "imports": [
       "_index-server.js",
-      "_internal.js",
       "_client.js",
+      "_attachments.js",
       "_stream.js",
       "_theme.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.xk_bVZKg.css"
+      "_app/immutable/assets/_layout.Cvvczlsj.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -198,7 +214,11 @@
     "isEntry": true,
     "imports": [
       "_index-server.js",
-      "_Streamer.js"
+      "_attachments.js",
+      "_index-server2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.Bu6IM1B8.css"
     ]
   }
 }

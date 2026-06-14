@@ -11,7 +11,7 @@ function _page($$renderer) {
 	Streamer($$renderer, {
 		speedDiv: .8,
 		children: ($$renderer) => {
-			$$renderer.push(`<h2 class="section-title">Blog</h2> <p class="section-description">Thoughts on software engineering, machine learning, and the things I build along the way.</p> <div style="margin-top: 2rem;"><h3 class="section-subtitle">Coming Soon</h3></div>`);
+			$$renderer.push(`<p class="section-description">Thoughts on software engineering, machine learning, and the things I build along the way.</p>`);
 		},
 		$$slots: { default: true }
 	});
