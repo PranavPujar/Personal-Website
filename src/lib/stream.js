@@ -85,7 +85,7 @@ export function cancelStream() {
 
 export async function streamView(node, speedDiv = 1) {
   const g = ++gen;
-  const targets = [...node.querySelectorAll('.bio p, .section-title, .card p, .card h3, .thumb-overline, .video-caption-meta')];
+  const targets = [...node.querySelectorAll('.bio p, .section-title, .card p, .card h3, .thumb-overline, .video-caption-meta, .journey-title, .journey-desc')];
   targets.forEach(el => wrapWordsInEl(el));
   const allWords = [...node.querySelectorAll('.stream-word')];
   allWords.forEach(w => { w.style.transition = 'none'; w.classList.remove('visible'); });
