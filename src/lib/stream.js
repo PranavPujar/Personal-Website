@@ -16,22 +16,28 @@ function rafDelay(ms, g) {
 function wrapWordsInEl(el) {
   if (el.dataset.wrapped) return;
   el.dataset.wrapped = 'true';
+  // Letter mode reveals one character at a time (used for the thumbnail
+  // headline); the default splits on whitespace and reveals whole words.
+  const letterMode = el.dataset.streamMode === 'letter';
+  function wrapTextNode(node) {
+    const units = letterMode ? [...node.textContent] : node.textContent.split(/(\s+)/);
+    if (units.every(u => !/\S/.test(u))) return;
+    const frag = document.createDocumentFragment();
+    units.forEach(unit => {
+      if (/\S/.test(unit)) {
+        const span = document.createElement('span');
+        span.textContent = unit;
+        span.className = 'stream-word';
+        frag.appendChild(span);
+      } else {
+        frag.appendChild(document.createTextNode(unit));
+      }
+    });
+    node.parentNode.replaceChild(frag, node);
+  }
   function walk(node) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const parts = node.textContent.split(/(\s+)/);
-      if (parts.every(p => !/\S/.test(p))) return;
-      const frag = document.createDocumentFragment();
-      parts.forEach(part => {
-        if (/\S/.test(part)) {
-          const span = document.createElement('span');
-          span.textContent = part;
-          span.className = 'stream-word';
-          frag.appendChild(span);
-        } else {
-          frag.appendChild(document.createTextNode(part));
-        }
-      });
-      node.parentNode.replaceChild(frag, node);
+      wrapTextNode(node);
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       if (node.tagName === 'A' || node.tagName === 'U') {
         const wrapper = document.createElement('span');
@@ -53,6 +59,9 @@ async function streamEl(el, targets, started, g, speedDiv) {
   const words = [...el.querySelectorAll('.stream-word')];
   const next = targets[targets.indexOf(el) + 1];
   let nextTriggered = false;
+  // Optional per-element speed override (e.g. the thumbnail headline streams
+  // much slower than the body); falls back to the view-wide speedDiv.
+  const elSpeed = el.dataset.speedDiv ? parseFloat(el.dataset.speedDiv) : speedDiv;
 
   for (let i = 0; i < words.length; i++) {
     if (gen !== g) { el.classList.remove('is-streaming'); return; }
@@ -62,7 +71,7 @@ async function streamEl(el, targets, started, g, speedDiv) {
       nextTriggered = true;
       streamEl(next, targets, started, g, speedDiv);
     }
-    const delay = (25 + (Math.random() * 20 - 10)) / speedDiv;
+    const delay = (25 + (Math.random() * 20 - 10)) / elSpeed;
     await rafDelay(delay, g);
   }
   el.classList.remove('is-streaming');
@@ -76,7 +85,7 @@ export function cancelStream() {
 
 export async function streamView(node, speedDiv = 1) {
   const g = ++gen;
-  const targets = [...node.querySelectorAll('.bio p, .section-title, .card p, .card h3')];
+  const targets = [...node.querySelectorAll('.bio p, .section-title, .card p, .card h3, .thumb-overline, .video-caption-meta')];
   targets.forEach(el => wrapWordsInEl(el));
   const allWords = [...node.querySelectorAll('.stream-word')];
   allWords.forEach(w => { w.style.transition = 'none'; w.classList.remove('visible'); });

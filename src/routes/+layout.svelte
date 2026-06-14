@@ -3,7 +3,6 @@
   import { beforeNavigate } from '$app/navigation';
   import Nav from '$lib/Nav.svelte';
   import Footer from '$lib/Footer.svelte';
-  import SmoothCursor from '$lib/SmoothCursor.svelte';
   import { appReady } from '$lib/stores/app.js';
   import { theme } from '$lib/stores/theme.js';
   import { cancelStream } from '$lib/stream.js';
@@ -46,7 +45,6 @@
   });
 </script>
 
-<SmoothCursor />
 <Nav ready={$appReady} />
 
 <main id="scroll-container" class:ready={$appReady}>

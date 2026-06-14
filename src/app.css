@@ -591,58 +591,40 @@ canvas {
 }
 
 /* ── FEATURED ── */
-/* YouTube video box: large, rounded, fills the thumbnail; shown immediately. */
-.featured-video {
-  width: min(960px, 92vw);
-  max-width: none;
-  margin-top: 1.5rem;
-  background: #000;
-  border: none;
-  border-radius: clamp(16px, 3vw, 28px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+/* Centered, subtitle-sized heading (kept .section-title so it still streams). */
+.section-title.featured-title {
+  text-align: center;
+  font-size: clamp(1.02rem, 2vw, 1.17rem);
 }
 
-/* Circular play button anchored bottom-right (antigravity style). */
-.featured-video .video-play {
-  top: auto;
-  left: auto;
-  right: clamp(12px, 3vw, 22px);
-  bottom: clamp(12px, 3vw, 22px);
-  width: clamp(44px, 11vw, 64px);
-  height: clamp(44px, 11vw, 64px);
-  transform: none;
-  border-radius: 50%;
-  background: rgba(20, 20, 20, 0.72);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.featured-video .video-play::before {
-  position: static;
-  transform: translateX(2px);
-  border-width: 9px 0 9px 15px;
-}
-
-/* ── VIDEO CARD ── */
-.video-card {
-  display: block;
-  position: relative;
+/* Centered figure: small thumbnail + caption below. */
+.video-figure {
   width: 100%;
   max-width: 640px;
+  margin: 1.5rem auto 0;
+}
+
+/* Small clickable thumbnail (a <button>) that opens the modal player. */
+.video-card {
+  position: relative;
+  display: block;
+  width: 100%;
   aspect-ratio: 16 / 9;
-  margin-top: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  padding: 0;
+  border: none;
+  border-radius: clamp(5px, 1.2vw, 9px);
   overflow: hidden;
-  background: var(--card-bg);
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  background: #000;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .video-card:hover {
   transform: translateY(-2px);
-  border-color: var(--accent);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
 }
 
 .video-thumb {
@@ -650,19 +632,101 @@ canvas {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-/* Play-button overlay (YouTube-style rounded triangle). */
+.video-card:hover .video-thumb {
+  transform: scale(1.05);
+}
+
+/* Dark scrim that fades in on hover so the "Watch" pill pops. */
+.video-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.video-card:hover .video-scrim {
+  opacity: 1;
+}
+
+/* Headline overlaid on the left of the thumbnail (centred vertically), streamed
+   in word-by-word on load — see the reference video cards. Sits over the dark
+   panel of the photo; the text-shadow keeps it legible on busier frames. */
+.thumb-overline {
+  position: absolute;
+  left: clamp(16px, 3.6vw, 30px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.thumb-overline-line {
+  display: block;
+  font-size: clamp(1.38rem, 5.04vw, 2.4rem);
+}
+
+/* White "Watch interview" pill — smoothly follows the cursor across the
+   thumbnail. Position AND scale are driven every frame from JS (RAF lerp) via
+   `transform`; nothing here is CSS-animated (that would fight the per-frame
+   motion and smear it). The pill is fully opaque and is shown/hidden by scaling,
+   not fading — so it never reveals the thumbnail through itself. Anchored at the
+   card's top-left (0,0); the JS transform offsets it to the cursor, re-centres
+   with translate(-50%), and scales it (starts collapsed at scale 0). */
+.video-watch {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%) scale(0);
+  will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1.15em;
+  background: #ffffff; /* fully opaque — nothing behind the pill shows through */
+  color: #111;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.8rem, 1.7vw, 0.98rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.video-watch-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #111;
+}
+
+/* Small persistent play badge, bottom-right of the thumbnail. */
 .video-play {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 68px;
-  height: 48px;
-  transform: translate(-50%, -50%);
-  border-radius: 12px;
-  background: rgba(20, 20, 20, 0.75);
-  transition: background 0.2s;
+  right: clamp(10px, 2.5vw, 16px);
+  bottom: clamp(10px, 2.5vw, 16px);
+  width: clamp(34px, 7vw, 44px);
+  height: clamp(34px, 7vw, 44px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(4px);
+  transition: background 0.25s ease;
+  pointer-events: none;
 }
 
 .video-play::before {
@@ -672,13 +736,127 @@ canvas {
   left: 50%;
   transform: translate(-40%, -50%);
   border-style: solid;
-  border-width: 11px 0 11px 18px;
+  border-width: 6px 0 6px 10px;
   border-color: transparent transparent transparent #ffffff;
 }
 
 .video-card:hover .video-play {
-  background: var(--accent);
+  background: rgba(255, 255, 255, 0.45);
 }
+
+/* ── PLAYER OVERLAY ──
+   The page itself stays visible (and scrollable) behind a heavy dim layer;
+   only the floating player sits at full opacity on top. No horizontal padding
+   so the player width can exactly match the thumbnail. */
+.video-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 5vh, 48px) 0;
+}
+
+/* Dim layer over the whole page (nav + content). */
+.video-dim {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  opacity: 0.85;
+  cursor: pointer;
+  animation: dimIn 0.2s ease forwards;
+}
+
+/* Positioning context for the player + its corner close button. The width is
+   overridden inline (in px, measured from the thumbnail) so the player matches
+   the thumbnail exactly; this is just the fallback. */
+.video-modal-stage {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: min(640px, calc(100vw - 2 * var(--side-margin)));
+  animation: modalPop 0.25s ease forwards;
+}
+
+.video-modal-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: clamp(8px, 1.6vw, 14px);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.video-embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Close button floating just outside the player's top-right corner. */
+.video-modal-close {
+  position: absolute;
+  left: calc(100% + 5px);
+  bottom: calc(100% + 4px);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(32px, 6vw, 40px);
+  height: clamp(32px, 6vw, 40px);
+  padding: 0;
+  color: #111;
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.video-modal-close:hover {
+  transform: scale(1.08);
+}
+
+/* On narrow screens the player nears full width — keep the X from clipping off
+   the right edge by anchoring it just above the corner instead of beside it. */
+@media (max-width: 760px) {
+  .video-modal-close {
+    left: auto;
+    right: 4px;
+    bottom: calc(100% + 6px);
+  }
+}
+
+@keyframes dimIn {
+  from { opacity: 0; }
+  to { opacity: 0.85; }
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Caption: muted meta row (category · duration). The title now lives overlaid
+   on the thumbnail, so the meta row is the only child. */
+.video-caption {
+  margin-top: 1.15rem;
+}
+
+.video-caption-meta {
+  display: flex;
+  gap: 1.25rem;
+  color: var(--text);
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+.video-caption-meta > span:first-child { opacity: 1.0; }
+.video-caption-meta > span:last-child { opacity: 0.7; }
 
 /* ── FOOTER ── */
 .footer {
@@ -727,18 +905,6 @@ canvas {
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
-  cursor: none;
-}
-
-::view-transition-image-pair(root) {
-  cursor: none;
-}
-
-/* ── CURSOR ── */
-body.pointer-active,
-body.pointer-active *,
-html:has(body.pointer-active) {
-  cursor: none !important;
 }
 
 /* ── DESKTOP: layout ── */
