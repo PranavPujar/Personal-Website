@@ -1,0 +1,115 @@
+create a clean claude.md file to adhere to 
+
+featured add:
+
+2. UCMAS abacus 
+3. singing 
+4. 
+
+tailor content 
+decide on UI 
+claude into it 
+
+
+(timeline on the right side)
+Company
+Title  
+
+journey - add singing stage anchoring sankskrit teaching SAT all that 
+
+1. Adobe (San Jose, CA)
+
+Incoming SDE II @ Adobe HQ
+
+Building Agentic AI solutions within the Adobe Experience Platform.
+
+UT Arlington M.S. in Computer Science
+
+2. IDIR Lab 
+
+ML Research involving custom Machine Learning Architecture & graph neural networks for a gene discovery project. Funded by the US Dept. of Agriulture. 
+Software Development for a project aimed at mitigating hurricane-related home damage through predictive analytics.
+
+3. Adobe
+Software Engineering Intern 
+
+My first experience working on software used by some of the world's largest companies.
+
+Developed AI-powered monitoring tools that proactively detected customer journey failures.
+Built production APIs and data pipelines used across Adobe Experience Platform.
+Learned how enterprise software is designed, deployed, and scaled for millions of users.
+
+Publication & Research Recognition
+
+Presented research at academic conferences and university research showcases.
+Continued advancing GeneSieve and AI-driven bioinformatics research.
+4. AMD Software Engineering Intern ⚡
+
+Advanced Micro Devices (AMD)
+
+Worked on developer productivity and automation tooling supporting engineering teams across AMD.
+
+Built real-time workflow tracking systems using Kafka, FastAPI, and Python.
+Reduced execution times from nearly a minute to just seconds through automation and optimization.
+Learned how software engineering drives efficiency across large hardware organizations.
+
+Milestone: Graduated with B.S. in Computer Science
+
+Honors: Freshman Distinction Roll, Dean's List (Spring '22, Spring '23, Spring '24, Fall '24)
+
+5. IDIR Lab Undergraduate Research Assistant 🧬
+
+My first deep dive into research, machine learning, and large-scale biological datasets.
+
+Helped build GeneSieve's backend infrastructure and data pipelines.
+Applied machine learning, feature engineering, and statistical analysis to improve biological search systems.
+Learned how modern AI techniques can accelerate scientific discovery.
+6. LAC Tutor 📚
+
+Learning Assistant Center
+
+Helped students build confidence in technical subjects while strengthening my own communication skills.
+
+Guided students through challenging programming, math, and computer science concepts.
+Learned how to explain complex ideas in simple and intuitive ways.
+Discovered a passion for mentoring and helping others succeed.
+7. IE Lab Undergraduate Research Assistant 🧪
+
+UTA College of Engineering Research Lab
+
+My first exposure to academic research and machine learning.
+
+Researched CRISPR-CAS proteins using data science, machine learning, and bioinformatics techniques.
+Contributed to classifier and generative model development achieving over 96% prediction accuracy.
+Learned how large-scale datasets, automation, and AI can be applied to biological research.
+
+Publication: Research contribution on CRISPR-CAS protein classification and prediction.
+
+8. Research Presentations & Publications 
+
+Sharing research became just as rewarding as conducting it.
+
+Presented projects at university research symposiums and academic events.
+Collaborated with faculty, graduate researchers, and industry professionals.
+Developed skills in technical communication, storytelling, and scientific presentation.
+9. Mathematics Tutor 
+
+Teaching became one of the most rewarding parts of my undergraduate experience.
+
+Tutored students in Linear Algebra, Calculus I & II, Algebra, and related mathematics courses.
+Helped students strengthen problem-solving skills and build confidence in quantitative reasoning.
+Learned patience, communication, and the value of breaking down complex concepts.
+10. Dean's Office Student Assistant ☕
+
+My first university role and introduction to professional responsibility.
+
+Supported daily operations of the College of Engineering Dean's Office.
+Assisted with events, technology systems, inventory management, and administrative coordination.
+Built professionalism, communication skills, and relationships with faculty and university leadership.
+
+Memorable Moments
+
+Conversations with Dean Paul Componation.
+Meeting distinguished researchers including Dr. Shouyi Wang.
+
+president vandergriff hall council 

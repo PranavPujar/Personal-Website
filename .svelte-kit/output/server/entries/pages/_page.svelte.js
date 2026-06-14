@@ -3,12 +3,14 @@ import "../../chunks/index-server2.js";
 import "../../chunks/theme.js";
 import { t as Streamer } from "../../chunks/Streamer.js";
 import "three-globe";
-import "three";
+import { Color } from "three";
 import "three/examples/jsm/controls/OrbitControls.js";
 //#endregion
 //#region src/lib/Globe.svelte
 function Globe($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
+		new Color("#040d21");
+		new Color("#ffffff");
 		$$renderer.push(`<div id="globe-container"></div>`);
 	});
 }
@@ -22,6 +24,7 @@ function ImageSlideshow($$renderer, $$props) {
 //#endregion
 //#region src/routes/+page.svelte
 function _page($$renderer) {
+	const speedDiv = 1.9;
 	head("1uha8ag", $$renderer, ($$renderer) => {
 		$$renderer.title(($$renderer) => {
 			$$renderer.push(`<title>Pranav Pujar</title>`);
@@ -29,7 +32,7 @@ function _page($$renderer) {
 	});
 	$$renderer.push(`<div class="view-content">`);
 	Streamer($$renderer, {
-		speedDiv: 1.9,
+		speedDiv,
 		children: ($$renderer) => {
 			ImageSlideshow($$renderer, {});
 			$$renderer.push(`<!----> <div class="bio"><p>I'm currently pursuing my Master's in Computer Science at <a href="https://www.uta.edu" target="_blank" class="text-link text-link-uta">The University of Texas at Arlington</a>, on track to complete my B.S. and M.S. in five years by July 2026.</p> <p>This summer, I'll be joining <a href="https://business.adobe.com/products/experience-platform/adobe-experience-platform.html" target="_blank" class="text-link text-link-adobe">Adobe</a> in San Jose, CA as a Full-Time Software Engineer, working on Agentic AI

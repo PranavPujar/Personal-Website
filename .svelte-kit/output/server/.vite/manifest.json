@@ -143,7 +143,7 @@
       "_theme.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.COWngN0u.css"
+      "_app/immutable/assets/_layout.xk_bVZKg.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -161,10 +161,10 @@
       "_app/immutable/assets/_page.DH-H6p_0.css"
     ]
   },
-  "src/routes/career/+page.svelte": {
-    "file": "entries/pages/career/_page.svelte.js",
-    "name": "entries/pages/career/_page.svelte",
-    "src": "src/routes/career/+page.svelte",
+  "src/routes/blog/+page.svelte": {
+    "file": "entries/pages/blog/_page.svelte.js",
+    "name": "entries/pages/blog/_page.svelte",
+    "src": "src/routes/blog/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index-server.js",
@@ -175,6 +175,26 @@
     "file": "entries/pages/featured/_page.svelte.js",
     "name": "entries/pages/featured/_page.svelte",
     "src": "src/routes/featured/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-server.js",
+      "_Streamer.js"
+    ]
+  },
+  "src/routes/fun-facts/+page.svelte": {
+    "file": "entries/pages/fun-facts/_page.svelte.js",
+    "name": "entries/pages/fun-facts/_page.svelte",
+    "src": "src/routes/fun-facts/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-server.js",
+      "_Streamer.js"
+    ]
+  },
+  "src/routes/journey/+page.svelte": {
+    "file": "entries/pages/journey/_page.svelte.js",
+    "name": "entries/pages/journey/_page.svelte",
+    "src": "src/routes/journey/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index-server.js",

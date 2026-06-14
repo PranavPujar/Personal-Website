@@ -42,6 +42,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/blog" | "/featured" | "/fun-facts" | "/journey";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/CV.pdf" | "/favicon.png" | "/src/.DS_Store" | "/src/files/1.jpg" | "/src/files/2.jpg" | "/src/files/3.jpg" | "/src/files/4.jpg" | "/src/files/5.jpg" | "/src/files/6.jpg" | "/src/files/cropped.jpg" | "/src/files/final.png" | "/src/files/goldengate.jpeg" | "/src/files/slideshow.mp4" | string & {};
+		Asset(): "/CV.pdf" | "/favicon.png" | "/src/.DS_Store" | "/src/files/1.jpg" | "/src/files/2.jpg" | "/src/files/3.jpg" | "/src/files/4.jpg" | "/src/files/5.jpg" | "/src/files/6.jpg" | "/src/files/cropped.jpg" | "/src/files/featured-thumbnail.jpg" | "/src/files/final.png" | "/src/files/goldengate.jpeg" | "/src/files/slideshow.mp4" | string & {};
 	}
 }
