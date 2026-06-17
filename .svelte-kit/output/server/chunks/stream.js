@@ -81,6 +81,49 @@ async function streamEl(el, targets, started, g, speedDiv) {
 function cancelStream() {
 	gen++;
 }
+function streamOnScroll(node, { selector, speedDiv = 1, rootMargin = "0px", threshold = 0 } = {}) {
+	const g = gen;
+	const targets = [...node.querySelectorAll(selector)];
+	targets.forEach((el) => {
+		wrapWordsInEl(el);
+		const words = [...el.querySelectorAll(".stream-word")];
+		if (el.offsetParent === null) {
+			words.forEach((w) => w.classList.add("visible"));
+			el.dataset.streamed = "true";
+		} else words.forEach((w) => {
+			w.style.transition = "none";
+			w.classList.remove("visible");
+		});
+	});
+	requestAnimationFrame(() => {
+		targets.forEach((el) => el.querySelectorAll(".stream-word").forEach((w) => {
+			w.style.transition = "";
+		}));
+	});
+	async function reveal(el) {
+		if (el.dataset.streamed) return;
+		el.dataset.streamed = "true";
+		const words = [...el.querySelectorAll(".stream-word")];
+		const elSpeed = el.dataset.speedDiv ? parseFloat(el.dataset.speedDiv) : speedDiv;
+		for (let i = 0; i < words.length; i++) {
+			if (gen !== g) return;
+			words[i].classList.add("visible");
+			await rafDelay((25 + (Math.random() * 20 - 10)) / elSpeed, g);
+		}
+	}
+	const io = new IntersectionObserver((entries) => {
+		for (const entry of entries) if (entry.isIntersecting) {
+			reveal(entry.target);
+			io.unobserve(entry.target);
+		}
+	}, {
+		root: null,
+		rootMargin,
+		threshold
+	});
+	targets.forEach((el) => io.observe(el));
+	return () => io.disconnect();
+}
 async function streamView(node, speedDiv = 1) {
 	const g = ++gen;
 	const targets = [...node.querySelectorAll(".bio p, .section-title, .card p, .card h3, .thumb-overline, .video-caption-meta")];
@@ -97,4 +140,4 @@ async function streamView(node, speedDiv = 1) {
 	if (targets.length > 0) streamEl(targets[0], targets, /* @__PURE__ */ new Set(), g, speedDiv);
 }
 //#endregion
-export { streamReset as i, streamView as n, appReady as r, cancelStream as t };
+export { streamReset as a, appReady as i, streamOnScroll as n, streamView as r, cancelStream as t };

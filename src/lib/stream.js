@@ -83,6 +83,58 @@ export function cancelStream() {
   gen++;
 }
 
+// Scroll-triggered variant: each target element reveals its words (same blur
+// effect as streamView) only once it scrolls into view, instead of all chaining
+// from load. Returns a cleanup fn that disconnects the observer.
+export function streamOnScroll(node, { selector, speedDiv = 1, rootMargin = '0px', threshold = 0 } = {}) {
+  // Capture the current generation; layout's cancelStream() bumps `gen` on
+  // navigation, which aborts any in-flight reveals via rafDelay.
+  const g = gen;
+  const targets = [...node.querySelectorAll(selector)];
+
+  targets.forEach(el => {
+    wrapWordsInEl(el);
+    const words = [...el.querySelectorAll('.stream-word')];
+    if (el.offsetParent === null) {
+      // Hidden in this viewport (e.g. the desktop/mobile duplicate of an item).
+      // Reveal immediately so it's never stuck blurred if the layout later
+      // switches to show it; only the visible copy actually streams.
+      words.forEach(w => w.classList.add('visible'));
+      el.dataset.streamed = 'true';
+    } else {
+      words.forEach(w => { w.style.transition = 'none'; w.classList.remove('visible'); });
+    }
+  });
+  requestAnimationFrame(() => {
+    targets.forEach(el => el.querySelectorAll('.stream-word').forEach(w => { w.style.transition = ''; }));
+  });
+
+  async function reveal(el) {
+    if (el.dataset.streamed) return;
+    el.dataset.streamed = 'true';
+    const words = [...el.querySelectorAll('.stream-word')];
+    const elSpeed = el.dataset.speedDiv ? parseFloat(el.dataset.speedDiv) : speedDiv;
+    for (let i = 0; i < words.length; i++) {
+      if (gen !== g) return;
+      words[i].classList.add('visible');
+      const delay = (25 + (Math.random() * 20 - 10)) / elSpeed;
+      await rafDelay(delay, g);
+    }
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        reveal(entry.target);
+        io.unobserve(entry.target);
+      }
+    }
+  }, { root: null, rootMargin, threshold });
+
+  targets.forEach(el => io.observe(el));
+  return () => io.disconnect();
+}
+
 export async function streamView(node, speedDiv = 1) {
   const g = ++gen;
   const targets = [...node.querySelectorAll('.bio p, .section-title, .card p, .card h3, .thumb-overline, .video-caption-meta')];

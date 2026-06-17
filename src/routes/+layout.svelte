@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { page } from '$app/stores';
   import { beforeNavigate } from '$app/navigation';
   import Nav from '$lib/Nav.svelte';
   import Footer from '$lib/Footer.svelte';
@@ -47,7 +48,7 @@
 
 <Nav ready={$appReady} />
 
-<main id="scroll-container" class:ready={$appReady}>
+<main id="scroll-container" class:ready={$appReady} data-route={$page.url.pathname}>
   {@render children()}
   <Footer />
 </main>

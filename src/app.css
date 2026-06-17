@@ -33,6 +33,10 @@ a::before { content: ''; position: absolute; inset: -10px; }
   --accent: #e86927;
   --border: rgba(255,255,255,0.07);
   --card-bg: rgba(255,255,255,0.04);
+  /* macOS SF Pro (and the equivalent system UI font elsewhere). Used site-wide
+     for everything EXCEPT the nav title, subtitle and nav links. */
+  --font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --side-margin: clamp(2rem, 25vw, 40rem);
   --nav-title-size: clamp(2rem, 0.5rem + 3.5vw, 2.8rem);
   --nav-subtitle-size: clamp(0.95rem, 0.5rem + 1.05vw, 1.12rem);
@@ -91,12 +95,25 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'EB Garamond', Garamond, serif;
+  font-family: var(--font-system);
   font-size: clamp(16px, 1vw + 10px, 16px);
   font-weight: 400;
   line-height: 1.6;
   overflow-x: clip;
   min-height: 100vh;
+}
+
+/* On laptop+ viewports only, the landing ("/") and featured pages keep the
+   original EB Garamond serif look instead of the site-wide system font.
+   (The thumbnail headline + watch pill below are featured-only, so they're
+   simply restored to their original fonts at the same breakpoint.) */
+@media (min-width: 1281px) {
+  main[data-route="/"],
+  main[data-route="/featured"] {
+    font-family: 'EB Garamond', Garamond, serif;
+  }
+  .thumb-overline { font-family: 'Inter Tight', 'Inter', sans-serif; }
+  .video-watch { font-family: 'Inter', sans-serif; }
 }
 
 /* ── NAV ── */
@@ -675,7 +692,7 @@ canvas {
   display: flex;
   flex-direction: column;
   color: #fff;
-  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-family: var(--font-system);
   font-weight: 600;
   line-height: 1.06;
   letter-spacing: -0.025em;
@@ -707,7 +724,7 @@ canvas {
   padding: 0.6em 1.15em;
   background: #ffffff; /* fully opaque — nothing behind the pill shows through */
   color: #111;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-system);
   font-size: clamp(0.8rem, 1.7vw, 0.98rem);
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -1030,7 +1047,7 @@ canvas {
     letter-spacing: 0.012em;
   }
 
-  body { font-family: 'Oswald', sans-serif; }
+  body { font-family: var(--font-system); }
 }
 
 @media (max-width: 409px) {

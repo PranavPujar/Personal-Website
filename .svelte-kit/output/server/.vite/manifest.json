@@ -159,7 +159,7 @@
       "_theme.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.Cvvczlsj.css"
+      "_app/immutable/assets/_layout.CPyvki1t.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -215,10 +215,11 @@
     "imports": [
       "_index-server.js",
       "_attachments.js",
-      "_index-server2.js"
+      "_index-server2.js",
+      "_stream.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.Bu6IM1B8.css"
+      "_app/immutable/assets/_page.D6iNrGyt.css"
     ]
   }
 }

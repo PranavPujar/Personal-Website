@@ -102,3 +102,6 @@ dist/*
 
 # TernJS port file
 .tern-port
+
+# the resume directory is for me to iterate on
+resume/*

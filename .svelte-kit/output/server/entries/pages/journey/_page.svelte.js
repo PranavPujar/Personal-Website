@@ -1,6 +1,9 @@
-import { R as writable, a as attr_style, d as head, et as escape_html, g as unsubscribe_stores, h as stringify, lt as fallback, m as store_get, s as bind_props, u as ensure_array_like } from "../../../chunks/index-server.js";
+import { $ as clsx$1, Q as attr, R as writable, a as attr_style, c as derived, d as head, et as escape_html, g as unsubscribe_stores, h as stringify, i as attr_class, lt as fallback, m as store_get, s as bind_props, u as ensure_array_like } from "../../../chunks/index-server.js";
 import "../../../chunks/index-server2.js";
 import { n as loop, r as raf } from "../../../chunks/attachments.js";
+import "../../../chunks/stream.js";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 globalThis.Date;
 globalThis.Set;
 globalThis.Map;
@@ -154,34 +157,87 @@ function tweened(value, defaults = {}) {
 	};
 }
 //#endregion
+//#region src/lib/utils.js
+function cn(...inputs) {
+	return twMerge(clsx(inputs));
+}
+//#endregion
+//#region src/lib/MagicCard.svelte
+function MagicCard($$renderer, $$props) {
+	$$renderer.component(($$renderer) => {
+		let { children, class: className = "", gradientSize = 200, gradientColor = "#262626", gradientOpacity = .8 } = $$props;
+		let mouseX = -9999;
+		let mouseY = -9999;
+		let bg = derived(() => `radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)`);
+		$$renderer.push(`<div role="presentation"${attr_class(clsx$1(cn("group relative flex size-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 border text-black dark:text-white justify-center py-4", className)), "svelte-b7f4x4")}><div class="relative z-10">`);
+		children?.($$renderer);
+		$$renderer.push(`<!----></div> <div class="pointer-events-none absolute -inset-px rounded-xl transition-opacity duration-300"${attr_style(`background: ${stringify(bg())}; opacity: ${stringify(0)};`)}></div></div>`);
+	});
+}
+//#endregion
 //#region src/lib/Timeline.svelte
 function Timeline($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
 		var $$store_subs;
 		let timelineData = fallback($$props["timelineData"], () => [], true);
-		let height = 0;
-		let scrollProgress = writable(0);
-		let heightTransform = tweened(0, {
-			duration: 400,
+		let trackHeight = 0;
+		let fillHeight = tweened(0, {
+			duration: 180,
 			easing: cubicOut
 		});
-		let opacityTransform = tweened(0, {
-			duration: 400,
+		let fillOpacity = tweened(0, {
+			duration: 180,
 			easing: cubicOut
 		});
-		$: scrollProgress.subscribe((progress) => {
-			heightTransform.set(progress * height);
-			opacityTransform.set(progress < .1 ? progress * 10 : 1);
+		$$renderer.push(`<div class="w-full journey-bg font-sans svelte-1b7kgsg"><div class="journey-pad journey-header svelte-1b7kgsg"><a class="cv-link svelte-1b7kgsg" href="/CV.pdf" target="_blank" rel="noopener noreferrer" data-sveltekit-reload="" aria-label="Open my CV (PDF)">`);
+		MagicCard($$renderer, {
+			class: "cursor-pointer group items-center hover:border-[#e8692773] transition-all duration-300",
+			gradientColor: "#4d2506",
+			gradientSize: 220,
+			children: ($$renderer) => {
+				$$renderer.push(`<span class="cv-inner svelte-1b7kgsg"><span class="cv-pdf svelte-1b7kgsg" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="svelte-1b7kgsg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M9 13h6M9 17h4"></path></svg></span> <span class="cv-title svelte-1b7kgsg">CV</span></span>`);
+			},
+			$$slots: { default: true }
 		});
-		$$renderer.push(`<div class="w-full bg-white dark:bg-neutral-950 font-sans md:px-10"><div class="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10"><h2 class="text-lg md:text-4xl mb-4 text-black dark:text-white max-w-4xl">My Journey</h2> <p class="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-sm">A timeline of the roles, projects, and milestones I've worked on over the
-      years.</p></div> <div class="relative max-w-7xl mx-auto pb-20 overflow-hidden"><!--[-->`);
+		$$renderer.push(`<!----></a> <p class="journey-subtitle text-sm md:text-base svelte-1b7kgsg">A timeline of the roles I've held, and milestones I've achieved over the
+      years. Browse my journey below, or check out a concise resume.</p></div> <div class="journey-pad pb-20 svelte-1b7kgsg"><div class="relative overflow-hidden"><!--[-->`);
 		const each_array = ensure_array_like(timelineData);
 		for (let index = 0, $$length = each_array.length; index < $$length; index++) {
 			let item = each_array[index];
-			$$renderer.push(`<div class="flex justify-start pt-10 md:pt-40 md:gap-10"><div class="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full"><div class="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center"><div class="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2"></div></div> <h3 class="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500">${escape_html(item.title)}</h3></div> <div class="relative pl-20 pr-4 md:pl-4 w-full"><h3 class="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">${escape_html(item.title)}</h3> `);
+			$$renderer.push(`<div${attr_class(`flex justify-start md:gap-10 ${stringify(index === 0 ? "pt-6 md:pt-12" : "pt-10 md:pt-40")}`)}><div class="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full"><div data-timeline-dot="" class="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center"><div class="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2"></div></div> <div class="hidden md:flex md:flex-col md:pl-20"><h3 class="journey-role svelte-1b7kgsg">${escape_html(item.title)}</h3> `);
+			if (item.year) {
+				$$renderer.push("<!--[0-->");
+				$$renderer.push(`<span class="journey-year svelte-1b7kgsg">${escape_html(item.year)}</span>`);
+			} else $$renderer.push("<!--[-1-->");
+			$$renderer.push(`<!--]--> `);
+			if (item.location) {
+				$$renderer.push("<!--[0-->");
+				$$renderer.push(`<span class="journey-location svelte-1b7kgsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="svelte-1b7kgsg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${escape_html(item.location)}</span>`);
+			} else $$renderer.push("<!--[-1-->");
+			$$renderer.push(`<!--]--> `);
+			if (item.logo) {
+				$$renderer.push("<!--[0-->");
+				$$renderer.push(`<img${attr("src", item.logo)} alt="" class="journey-logo mt-4 svelte-1b7kgsg"/>`);
+			} else $$renderer.push("<!--[-1-->");
+			$$renderer.push(`<!--]--></div></div> <div class="relative pl-20 pr-4 md:pl-4 w-full"><div class="md:hidden mb-4"><h3 class="journey-role svelte-1b7kgsg">${escape_html(item.title)}</h3> `);
+			if (item.year) {
+				$$renderer.push("<!--[0-->");
+				$$renderer.push(`<span class="journey-year svelte-1b7kgsg">${escape_html(item.year)}</span>`);
+			} else $$renderer.push("<!--[-1-->");
+			$$renderer.push(`<!--]--> `);
+			if (item.location) {
+				$$renderer.push("<!--[0-->");
+				$$renderer.push(`<span class="journey-location svelte-1b7kgsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="svelte-1b7kgsg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${escape_html(item.location)}</span>`);
+			} else $$renderer.push("<!--[-1-->");
+			$$renderer.push(`<!--]--> `);
+			if (item.logo) {
+				$$renderer.push("<!--[0-->");
+				$$renderer.push(`<img${attr("src", item.logo)} alt="" class="journey-logo block mt-3 svelte-1b7kgsg"/>`);
+			} else $$renderer.push("<!--[-1-->");
+			$$renderer.push(`<!--]--></div> `);
 			if (typeof item.content === "string") {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`${escape_html(item.content)}`);
+				$$renderer.push(`<p class="journey-desc svelte-1b7kgsg">${escape_html(item.content)}</p>`);
 			} else {
 				$$renderer.push("<!--[-1-->");
 				if (item.content) {
@@ -195,7 +251,7 @@ function Timeline($$renderer, $$props) {
 			}
 			$$renderer.push(`<!--]--></div></div>`);
 		}
-		$$renderer.push(`<!--]--> <div${attr_style(`height: ${stringify(height)}px;`)} class="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-neutral-200 dark:via-neutral-700 to-transparent to-[99%] timeline-line svelte-1b7kgsg"><div${attr_style(`height: ${stringify(store_get($$store_subs ??= {}, "$heightTransform", heightTransform))}px; opacity: ${stringify(store_get($$store_subs ??= {}, "$opacityTransform", opacityTransform))};`)} class="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"></div></div></div></div>`);
+		$$renderer.push(`<!--]--> <div${attr_style(`height: ${stringify(trackHeight)}px;`)} class="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] timeline-line svelte-1b7kgsg"><div${attr_style(`height: ${stringify(store_get($$store_subs ??= {}, "$fillHeight", fillHeight))}px; opacity: ${stringify(store_get($$store_subs ??= {}, "$fillOpacity", fillOpacity))};`)} class="absolute inset-x-0 top-0 w-[2px] rounded-full timeline-fill svelte-1b7kgsg"></div></div></div></div></div>`);
 		if ($$store_subs) unsubscribe_stores($$store_subs);
 		bind_props($$props, { timelineData });
 	});
@@ -203,13 +259,82 @@ function Timeline($$renderer, $$props) {
 //#endregion
 //#region src/routes/journey/+page.svelte
 function _page($$renderer) {
-	const timelineData = [{
-		title: "Antigravity SDK",
-		dateText: "June 2026",
-		description: "Have some content here that should ideally wrap around perfectly with the surrounding text. Lets make this text a little bit longer."
-	}].map((d) => ({
-		title: d.dateText,
-		content: `${d.title} — ${d.description}`
+	const timelineData = [
+		{
+			title: "Incoming SDE II",
+			location: "San Jose, CA",
+			dateText: "2026",
+			logo: "/logos/adobe.png",
+			description: "Two months to start as an SDE II @ Adobe HQ!         Will be working on Agentic AI initiatives within Adobe Experience Platform."
+		},
+		{
+			title: "Graduate ML Research Assistant",
+			location: "Arlington, TX",
+			dateText: "Aug 2025-July 2026",
+			description: "Conducting machine learning research involving custom neural architectures and graph neural networks for a USDA-funded gene discovery initiative. Also developing predictive analytics systems focused on mitigating hurricane-related home damage."
+		},
+		{
+			title: "Adobe — Software Engineering Intern",
+			location: "San Jose, CA",
+			dateText: "2025",
+			logo: "/logos/adobe.png",
+			description: "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform. Developed production APIs and data pipelines while learning how enterprise software operates at massive scale."
+		},
+		{
+			title: "AAAI Publication",
+			location: "Philadelphia, PA",
+			dateText: "2025",
+			description: "Contributed to research that resulted in a publication accepted at the AAAI Conference on Artificial Intelligence, marking a major milestone in my research journey."
+		},
+		{
+			title: "AMD — Software Engineering Intern",
+			location: "Austin, TX",
+			dateText: "2024",
+			logo: "/logos/amd.png",
+			description: "Developed developer productivity and automation tooling used across engineering teams at AMD. Built real-time workflow tracking systems with Kafka, FastAPI, and Python while reducing execution times from minutes to seconds."
+		},
+		{
+			title: "UT Arlington — B.S. Computer Science",
+			location: "Arlington, TX",
+			dateText: "2024",
+			description: "Graduated Magna Cum Laude with a Bachelor of Science in Computer Science. Earned recognition including Freshman Distinction Roll and multiple Dean's List honors throughout my academic career."
+		},
+		{
+			title: "IDIR Lab — Undergraduate Research Assistant",
+			location: "Arlington, TX",
+			dateText: "2023-2024",
+			description: "Helped build the backend infrastructure and data pipelines powering GeneSieve. Applied machine learning, feature engineering, and statistical analysis to improve biological search systems and accelerate scientific discovery."
+		},
+		{
+			title: "Learning Assistant Center — Tutor",
+			location: "Arlington, TX",
+			dateText: "2023",
+			description: "Tutored students with mental disabilities across mathematics and finance courses. Developed a passion for mentoring while helping students strengthen academic skills and confidence."
+		},
+		{
+			title: "UTA College of Engineering — Research Assistant",
+			location: "Arlington, TX",
+			dateText: "2022-2023",
+			description: "Conducted bioinformatics and machine learning research on CRISPR-CAS proteins. Contributed to classifier and generative model development achieving over 96% prediction accuracy, leading to a research publication."
+		},
+		{
+			title: "Mathematics Tutor",
+			location: "Arlington, TX",
+			dateText: "2022-2023",
+			description: "Tutored students in Calculus I & II, Linear Algebra, Algebra, and related mathematics courses. Focused on building strong problem-solving skills and quantitative reasoning foundations."
+		},
+		{
+			title: "Dean's Office Student Assistant",
+			location: "Arlington, TX",
+			dateText: "2021-2022",
+			description: "Supported operations within the UT Arlington College of Engineering Dean's Office. Assisted with events, technology systems, inventory management, and administrative coordination while developing professional communication skills."
+		}
+	].map((d) => ({
+		title: d.title,
+		year: d.dateText,
+		location: d.location,
+		logo: d.logo,
+		content: d.description
 	}));
 	head("7ieb2r", $$renderer, ($$renderer) => {
 		$$renderer.title(($$renderer) => {

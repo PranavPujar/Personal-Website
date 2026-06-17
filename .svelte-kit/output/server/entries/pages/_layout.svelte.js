@@ -2,7 +2,7 @@ import { $ as clsx, Q as attr, c as derived, et as escape_html, ft as run, g as 
 import { t as beforeNavigate } from "../../chunks/client.js";
 import { t as theme } from "../../chunks/theme.js";
 import { t as createAttachmentKey } from "../../chunks/attachments.js";
-import { r as appReady, t as cancelStream } from "../../chunks/stream.js";
+import { i as appReady, t as cancelStream } from "../../chunks/stream.js";
 import { cancelFrame, clamp, complex, distance2D, frame, frameData, hover, inView, isCSSVariableName, isMotionValue, millisecondsToSeconds, mixNumber, motionValue, motionValue as useMotionValue, noop, percent, pipe, press, progress, px, secondsToMilliseconds } from "framer-motion/dom";
 import { AsyncMotionValueAnimation, DOMKeyframesResolver, JSAnimation, KeyframeResolver, activeAnimations, attachFollow, cancelFrame as cancelFrame$1, collectMotionValues, complex as complex$1, defaultTransformValue, findValueType, frame as frame$1, frameData as frameData$1, frameSteps, getAnimatableNone, getDefaultValueType, getValueAsType, getValueTransition, isCSSVariableName as isCSSVariableName$1, isMotionValue as isMotionValue$1, isSVGElement, isSVGSVGElement, makeAnimationInstant, microtask, mixNumber as mixNumber$1, motionValue as motionValue$1, numberValueTypes, percent as percent$1, positionalKeys, px as px$1, readTransformValue, statsBuffer, time, transform, transformPropOrder, transformProps } from "motion-dom";
 import { MotionGlobalConfig, SubscriptionManager, addUniqueItem, circOut, clamp as clamp$1, isNumericalString, isZeroValueString, noop as noop$1, progress as progress$1, removeItem, secondsToMilliseconds as secondsToMilliseconds$1, warnOnce } from "motion-utils";
@@ -5884,7 +5884,7 @@ function _layout($$renderer, $$props) {
 			cancelStream();
 		});
 		Nav($$renderer, { ready: store_get($$store_subs ??= {}, "$appReady", appReady) });
-		$$renderer.push(`<!----> <main id="scroll-container"${attr_class("", void 0, { "ready": store_get($$store_subs ??= {}, "$appReady", appReady) })}>`);
+		$$renderer.push(`<!----> <main id="scroll-container"${attr("data-route", store_get($$store_subs ??= {}, "$page", page).url.pathname)}${attr_class("", void 0, { "ready": store_get($$store_subs ??= {}, "$appReady", appReady) })}>`);
 		children($$renderer);
 		$$renderer.push(`<!----> `);
 		Footer($$renderer, {});
