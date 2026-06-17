@@ -588,6 +588,24 @@ a.hover-link-uta { color: #6ab4f5; }
 a.hover-link-adobe { color: #e53e3e; }
 html.light-mode a.hover-link-uta { color: #2b7bb9; }
 
+/* Same underline→highlight hover as the resume HoverLink, but with NO brand
+   colour. Used for inline links inside {@html} timeline descriptions, so it
+   must be global (component-scoped styles can't reach {@html} content). A thin
+   underline grows into a full-height highlight on hover; the text flips to the
+   page bg so it stays readable on the fill. Fill is var(--text) (fixed) while
+   the text colour animates, so they don't cancel out. */
+a.journey-link {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(var(--text), var(--text)) no-repeat 0 100% / 100% 0.1em;
+  transition: background-size 0.3s ease, color 0.3s ease;
+}
+a.journey-link:hover,
+a.journey-link:focus-visible {
+  background-size: 100% 100%;
+  color: var(--bg);
+}
+
 /* ── INLINE LINKS ── */
 .text-link {
   color: inherit;
@@ -977,9 +995,9 @@ canvas {
 /* ── FOOTER ── */
 .footer {
   padding: 0.5rem var(--side-margin) 3rem;
-  /* --footer-pull (set per-route below) deepens the negative margin so the bar
-     rides further UP into the content above, with no gap added beneath it. */
-  margin-top: calc(-9.2rem - var(--footer-pull, 0rem));
+  /* Sit naturally below the page content on every route (the way /journey
+     does), rather than overlapping it with a negative margin. */
+  margin-top: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -987,12 +1005,6 @@ canvas {
   gap: 1rem;
   flex-wrap: wrap;
 }
-
-/* Pull the social bar further up into the content above (no gap below).
-   Amount is in ~text-line units (1 line ≈ 1.6rem). */
-#scroll-container[data-route="/"]        { --footer-pull: 4.8rem; } /* about: ≈ 3 lines */
-#scroll-container[data-route="/featured"],
-#scroll-container[data-route="/blog"]    { --footer-pull: 32rem; }  /* ≈ 20 lines */
 
 .social-icons {
   display: flex;
@@ -1035,7 +1047,6 @@ canvas {
 @media (min-width: 700px) {
   .section-title { font-size: clamp(1.325rem, 3vw, 1.54rem); }
   .copyright    { font-size: 0.74rem; }
-  .footer       { margin-top: calc(-10.8rem - var(--footer-pull, 0rem)); }
 }
 
 @media (min-width: 1281px) {

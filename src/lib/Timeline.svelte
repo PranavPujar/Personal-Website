@@ -203,7 +203,9 @@
               {/if}
             </div>
             {#if typeof item.content === "string"}
-              <p class="journey-desc">{item.content}</p>
+              <!-- HTML so descriptions can include inline links (e.g. <a>);
+                   stream.js reveals each <a> as a single word unit. -->
+              <p class="journey-desc">{@html item.content}</p>
             {:else}
               <svelte:component this={item.content} />
             {/if}
@@ -285,7 +287,7 @@
   }
   /* Mobile viewports: every logo renders 15px narrower. */
   @media (max-width: 700px) {
-    .journey-logo { width: calc(var(--logo-w) - 15px); }
+    .journey-logo { width: calc(var(--logo-w) - 60px); }
   }
 
   .journey-location {

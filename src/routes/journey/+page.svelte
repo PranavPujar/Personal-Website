@@ -10,7 +10,10 @@
 
   // UTA mark swaps with the theme: a dark logo on the light bg, a white logo
   // on the dark bg.
-  const utaLogo = { light: "/logos/utalightmode.png", dark: "/logos/utadarkmode.png" };
+  const utaLogo = {
+    light: "/logos/utalightmode.png",
+    dark: "/logos/utadarkmode.png",
+  };
 
   const journeyData = [
     {
@@ -20,7 +23,7 @@
       logo: "/logos/adobe.png",
       description:
         "Two months away from joining Adobe!\n" +
-        "Agentic AI @ Adobe Experience Platform (AEP).",
+        "Agentic AI @ <a class='journey-link' href='https://business.adobe.com/products/experience-platform/adobe-experience-platform.html' target='_blank' rel='noopener noreferrer'>Adobe Experience Platform</a>.",
     },
     {
       title: "M.S. in Computer Science (Thesis)",
@@ -29,7 +32,7 @@
       description:
         "Outstanding Masters Student of the Year - 2026.\n\n" +
         "Won the Lonestar Scholarship, a prestigious award given to top-performing graduate students. The scholarship granted me in-state tuition eligibility, resulting in over $20,000 in tuition savings.\n\n" +
-        "On track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research & Applications in Bioinformatics. Defending July 29.",
+        "On track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research &amp; Applications in Bioinformatics. Defending July 29.",
     },
     {
       title: "Graduate ML Research Assistant",
@@ -38,7 +41,7 @@
       description:
         "Developed software for an NSF-funded project focused on reducing hurricane-related residential damage. \n\n" +
         "Architected and developed a custom PyTorch-based Graph Neural Network for gene ranking in GeneSieve, successfully placing the true gene within the top 40% of candidates in ~92% of test cases. \n\n" +
-        "Published a research paper for GeneSieve to PLoS Computational Biology. \n\n" +
+        "Published GeneSieve research paper in <a class='journey-link' href='https://journals.plos.org/ploscompbiol/' target='_blank' rel='noopener noreferrer'>PLoS Computational Biology</a>. \n\n" +
         "Placed #3 in the IDIR Chess Tournament that I organized!",
     },
     {
@@ -48,7 +51,7 @@
       logo: "/logos/adobe.png",
       description:
         "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform (AEP).\n\n" +
-        "Developed & deployed Knowledge Graph querying APIs into production. Worked with Software Engineering and ML teams to create the data flow pipeline integrating these APIs into the Proactive Monitoring Agent."
+        "Developed &amp; deployed Knowledge Graph querying APIs into production. Worked with Software Engineering and ML teams to create the data flow pipeline integrating these APIs into the Proactive Monitoring Agent.",
     },
     {
       title: "Software Engineering Intern",
@@ -93,14 +96,15 @@
       dateText: "2022-2023",
       logo: utaLogo,
       description:
-        "Tutored students in Calculus I & II, Linear Algebra, Algebra, and related mathematics courses. Focused on building strong problem-solving skills and quantitative reasoning foundations.",
+        "Tutored college freshmen in Calculus I &amp; II, Linear Algebra, Algebra.",
     },
     {
       title: "Dean's Office Student Assistant",
       dateText: "2021-2022",
       logo: utaLogo,
       description:
-        "Supported operations within the UT Arlington College of Engineering Dean's Office. Assisted with events, technology systems, inventory management, and administrative coordination while developing professional communication skills.",
+        "Supported event planning and handled calls within the Dean of Engineering's Office. \n\n" +
+        "Mostly just replaced coffee and did some admin stuff tbh. Met a guy who knew a guy, and thats how I got into my first research opportunity!",
     },
   ];
 
