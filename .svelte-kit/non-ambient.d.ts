@@ -42,6 +42,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/blog" | "/featured" | "/fun-facts" | "/journey";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/CV.pdf" | "/favicon.png" | "/logos/adobe.png" | "/logos/amd.png" | "/logos/idir.png" | "/logos/uta.png" | "/logos/uta2.png" | "/logos/uta3.png" | "/logos/uta4.png" | "/resume.pdf" | "/src/.DS_Store" | "/src/files/1.jpg" | "/src/files/2.jpg" | "/src/files/3.jpg" | "/src/files/4.jpg" | "/src/files/5.jpg" | "/src/files/6.jpg" | "/src/files/cropped.jpg" | "/src/files/featured-thumbnail.jpg" | "/src/files/final.png" | "/src/files/goldengate.jpeg" | "/src/files/slideshow.mp4" | string & {};
+		Asset(): "/.DS_Store" | "/CV.pdf" | "/favicon.png" | "/logos/.DS_Store" | "/logos/adobe.png" | "/logos/amd.png" | "/logos/idir.png" | "/logos/image copy.png" | "/logos/image.png" | "/logos/utacse.png" | "/logos/utadarkmode.png" | "/logos/utalightmode.png" | "/resume.pdf" | "/src/.DS_Store" | "/src/files/1.jpg" | "/src/files/2.jpg" | "/src/files/3.jpg" | "/src/files/4.jpg" | "/src/files/5.jpg" | "/src/files/6.jpg" | "/src/files/cropped.jpg" | "/src/files/featured-thumbnail.jpg" | "/src/files/final.png" | "/src/files/goldengate.jpeg" | "/src/files/slideshow.mp4" | string & {};
 	}
 }

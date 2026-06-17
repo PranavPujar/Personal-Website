@@ -1,5 +1,4 @@
-<script>
-  import { onMount } from 'svelte';
+<script module>
   import { get } from 'svelte/store';
   import { theme } from '$lib/stores/theme.js';
   import ThreeGlobe from 'three-globe';
@@ -26,15 +25,15 @@
   // is created ONCE inside `new ThreeGlobe()`. If we tore the globe down and
   // rebuilt it on every visit to the home page, the old instance's ticker +
   // WebGL context leaked and the freshly-built globe's flights stopped running.
-  // So we build the globe a single time, keep the three.js objects at module
-  // scope, and just re-attach the same canvas to whichever page instance is
-  // mounted. The flight dashes keep advancing in real time the whole while.
+  // So we build the globe a single time, keep the three.js objects + `built`
+  // guard at MODULE scope (this `<script module>` block — NOT the per-instance
+  // `<script>` below, whose `let`s reset on every mount), and just re-attach the
+  // same canvas to whichever page instance is mounted. The flight dashes keep
+  // advancing in real time the whole while.
   let renderer, scene, camera, controls, globe;
   let built = false;
   let rendering = false;
   let renderRaf = null;
-
-  let container;
 
   // ── COUNTER-CHANGE EFFECT ON THE FLIGHT LINES (dark mode only) ─────────────
   // Analytic sphere-silhouette mask: each flight-line fragment is dark navy while
@@ -231,6 +230,12 @@
     if (renderRaf) cancelAnimationFrame(renderRaf);
     renderRaf = null;
   }
+</script>
+
+<script>
+  import { onMount } from 'svelte';
+
+  let container; // per-instance DOM ref; the globe itself lives at module scope
 
   onMount(() => {
     let active = true;

@@ -4,16 +4,45 @@
   import { cubicOut } from "svelte/easing";
   import { get } from "svelte/store";
   import { appReady } from "$lib/stores/app.js";
+  import { theme } from "$lib/stores/theme.js";
   import { streamOnScroll } from "$lib/stream.js";
   import HoverLink from "$lib/HoverLink.svelte";
 
+  type ThemedLogo = { light: string; dark: string };
   type TimelineItem = {
     title: string;
     year?: string;
     location?: string;
     content: ComponentType | string;
-    logo?: string;
+    logo?: string | ThemedLogo;
   };
+
+  // A logo may be a single path or a { light, dark } pair (e.g. the UTA mark,
+  // which needs a dark logo on the light bg and a white logo on the dark bg).
+  function logoSrc(logo: string | ThemedLogo | undefined, mode: string) {
+    if (!logo) return undefined;
+    return typeof logo === "string" ? logo : mode === "light" ? logo.light : logo.dark;
+  }
+
+  // ── PER-LOGO SIZE KNOBS ──
+  // Each unique logo is sized independently (px width). Tweak a value to resize
+  // just that logo everywhere it appears; default is used for any other logo.
+  const LOGO_WIDTHS: Record<string, number> = {
+    adobe: 290,
+    amd: 280,
+    idir: 260,
+    uta: 260,
+    default: 200,
+  };
+  function logoKey(logo: string | ThemedLogo | undefined): string {
+    const path = typeof logo === "string" ? logo : logo?.dark ?? "";
+    return (
+      ["adobe", "amd", "idir", "uta"].find((k) => path.includes(k)) ?? "default"
+    );
+  }
+  function logoWidth(logo: string | ThemedLogo | undefined): number {
+    return LOGO_WIDTHS[logoKey(logo)] ?? LOGO_WIDTHS.default;
+  }
   export let timelineData: TimelineItem[] = [];
 
   let rootEl: HTMLDivElement; // whole journey section (streaming scope)
@@ -104,7 +133,7 @@
 
 <div class="w-full journey-bg font-sans" bind:this={rootEl}>
   <div class="journey-pad journey-header">
-    <p class="journey-subtitle text-sm md:text-base">
+    <p class="journey-subtitle">
       A timeline of the roles I've held, and milestones I've achieved over the
       years. Browse my journey below, or check out a concise <HoverLink
         href="/resume.pdf"
@@ -134,20 +163,21 @@
             </div>
             <div class="hidden md:flex md:flex-col md:pl-20">
               <h3 class="journey-role">{item.title}</h3>
-              {#if item.year}
-                <span class="journey-year">{item.year}</span>
-              {/if}
-              {#if item.location}
-                <span class="journey-location">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  {item.location}
-                </span>
+              {#if item.year || item.location}
+                <div class="journey-meta">
+                  {#if item.year}
+                    <span class="journey-year">{item.year}</span>
+                  {/if}
+                  {#if item.location}
+                    <span class="journey-location">
+                      <span class="journey-pin" aria-hidden="true">📍</span>
+                      {item.location}
+                    </span>
+                  {/if}
+                </div>
               {/if}
               {#if item.logo}
-                <img src={item.logo} alt="" class="journey-logo mt-4" />
+                <img src={logoSrc(item.logo, $theme)} alt="" style="width: {logoWidth(item.logo)}px" class="journey-logo mt-4" />
               {/if}
             </div>
           </div>
@@ -155,20 +185,21 @@
           <div class="relative pl-20 pr-4 md:pl-4 w-full">
             <div class="md:hidden mb-4">
               <h3 class="journey-role">{item.title}</h3>
-              {#if item.year}
-                <span class="journey-year">{item.year}</span>
-              {/if}
-              {#if item.location}
-                <span class="journey-location">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  {item.location}
-                </span>
+              {#if item.year || item.location}
+                <div class="journey-meta">
+                  {#if item.year}
+                    <span class="journey-year">{item.year}</span>
+                  {/if}
+                  {#if item.location}
+                    <span class="journey-location">
+                      <span class="journey-pin" aria-hidden="true">📍</span>
+                      {item.location}
+                    </span>
+                  {/if}
+                </div>
               {/if}
               {#if item.logo}
-                <img src={item.logo} alt="" class="journey-logo block mt-3" />
+                <img src={logoSrc(item.logo, $theme)} alt="" style="width: {logoWidth(item.logo)}px" class="journey-logo block mt-3" />
               {/if}
             </div>
             {#if typeof item.content === "string"}
@@ -214,6 +245,7 @@
 
   .journey-subtitle {
     color: var(--text);
+    font-size: clamp(1rem, 0.7rem + 1vw, 1.2rem); /* match the about/bio body */
     opacity: 1;
   }
 
@@ -221,7 +253,7 @@
      ║  SIZE KNOBS — edit these to resize each journey item's parts  ║
      ║    • TITLE → .journey-role  →  font-size                      ║
      ║    • YEAR  → .journey-year  →  font-size                      ║
-     ║    • LOGO  → .journey-logo  →  width                          ║
+     ║    • LOGO  → LOGO_WIDTHS in <script>                          ║
      ╚══════════════════════════════════════════════════════════════╝ */
   .journey-role {
     font-size: clamp(1rem, 1rem + 1.8vw, 1.5rem); /* ← TITLE size */
@@ -230,14 +262,22 @@
     color: var(--text);
   }
   .journey-year {
-    display: block;
-    margin-top: 0.4rem;
-    font-size: clamp(0.8rem, 0.8rem + 1vw, 1.3rem); /* ← YEAR size */
+    font-size: clamp(0.8rem, 0.8rem + 1vw, 1.25rem); /* ← YEAR size */
     font-weight: 600;
     color: color-mix(in srgb, var(--text) 60%, transparent);
   }
+
+  /* Year + location sit on one line, location to the right of the year (all
+     viewports). */
+  .journey-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.7rem;
+    margin-top: 0.4rem;
+  }
   .journey-logo {
-    width: 200px; /* ← LOGO size */
+    /* width is set per-logo inline (see LOGO_WIDTHS in <script>). */
     max-width: 100%;
     height: auto;
     border-radius: 10px;
@@ -247,19 +287,19 @@
     display: inline-flex;
     align-items: center;
     gap: 0.32rem;
-    margin-top: 0.4rem;
-    font-size: clamp(0.6rem, 0.6rem + 1vw, 1rem);
+    font-size: clamp(0.8rem, 0.8rem + 1vw, 1.25rem);
     font-weight: 500;
     color: color-mix(in srgb, var(--text) 45%, transparent);
   }
-  .journey-location svg {
-    width: 0.95em;
-    height: 0.95em;
+  .journey-pin {
+    font-size: 1.05em;
+    line-height: 1;
     flex: none;
   }
 
   .journey-desc {
     color: color-mix(in srgb, var(--text) 82%, transparent);
+    font-size: clamp(1rem, 0.7rem + 1vw, 1.2rem); /* match the about/bio body */
     line-height: 1.6;
     margin: 0;
     white-space: pre-line; /* honor explicit "\n" in a description as a line break */

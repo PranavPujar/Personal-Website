@@ -1,6 +1,6 @@
 import { Q as attr, R as writable, a as attr_style, d as head, et as escape_html, g as unsubscribe_stores, h as stringify, i as attr_class, lt as fallback, m as store_get, s as bind_props, u as ensure_array_like } from "../../../chunks/index-server.js";
 import "../../../chunks/index-server2.js";
-import { i as raf, r as loop } from "../../../chunks/dist.js";
+import { i as raf, r as loop, s as theme } from "../../../chunks/dist.js";
 import "../../../chunks/stream.js";
 import { t as HoverLink } from "../../../chunks/HoverLink.js";
 globalThis.Date;
@@ -160,6 +160,29 @@ function tweened(value, defaults = {}) {
 function Timeline($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
 		var $$store_subs;
+		function logoSrc(logo, mode) {
+			if (!logo) return void 0;
+			return typeof logo === "string" ? logo : mode === "light" ? logo.light : logo.dark;
+		}
+		const LOGO_WIDTHS = {
+			adobe: 200,
+			amd: 200,
+			idir: 200,
+			uta: 200,
+			default: 200
+		};
+		function logoKey(logo) {
+			const path = typeof logo === "string" ? logo : logo?.dark ?? "";
+			return [
+				"adobe",
+				"amd",
+				"idir",
+				"uta"
+			].find((k) => path.includes(k)) ?? "default";
+		}
+		function logoWidth(logo) {
+			return LOGO_WIDTHS[logoKey(logo)] ?? LOGO_WIDTHS.default;
+		}
 		let timelineData = fallback($$props["timelineData"], () => [], true);
 		let trackHeight = 0;
 		let fillHeight = tweened(0, {
@@ -170,7 +193,7 @@ function Timeline($$renderer, $$props) {
 			duration: 180,
 			easing: cubicOut
 		});
-		$$renderer.push(`<div class="w-full journey-bg font-sans svelte-1b7kgsg"><div class="journey-pad journey-header svelte-1b7kgsg"><p class="journey-subtitle text-sm md:text-base svelte-1b7kgsg">A timeline of the roles I've held, and milestones I've achieved over the
+		$$renderer.push(`<div class="w-full journey-bg font-sans svelte-1b7kgsg"><div class="journey-pad journey-header svelte-1b7kgsg"><p class="journey-subtitle svelte-1b7kgsg">A timeline of the roles I've held, and milestones I've achieved over the
       years. Browse my journey below, or check out a concise `);
 		HoverLink($$renderer, {
 			href: "/resume.pdf",
@@ -185,34 +208,44 @@ function Timeline($$renderer, $$props) {
 		for (let index = 0, $$length = each_array.length; index < $$length; index++) {
 			let item = each_array[index];
 			$$renderer.push(`<div${attr_class(`flex justify-start md:gap-10 ${stringify(index === 0 ? "pt-6 md:pt-12" : "pt-10 md:pt-40")}`)}><div class="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full"><div data-timeline-dot="" class="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center"><div class="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2"></div></div> <div class="hidden md:flex md:flex-col md:pl-20"><h3 class="journey-role svelte-1b7kgsg">${escape_html(item.title)}</h3> `);
-			if (item.year) {
+			if (item.year || item.location) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<span class="journey-year svelte-1b7kgsg">${escape_html(item.year)}</span>`);
-			} else $$renderer.push("<!--[-1-->");
-			$$renderer.push(`<!--]--> `);
-			if (item.location) {
-				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<span class="journey-location svelte-1b7kgsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="svelte-1b7kgsg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${escape_html(item.location)}</span>`);
+				$$renderer.push(`<div class="journey-meta svelte-1b7kgsg">`);
+				if (item.year) {
+					$$renderer.push("<!--[0-->");
+					$$renderer.push(`<span class="journey-year svelte-1b7kgsg">${escape_html(item.year)}</span>`);
+				} else $$renderer.push("<!--[-1-->");
+				$$renderer.push(`<!--]--> `);
+				if (item.location) {
+					$$renderer.push("<!--[0-->");
+					$$renderer.push(`<span class="journey-location svelte-1b7kgsg"><span class="journey-pin svelte-1b7kgsg" aria-hidden="true">📍</span> ${escape_html(item.location)}</span>`);
+				} else $$renderer.push("<!--[-1-->");
+				$$renderer.push(`<!--]--></div>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--> `);
 			if (item.logo) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<img${attr("src", item.logo)} alt="" class="journey-logo mt-4 svelte-1b7kgsg"/>`);
+				$$renderer.push(`<img${attr("src", logoSrc(item.logo, store_get($$store_subs ??= {}, "$theme", theme)))} alt=""${attr_style(`width: ${stringify(logoWidth(item.logo))}px`)} class="journey-logo mt-4 svelte-1b7kgsg"/>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div></div> <div class="relative pl-20 pr-4 md:pl-4 w-full"><div class="md:hidden mb-4"><h3 class="journey-role svelte-1b7kgsg">${escape_html(item.title)}</h3> `);
-			if (item.year) {
+			if (item.year || item.location) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<span class="journey-year svelte-1b7kgsg">${escape_html(item.year)}</span>`);
-			} else $$renderer.push("<!--[-1-->");
-			$$renderer.push(`<!--]--> `);
-			if (item.location) {
-				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<span class="journey-location svelte-1b7kgsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="svelte-1b7kgsg"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${escape_html(item.location)}</span>`);
+				$$renderer.push(`<div class="journey-meta svelte-1b7kgsg">`);
+				if (item.year) {
+					$$renderer.push("<!--[0-->");
+					$$renderer.push(`<span class="journey-year svelte-1b7kgsg">${escape_html(item.year)}</span>`);
+				} else $$renderer.push("<!--[-1-->");
+				$$renderer.push(`<!--]--> `);
+				if (item.location) {
+					$$renderer.push("<!--[0-->");
+					$$renderer.push(`<span class="journey-location svelte-1b7kgsg"><span class="journey-pin svelte-1b7kgsg" aria-hidden="true">📍</span> ${escape_html(item.location)}</span>`);
+				} else $$renderer.push("<!--[-1-->");
+				$$renderer.push(`<!--]--></div>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--> `);
 			if (item.logo) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<img${attr("src", item.logo)} alt="" class="journey-logo block mt-3 svelte-1b7kgsg"/>`);
+				$$renderer.push(`<img${attr("src", logoSrc(item.logo, store_get($$store_subs ??= {}, "$theme", theme)))} alt=""${attr_style(`width: ${stringify(logoWidth(item.logo))}px`)} class="journey-logo block mt-3 svelte-1b7kgsg"/>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div> `);
 			if (typeof item.content === "string") {
@@ -239,80 +272,78 @@ function Timeline($$renderer, $$props) {
 //#endregion
 //#region src/routes/journey/+page.svelte
 function _page($$renderer) {
+	const utaLogo = {
+		light: "/logos/utalightmode.png",
+		dark: "/logos/utadarkmode.png"
+	};
 	const timelineData = [
 		{
 			title: "Incoming SDE II",
 			location: "San Jose, CA",
-			dateText: "Aug'26",
+			dateText: "Aug '26",
 			logo: "/logos/adobe.png",
-			description: "Two months away from joining Adobe!\n\nWill be working on Agentic AI initiatives within the Adobe Experience Platform."
+			description: "Two months away from joining Adobe!\nAgentic AI @ Adobe Experience Platform (AEP)."
 		},
 		{
 			title: "M.S. in Computer Science (Thesis)",
-			location: "Arlington, TX",
-			dateText: "Aug'26",
-			logo: "/logos/uta2.png",
-			description: "Outstanding Masters Student of the Year - 2026\n\nWon the Lonestar Scholarship, a prestigious award given to top-performing graduate students. The scholarship granted me in-state tuition eligibility, resulting in > $20,000 in tuition savings.\n\nOn track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research & Applications in Bioinformatics. Defending July 29."
+			dateText: "Aug '26",
+			logo: utaLogo,
+			description: "Outstanding Masters Student of the Year - 2026.\n\nWon the Lonestar Scholarship, a prestigious award given to top-performing graduate students. The scholarship granted me in-state tuition eligibility, resulting in over $20,000 in tuition savings.\n\nOn track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research & Applications in Bioinformatics. Defending July 29."
 		},
 		{
 			title: "Graduate ML Research Assistant",
-			location: "Arlington, TX",
-			dateText: "Aug'25 - Jul'26",
+			dateText: "Aug '25 - Jul '26",
 			logo: "/logos/idir.png",
 			description: "Developed software for an NSF-funded project focused on reducing hurricane-related residential damage. \n\nArchitected and developed a custom PyTorch-based Graph Neural Network for gene ranking in GeneSieve, successfully placing the true gene within the top 40% of candidates in ~92% of test cases. \n\nPublished a research paper for GeneSieve to PLoS Computational Biology. \n\nPlaced #3 in the IDIR Chess Tournament that I organized!"
 		},
 		{
 			title: "Software Engineering Intern",
 			location: "San Jose, CA",
-			dateText: "May'25-Aug'25",
+			dateText: "May '25-Aug '25",
 			logo: "/logos/adobe.png",
-			description: "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform. Developed production APIs and data pipelines while learning how enterprise software operates at massive scale."
+			description: "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform (AEP).\n\nDeveloped & deployed Knowledge Graph querying APIs into production. Worked with Software Engineering and ML teams to create the data flow pipeline integrating these APIs into the Proactive Monitoring Agent."
 		},
 		{
 			title: "Software Engineering Intern",
 			location: "Austin, TX",
-			dateText: "Jan'24 - May'24",
+			dateText: "Jan '24 - May '24",
 			logo: "/logos/amd.png",
 			description: "Developed developer productivity and automation tooling used across engineering teams at AMD. Built real-time workflow tracking systems with Kafka, FastAPI, and Python while reducing execution times from minutes to seconds."
 		},
 		{
-			title: "UT Arlington",
-			location: "Arlington, TX",
+			title: "B.S. in Computer Science",
 			dateText: "2024",
-			logo: "/logos/uta2.png",
-			description: "Graduated Magna Cum Laude with a Bachelor of Science in Computer Science. Earned recognition including Freshman Distinction Roll and multiple Dean's List honors throughout my academic career."
+			logo: utaLogo,
+			description: "Magna Cum Laude. Freshman Distinction Roll. Dean's List: Spring'22, Spring'23, Spring'24, Fall'24. won REU award from Dean of Eng given to 7 students. Maverick Academic Scholarship worth $8000/yr plus in state. "
 		},
 		{
 			title: "Undergraduate Research Assistant",
-			location: "Arlington, TX",
 			dateText: "2023-2024",
 			logo: "/logos/idir.png",
 			description: "Helped build the backend infrastructure and data pipelines powering GeneSieve. Applied machine learning, feature engineering, and statistical analysis to improve biological search systems and accelerate scientific discovery."
 		},
 		{
-			title: "Learning Access Center — Tutor",
-			location: "Arlington, TX",
+			title: "Tutor for Students with Special Needs",
 			dateText: "2023",
+			logo: utaLogo,
 			description: "Tutored students with mental disabilities across mathematics and finance courses. Developed a passion for mentoring while helping students strengthen academic skills and confidence."
 		},
 		{
 			title: "Undergraduate Research Assistant",
-			location: "Arlington, TX",
 			dateText: "2022-2023",
-			logo: "/logos/uta2.png",
+			logo: utaLogo,
 			description: "Conducted bioinformatics and machine learning research on CRISPR-CAS proteins. Contributed to classifier and generative model development achieving over 96% prediction accuracy, leading to a research publication.\n\nPublished a research paper on the topic in a peer-reviewed journal.\n\nWon the scholarship for this REU 2000$"
 		},
 		{
-			title: "Mathematics Tutor",
-			location: "Arlington, TX",
+			title: "Math Tutor",
 			dateText: "2022-2023",
+			logo: utaLogo,
 			description: "Tutored students in Calculus I & II, Linear Algebra, Algebra, and related mathematics courses. Focused on building strong problem-solving skills and quantitative reasoning foundations."
 		},
 		{
 			title: "Dean's Office Student Assistant",
-			location: "Arlington, TX",
 			dateText: "2021-2022",
-			logo: "/logos/uta2.png",
+			logo: utaLogo,
 			description: "Supported operations within the UT Arlington College of Engineering Dean's Office. Assisted with events, technology systems, inventory management, and administrative coordination while developing professional communication skills."
 		}
 	].map((d) => ({
