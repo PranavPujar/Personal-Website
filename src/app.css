@@ -417,6 +417,51 @@ nav.intro .nav-links li:nth-child(3) a.nav-active        { animation: nav-text-g
   }
 }
 
+/* ── JOURNEY STICKY TOP NAV ──
+   Persistent bar mounted only on /journey. Slides in once the main nav has
+   scrolled out of view. Reuses .nav-links / .nav-link for identical link
+   behavior (hover glow + underline); the theme toggle sits on the right. */
+.journey-topnav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1100; /* above the main nav (1000) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem var(--side-margin);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.journey-topnav.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.journey-topnav-toggle {
+  position: absolute;
+  right: var(--side-margin);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+/* Keep the reused toggle in-flow within this bar, overriding the main-nav
+   absolute positioning that kicks in below 1280px. */
+.journey-topnav #theme-toggle {
+  position: relative;
+  top: auto;
+  right: auto;
+}
+
 /* ── THEME TOGGLE ── */
 #theme-toggle {
   position: relative;
@@ -932,7 +977,9 @@ canvas {
 /* ── FOOTER ── */
 .footer {
   padding: 0.5rem var(--side-margin) 3rem;
-  margin-top: -9.2rem;
+  /* --footer-pull (set per-route below) deepens the negative margin so the bar
+     rides further UP into the content above, with no gap added beneath it. */
+  margin-top: calc(-9.2rem - var(--footer-pull, 0rem));
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -940,6 +987,12 @@ canvas {
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+/* Pull the social bar further up into the content above (no gap below).
+   Amount is in ~text-line units (1 line ≈ 1.6rem). */
+#scroll-container[data-route="/"]        { --footer-pull: 4.8rem; } /* about: ≈ 3 lines */
+#scroll-container[data-route="/featured"],
+#scroll-container[data-route="/blog"]    { --footer-pull: 32rem; }  /* ≈ 20 lines */
 
 .social-icons {
   display: flex;
@@ -982,7 +1035,7 @@ canvas {
 @media (min-width: 700px) {
   .section-title { font-size: clamp(1.325rem, 3vw, 1.54rem); }
   .copyright    { font-size: 0.74rem; }
-  .footer       { margin-top: -10.8rem; }
+  .footer       { margin-top: calc(-10.8rem - var(--footer-pull, 0rem)); }
 }
 
 @media (min-width: 1281px) {

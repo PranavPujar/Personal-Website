@@ -177,7 +177,7 @@
                 </div>
               {/if}
               {#if item.logo}
-                <img src={logoSrc(item.logo, $theme)} alt="" style="width: {logoWidth(item.logo)}px" class="journey-logo mt-4" />
+                <img src={logoSrc(item.logo, $theme)} alt="" style="--logo-w: {logoWidth(item.logo)}px" class="journey-logo mt-4" />
               {/if}
             </div>
           </div>
@@ -199,7 +199,7 @@
                 </div>
               {/if}
               {#if item.logo}
-                <img src={logoSrc(item.logo, $theme)} alt="" style="width: {logoWidth(item.logo)}px" class="journey-logo block mt-3" />
+                <img src={logoSrc(item.logo, $theme)} alt="" style="--logo-w: {logoWidth(item.logo)}px" class="journey-logo block mt-3" />
               {/if}
             </div>
             {#if typeof item.content === "string"}
@@ -277,10 +277,15 @@
     margin-top: 0.4rem;
   }
   .journey-logo {
-    /* width is set per-logo inline (see LOGO_WIDTHS in <script>). */
+    /* per-logo width comes from the inline --logo-w var (see LOGO_WIDTHS). */
+    width: var(--logo-w);
     max-width: 100%;
     height: auto;
     border-radius: 10px;
+  }
+  /* Mobile viewports: every logo renders 15px narrower. */
+  @media (max-width: 700px) {
+    .journey-logo { width: calc(var(--logo-w) - 15px); }
   }
 
   .journey-location {

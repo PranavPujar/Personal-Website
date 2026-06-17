@@ -1,5 +1,6 @@
 <script>
   import Timeline from "$lib/Timeline.svelte";
+  import JourneyTopNav from "$lib/JourneyTopNav.svelte";
 
   // Journey entries, newest first. Copy a block to add an event.
 
@@ -117,6 +118,8 @@
 <svelte:head>
   <title>Journey — Pranav Pujar</title>
 </svelte:head>
+
+<JourneyTopNav />
 
 <Timeline {timelineData} />
 
