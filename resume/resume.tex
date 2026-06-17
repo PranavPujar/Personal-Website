@@ -1,0 +1,321 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym} 
+\usepackage[usenames,dvipsnames]{color}
+
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+% \usepackage{fontawesome5}
+\usepackage{fontawesome}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsablef
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\classesList}[4]{w
+    \item\small{
+        {#1 #2 #3 #4 \vspace{-2pt}}
+  }
+}
+\newcommand{\educationSubheading}[3]{%
+  \vspace{-2pt}\item
+    \begin{tabular*}{1\textwidth}[t]{ll@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{\small #2} & \textbf{\small #3} \\ 
+    \end{tabular*}\vspace{-2pt}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\ 
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+    \textsc{\Huge \scshape Pranav Pujar} \\ \vspace{1pt}
+    \href{mailto:pranavpujar@gmail.com} {\underline{pranavpujar@gmail.com}} $|$ 
+    \href{https://linkedin.com/in/pranavpujar}{\underline{linkedin.com/in/pranavpujar}} $|$
+    \href{https://github.com/PranavPujar}{\underline{github.com/PranavPujar}}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{EDUCATION}
+  \resumeSubHeadingListStart
+    \educationSubheading
+      {University of Texas at Arlington}{ -- Master of Science in Computer Science}{Aug 2025 -- Jul 2026}
+      \resumeItemListStart
+      \resumeItemListEnd
+    \educationSubheading
+      {University of Texas at Arlington}{ -- Bachelor of Science in Computer Science}{Aug 2021 -- Dec 2024}
+        \resumeItemListStart 
+            % \resumeItem{GPA 3.78/4.0}
+            % \resumeItem{Coursework: Data Structures \& Algorithms, OOP (Java), Databases, Operating Systems, Intro to ML, Bioinformatics}
+            
+        \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------PROGRAMMING SKILLS-----------
+\section{SKILLS \& CERTIFICATES}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     % \textbf{Frameworks}{: } \\
+     \textbf{Languages}{: Python, Java, C/C++, Go, Scala, SQL, JavaScript} \\
+     \textbf{APIs \& Web Development}{: Spring Boot, FastAPI, Flask, React.js, Svelte, Celery, REST APIs} \\ %  
+     \textbf{DevOps \& Tools}{: Git, Docker, Kubernetes, Nginx, Kafka, Shell, Hadoop, CI/CD, PyTorch, TensorFlow} \\ 
+     \textbf{Certificates}{: Microsoft Azure Certified Fundamentals (AZ-900), Applied Data Science, Visualization \& ML in Python} \\
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+
+
+%----------EXPERIENCE-----------
+% \vspace{-15pt}
+\section{EXPERIENCE}
+  \resumeSubHeadingListStart 
+    \resumeSubheading
+    {Adobe}{Aug 2026}
+    {Incoming Software Engineer}{San Jose, California}
+        \resumeItemListStart
+            \resumeItem{Incoming Software Engineer II (P20) in the Digital Experience (DX) organization at Adobe}. 
+        \resumeItemListEnd
+    
+    \resumeSubheading
+    {Innovative Data Intelligence \& Research (IDIR) Lab}{Aug 2025 - Present}
+    {Graduate Research Assistant}{Arlington, Texas}
+        \resumeItemListStart
+            \resumeItem{Working on an NSF-funded project to mitigate home damage due to hurricanes. Created the \href{https://idir.uta.edu/hurricane/}{\textbf{website} \faExternalLink} for the same.} 
+            \resumeItem{Developed a Graph Neural Network to rank genes by likelihood of influencing plant traits in GeneSieve.}
+            \resumeItem{Designed the model architecture and data pipeline in PyTorch, using DistillBERT for trait embeddings and ESM-2 for gene embeddings.} 
+        \resumeItemListEnd
+    \resumeSubheading
+    {Adobe}{May 2025 -- Aug 2025}
+    {Software Engineering Intern}{San Jose, California}
+        \resumeItemListStart
+            \resumeItem{Built an AI-powered tool for proactive AEP monitoring, preventing journey failures for clients, saving \$100k+ daily}
+            \resumeItem{Built APIs to visualize lineage between different AEP Entities \& deployed these APIs into production using Jenkins.}
+            \resumeItem{Engineered a data pipeline integrating lineage data into the Proactive AEP Monitoring tool using Java Spring Boot, empowering customers to analyze and anticipate the financial impact of potential journey failures.} 
+        \resumeItemListEnd
+        
+    \resumeSubheading
+    {Advanced Micro Devices (AMD)}{Jan 2025 -- May 2025}
+    {Software Engineering Intern}{Austin, Texas}
+        \resumeItemListStart
+            \resumeItem{Enhanced an internal automation tool with real-time workflow tracking via Kafka and FastAPI, automated environment setup, and optimized log filtering -- improving UX, runtime efficiency, and adoption by 140 users across 20 teams.}
+            \resumeItem{Cut runtime of register control scripts from 54s to 2s by implementing custom batched register reads with Python decorators and leveraging register logic, saving hundreds of employee hours.}
+            % \resumeItem{Created unit tests and GitHub Actions to improve and enforce 90\%+ test coverage.}
+            % \resumeItem{Worked on an internal tool to optimize server workflow automation through Docker Compose configuration updates & shell scripting.}
+
+% Implemented response queues in the backend using Apache Kafka and FastAPI routers, enabling clients to track their workflow task status in real time.
+
+% Ran test scripts to debug and fix logical issues, and to make the tool's interface more user friendly to customers. 
+
+% Created descriptive documentation of internal tool for the team's confluence page.
+        % Created docker-compose file and bash scripts to optimize an internal automation tool.
+        % simplified ahds local container runtime to 1 bash script call -- ahds version can be specified optionally
+        % setup script to automate environment setup for local container
+        % added log filtering to show only useful logs to user.
+        % confluence documentation
+        % implemented batching on individual register reads to optimize script runtime from 54s to 2s. 
+        % added github actions to enforce >90% test coverage before merging pull requests.
+        % created unit tests to improve test coverage 
+
+        \resumeItemListEnd
+        
+    \resumeSubheading
+    {Innovative Data Intelligence \& Research (IDIR) Lab}{June 2024 -- Dec 2024}
+    {Undergraduate Research Assistant}{Arlington, Texas}
+        \resumeItemListStart
+\resumeItem{Created the backend for \href{https://idir.uta.edu/genesieve/}{\textbf{GeneSieve} \faExternalLink}, a gene discovery tool built with Graph Neural Networks, Flask, D3.js \& MySQL.}            \resumeItem{Executed feature engineering, data preprocessing, and statistical analyses to optimize LLM performance. Fine-tuned hyperparameters and performed model selection to enhance the GeneSieve backend’s database query search, improving query–trait matching accuracy by 38\%.}
+\resumeItem{Deployed upgrades to GeneSieve's backend by implementing asyncio/aiohttp for 80\% faster API response times, optimized task processing using Celery \& Redis, cutting GeneSieve runtime by half.}
+
+
+            % \resumeItem{Secured key websites with GCP reCAPTCHA API and IP-based throttling to block malicious traffic.}
+
+        \resumeItemListEnd
+        
+    % \resumeSubheading
+    % {Emircom}{May 2023 -- Aug 2023}
+    % {Intern}{Dubai, UAE}
+    %     \resumeItemListStart
+    %         % \resumeItem{Engineered an incident reporting tool using React and FastAPI, reducing incident resolution times by 30\%. Deployed the web app using Azure DevOps, achieving 99.9999\% uptime.}
+    %         % % \resumeItem{Created real-time web traffic visualizations for key webpages with Streamlit and Google Analytics API.}
+    %         % \resumeItem{Migrated 120 TB of company data from on-premises SQL Servers to AWS RDS, using Python ETL engines for data transformation, improving data retrieval speeds by 23\%.}
+    %         \resumeItem{Received training on handling and deploying telecommunications equipment.}
+    %     \resumeItemListEnd
+
+
+    \resumeSubheading
+      {\href{https://pubmed.ncbi.nlm.nih.gov/38328240/}{UT Arlington - College of Engineering \faExternalLink}}{Sept 2022 -- May 2023}
+      {Undergraduate Research Assistant}{Arlington, Texas}
+      \resumeItemListStart
+        \resumeItem{Assisted in developing a transformer-based classifier for a USDA project on CRISPR-CAS proteins, achieving 96\% accuracy.}
+        \resumeItem{Applied feature extraction on over 200,000 CRISPR-CAS protein sequences using Data Science libraries, Shell Scripting and Python tools from GitHub.}
+        % \resumeItem{Developed iFeaturizer, a full stack Python tool to streamline this process and increase work efficiency by over 30\%.}
+        \resumeItem{Worked closely with USDA researchers to create \& automate ETL pipelines for protein classifier and generative models, cutting data processing time by 33\%.}
+        
+    \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+% \section{PROJECTS}
+%     \resumeSubHeadingListStart
+%       \resumeProjectHeading
+%         { \href{https://github.com/PranavPujar/RateMySpeech}{\textbf{RateMySpeech} \faExternalLink} $|$ \emph{Python, React, FastAPI, Whisper, OpenAI, Docker, EKS, CodePipeline, CSS}}{October 2023}
+%         \resumeItemListStart
+%             \resumeItem{Developed an AI-driven React website that analyzes users' technical interview performance via audio explanations.}
+%             % \resumeItem{Used role-based Prompt Engineering to create 300+ data points simulating real-world interviews for GPT fine-tuning.} 
+%             \resumeItem{Dockerized frontend and backend and deployed using Kubernetes via AWS EKS.}
+%          \resumeItemListEnd         
+
+%       \resumeProjectHeading
+%           { \href{https://github.com/SyndicateSquad/Syndicate}{\textbf{Syndicate} \faExternalLink} $|$ \emph{Python, React Native, FastAPI, Boto3, Twilio, Expo, S3, DynamoDB, HTML, CSS}}{August 2023}
+%           \resumeItemListStart
+%             \resumeItem{Developed a React Native mobile app to democratize real estate investment by matching investors with developers. }
+%             \resumeItem{Managed a team of 4 to implement a user preference matching algorithm, integrating AWS S3 buckets for image storage and AWS DynamoDB for noSQL data storage.}
+%             \resumeItem{Integrated Twilio SendGrid API for email authentication. Used Expo to accelerate development time by 30\%.}
+%           \resumeItemListEnd
+          
+
+      
+%       \resumeProjectHeading
+%           { \href{https://github.com/PranavPujar/iFeaturizer}{\textbf{iFeaturizer} \faExternalLink} $|$ \emph{Python, PyQt5, NumPy, Pandas, CSS}}{April 2023}
+%           \resumeItemListStart
+%             \resumeItem{Spearheaded the development of a full-stack protein feature extractor (for CAS protein classification).}
+%             \resumeItem{Designed intelligent data manipulation pipelines using a Python backend to dynamically extract over 13,000 protein features from diverse CSV, TSV, and Excel files, yielding a 30\% increase in research work efficiency.}
+%           \resumeItemListEnd
+
+
+%       \resumeProjectHeading
+%           {\href{https://github.com/jpk-opensource/CSG}{\textbf{Chemical Structure Generator (CSG)} \faExternalLink} $|$ \emph{Python, Matplotlib, PyQt5, SQLite3, CSS}}{June 2022}
+%           \resumeItemListStart
+%             \resumeItem{Built a full-stack application that renders the molecular structure of input chemical compounds within 0.2 sec.}
+%             \resumeItem{Validated 100+ input molecular data using Python and Sqlite3 backend, integrating CLI functionality for user convenience. Generated and plotted molecular structures using Matplotlib and PyQt5 GUI (with QtDesigner support).}
+%           \resumeItemListEnd
+
+          
+%     \resumeSubHeadingListEnd
+
+
+% %-----------LEADERSHIP-----------
+% % \section{Leadership }
+% % % \begin{itemize}[leftmargin=0.15in, label={}]
+% %     % \small{\item{
+% %     %     \textbf{Vice President, Vandergriff Hall Council} \hfill Aug 2021 -- May 2023 \\
+% %     % }}
+% %     \resumeSubHeadingListStart
+% %       \resumeProjectHeading
+% %           {\textbf{Learning Specialist}}{August 2023 -- May 2024}
+% %           \resumeItemListStart
+% %             \resumeItem{Delivered personalized tutoring and educational support to students with diverse learning disabilities, including Autism and ADHD. Instructed in programming languages, databases, mathematics, and physics, resulting in a 40\% average grade improvement.}
+
+% %           \resumeItemListEnd
+
+% %       \resumeProjectHeading
+% %           {\textbf{Vice President, Vandergriff Hall Council}}{August 2021 -- May 2022}
+% %           \resumeItemListStart
+% %             \resumeItem{Planned and hosted 10 events, attracting 500+ residents. Coordinated with sponsors to secure \$10,000+ in sponsorship.}
+% %           \resumeItemListEnd
+% %     \resumeSubHeadingListEnd
+    
+% % \end{itemize}
+
+%-------------------------------------------
+\end{document}
+
