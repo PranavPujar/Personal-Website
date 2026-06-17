@@ -104,4 +104,4 @@ dist/*
 .tern-port
 
 # the resume directory is for me to iterate on
-resume/*
+resume/*.DS_Store

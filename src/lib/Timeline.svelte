@@ -5,7 +5,7 @@
   import { get } from "svelte/store";
   import { appReady } from "$lib/stores/app.js";
   import { streamOnScroll } from "$lib/stream.js";
-  import MagicCard from "$lib/MagicCard.svelte";
+  import HoverLink from "$lib/HoverLink.svelte";
 
   type TimelineItem = {
     title: string;
@@ -104,37 +104,12 @@
 
 <div class="w-full journey-bg font-sans" bind:this={rootEl}>
   <div class="journey-pad journey-header">
-    <!-- Floated right so the subtitle text wraps around it (source order: the
-         float must precede the text it flows around). -->
-    <a
-      class="cv-link"
-      href="/resume.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
-      data-sveltekit-reload
-      aria-label="Open my CV (PDF)"
-    >
-      <MagicCard
-        class="cursor-pointer group items-center hover:border-[#e8692773] transition-all duration-300"
-        gradientColor="#4d2506"
-        gradientSize={220}
-      >
-        <span class="cv-inner">
-          <span class="cv-pdf" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <path d="M14 2v6h6" />
-              <path d="M9 13h6M9 17h4" />
-            </svg>
-          </span>
-          <span class="cv-title">CV</span>
-        </span>
-      </MagicCard>
-    </a>
-
     <p class="journey-subtitle text-sm md:text-base">
       A timeline of the roles I've held, and milestones I've achieved over the
-      years. Browse my journey below, or check out a concise resume.
+      years. Browse my journey below, or check out a concise <HoverLink
+        href="/resume.pdf"
+        variant="adobe">resume</HoverLink
+      >.
     </p>
   </div>
 
@@ -231,12 +206,10 @@
     background: var(--bg);
   }
 
-  /* Tight header. `flow-root` contains the floated CV card so it can't bleed
-     into the timeline below. */
+  /* Tight header. */
   .journey-header {
     padding-top: 1.5rem;
     padding-bottom: 0;
-    display: flow-root;
   }
 
   .journey-subtitle {
@@ -259,16 +232,15 @@
   .journey-year {
     display: block;
     margin-top: 0.4rem;
-    font-size: clamp(1rem, 0.7rem + 1vw, 1.45rem); /* ← YEAR size */
+    font-size: clamp(0.8rem, 0.8rem + 1vw, 1.3rem); /* ← YEAR size */
     font-weight: 600;
-    color: color-mix(in srgb, var(--text) 50%, transparent);
+    color: color-mix(in srgb, var(--text) 60%, transparent);
   }
   .journey-logo {
     width: 200px; /* ← LOGO size */
     max-width: 100%;
     height: auto;
     border-radius: 10px;
-    border: 1px solid var(--border);
   }
 
   .journey-location {
@@ -276,7 +248,7 @@
     align-items: center;
     gap: 0.32rem;
     margin-top: 0.4rem;
-    font-size: clamp(0.85rem, 0.7rem + 0.5vw, 1rem);
+    font-size: clamp(0.6rem, 0.6rem + 1vw, 1rem);
     font-weight: 500;
     color: color-mix(in srgb, var(--text) 45%, transparent);
   }
@@ -290,41 +262,7 @@
     color: color-mix(in srgb, var(--text) 82%, transparent);
     line-height: 1.6;
     margin: 0;
-    white-space: pre-line; /* honour explicit "\n" in a description as a line break */
-  }
-
-  /* ── CV card: a square floated to the right gutter (text wraps around it) ── */
-  .cv-link {
-    float: right;
-    width: clamp(120px, 20vw, 150px);
-    aspect-ratio: 1 / 1;
-    margin: 0.25rem 0 1rem 1.5rem;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .cv-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-  }
-
-  .cv-pdf {
-    display: grid;
-    place-items: center;
-    color: var(--accent);
-  }
-  .cv-pdf svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .cv-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    white-space: pre-line; /* honor explicit "\n" in a description as a line break */
   }
 
   /* The static timeline line is invisible; only the progress fill shows,

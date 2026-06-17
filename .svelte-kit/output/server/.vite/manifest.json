@@ -9,6 +9,14 @@
       "_internal.js"
     ]
   },
+  "_HoverLink.js": {
+    "file": "chunks/HoverLink.js",
+    "name": "HoverLink",
+    "imports": [
+      "_index-server.js",
+      "_dist.js"
+    ]
+  },
   "_Streamer.js": {
     "file": "chunks/Streamer.js",
     "name": "Streamer",
@@ -16,14 +24,6 @@
       "_index-server.js",
       "_index-server2.js",
       "_stream.js"
-    ]
-  },
-  "_attachments.js": {
-    "file": "chunks/attachments.js",
-    "name": "attachments",
-    "imports": [
-      "_index-server.js",
-      "_legacy-client.js"
     ]
   },
   "_client.js": {
@@ -35,6 +35,15 @@
       "_internal.js",
       "_exports.js",
       "_shared.js",
+      "_index-server2.js"
+    ]
+  },
+  "_dist.js": {
+    "file": "chunks/dist.js",
+    "name": "dist",
+    "imports": [
+      "_index-server.js",
+      "_legacy-client.js",
       "_index-server2.js"
     ]
   },
@@ -88,14 +97,6 @@
       "_index-server2.js"
     ]
   },
-  "_theme.js": {
-    "file": "chunks/theme.js",
-    "name": "theme",
-    "imports": [
-      "_index-server.js",
-      "_index-server2.js"
-    ]
-  },
   "_utils.js": {
     "file": "chunks/utils.js",
     "name": "utils",
@@ -103,6 +104,14 @@
       "_environment.js",
       "_shared.js"
     ]
+  },
+  "node_modules/@fontsource-variable/figtree/files/figtree-latin-ext-wght-normal.woff2": {
+    "file": "_app/immutable/assets/figtree-latin-ext-wght-normal.DCwSJGxG.woff2",
+    "src": "node_modules/@fontsource-variable/figtree/files/figtree-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2": {
+    "file": "_app/immutable/assets/figtree-latin-wght-normal.D_ZTVpCC.woff2",
+    "src": "node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2"
   },
   "node_modules/@sveltejs/kit/src/runtime/app/server/remote/index.js": {
     "file": "remote-entry.js",
@@ -154,12 +163,15 @@
     "imports": [
       "_index-server.js",
       "_client.js",
-      "_attachments.js",
-      "_stream.js",
-      "_theme.js"
+      "_dist.js",
+      "_stream.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.CPyvki1t.css"
+      "_app/immutable/assets/_layout.zdRxx3Js.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/figtree-latin-ext-wght-normal.DCwSJGxG.woff2",
+      "_app/immutable/assets/figtree-latin-wght-normal.D_ZTVpCC.woff2"
     ]
   },
   "src/routes/+page.svelte": {
@@ -169,9 +181,10 @@
     "isEntry": true,
     "imports": [
       "_index-server.js",
+      "_dist.js",
       "_index-server2.js",
-      "_Streamer.js",
-      "_theme.js"
+      "_HoverLink.js",
+      "_Streamer.js"
     ],
     "css": [
       "_app/immutable/assets/_page.DH-H6p_0.css"
@@ -214,12 +227,13 @@
     "isEntry": true,
     "imports": [
       "_index-server.js",
-      "_attachments.js",
+      "_dist.js",
       "_index-server2.js",
+      "_HoverLink.js",
       "_stream.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.D6iNrGyt.css"
+      "_app/immutable/assets/_page.BhHZBIE-.css"
     ]
   }
 }

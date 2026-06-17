@@ -1,9 +1,8 @@
-import { $ as clsx$1, Q as attr, R as writable, a as attr_style, c as derived, d as head, et as escape_html, g as unsubscribe_stores, h as stringify, i as attr_class, lt as fallback, m as store_get, s as bind_props, u as ensure_array_like } from "../../../chunks/index-server.js";
+import { Q as attr, R as writable, a as attr_style, d as head, et as escape_html, g as unsubscribe_stores, h as stringify, i as attr_class, lt as fallback, m as store_get, s as bind_props, u as ensure_array_like } from "../../../chunks/index-server.js";
 import "../../../chunks/index-server2.js";
-import { n as loop, r as raf } from "../../../chunks/attachments.js";
+import { i as raf, r as loop } from "../../../chunks/dist.js";
 import "../../../chunks/stream.js";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { t as HoverLink } from "../../../chunks/HoverLink.js";
 globalThis.Date;
 globalThis.Set;
 globalThis.Map;
@@ -157,24 +156,6 @@ function tweened(value, defaults = {}) {
 	};
 }
 //#endregion
-//#region src/lib/utils.js
-function cn(...inputs) {
-	return twMerge(clsx(inputs));
-}
-//#endregion
-//#region src/lib/MagicCard.svelte
-function MagicCard($$renderer, $$props) {
-	$$renderer.component(($$renderer) => {
-		let { children, class: className = "", gradientSize = 200, gradientColor = "#262626", gradientOpacity = .8 } = $$props;
-		let mouseX = -9999;
-		let mouseY = -9999;
-		let bg = derived(() => `radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)`);
-		$$renderer.push(`<div role="presentation"${attr_class(clsx$1(cn("group relative flex size-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 border text-black dark:text-white justify-center py-4", className)), "svelte-b7f4x4")}><div class="relative z-10">`);
-		children?.($$renderer);
-		$$renderer.push(`<!----></div> <div class="pointer-events-none absolute -inset-px rounded-xl transition-opacity duration-300"${attr_style(`background: ${stringify(bg())}; opacity: ${stringify(0)};`)}></div></div>`);
-	});
-}
-//#endregion
 //#region src/lib/Timeline.svelte
 function Timeline($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
@@ -189,18 +170,17 @@ function Timeline($$renderer, $$props) {
 			duration: 180,
 			easing: cubicOut
 		});
-		$$renderer.push(`<div class="w-full journey-bg font-sans svelte-1b7kgsg"><div class="journey-pad journey-header svelte-1b7kgsg"><a class="cv-link svelte-1b7kgsg" href="/CV.pdf" target="_blank" rel="noopener noreferrer" data-sveltekit-reload="" aria-label="Open my CV (PDF)">`);
-		MagicCard($$renderer, {
-			class: "cursor-pointer group items-center hover:border-[#e8692773] transition-all duration-300",
-			gradientColor: "#4d2506",
-			gradientSize: 220,
+		$$renderer.push(`<div class="w-full journey-bg font-sans svelte-1b7kgsg"><div class="journey-pad journey-header svelte-1b7kgsg"><p class="journey-subtitle text-sm md:text-base svelte-1b7kgsg">A timeline of the roles I've held, and milestones I've achieved over the
+      years. Browse my journey below, or check out a concise `);
+		HoverLink($$renderer, {
+			href: "/resume.pdf",
+			variant: "adobe",
 			children: ($$renderer) => {
-				$$renderer.push(`<span class="cv-inner svelte-1b7kgsg"><span class="cv-pdf svelte-1b7kgsg" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="svelte-1b7kgsg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M9 13h6M9 17h4"></path></svg></span> <span class="cv-title svelte-1b7kgsg">CV</span></span>`);
+				$$renderer.push(`<!---->resume`);
 			},
 			$$slots: { default: true }
 		});
-		$$renderer.push(`<!----></a> <p class="journey-subtitle text-sm md:text-base svelte-1b7kgsg">A timeline of the roles I've held, and milestones I've achieved over the
-      years. Browse my journey below, or check out a concise resume.</p></div> <div class="journey-pad pb-20 svelte-1b7kgsg"><div class="relative overflow-hidden"><!--[-->`);
+		$$renderer.push(`<!---->.</p></div> <div class="journey-pad pb-20 svelte-1b7kgsg"><div class="relative overflow-hidden"><!--[-->`);
 		const each_array = ensure_array_like(timelineData);
 		for (let index = 0, $$length = each_array.length; index < $$length; index++) {
 			let item = each_array[index];
@@ -263,59 +243,64 @@ function _page($$renderer) {
 		{
 			title: "Incoming SDE II",
 			location: "San Jose, CA",
-			dateText: "2026",
+			dateText: "Aug'26",
 			logo: "/logos/adobe.png",
-			description: "Two months to start as an SDE II @ Adobe HQ!         Will be working on Agentic AI initiatives within Adobe Experience Platform."
+			description: "Two months away from joining Adobe!\n\nWill be working on Agentic AI initiatives within the Adobe Experience Platform."
+		},
+		{
+			title: "M.S. in Computer Science (Thesis)",
+			location: "Arlington, TX",
+			dateText: "Aug'26",
+			logo: "/logos/uta2.png",
+			description: "Outstanding Masters Student of the Year - 2026\n\nWon the Lonestar Scholarship, a prestigious award given to top-performing graduate students. The scholarship granted me in-state tuition eligibility, resulting in > $20,000 in tuition savings.\n\nOn track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research & Applications in Bioinformatics. Defending July 29."
 		},
 		{
 			title: "Graduate ML Research Assistant",
 			location: "Arlington, TX",
-			dateText: "Aug 2025-July 2026",
-			description: "Conducting machine learning research involving custom neural architectures and graph neural networks for a USDA-funded gene discovery initiative. Also developing predictive analytics systems focused on mitigating hurricane-related home damage."
+			dateText: "Aug'25 - Jul'26",
+			logo: "/logos/idir.png",
+			description: "Developed software for an NSF-funded project focused on reducing hurricane-related residential damage. \n\nArchitected and developed a custom PyTorch-based Graph Neural Network for gene ranking in GeneSieve, successfully placing the true gene within the top 40% of candidates in ~92% of test cases. \n\nPublished a research paper for GeneSieve to PLoS Computational Biology. \n\nPlaced #3 in the IDIR Chess Tournament that I organized!"
 		},
 		{
-			title: "Adobe — Software Engineering Intern",
+			title: "Software Engineering Intern",
 			location: "San Jose, CA",
-			dateText: "2025",
+			dateText: "May'25-Aug'25",
 			logo: "/logos/adobe.png",
 			description: "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform. Developed production APIs and data pipelines while learning how enterprise software operates at massive scale."
 		},
 		{
-			title: "AAAI Publication",
-			location: "Philadelphia, PA",
-			dateText: "2025",
-			description: "Contributed to research that resulted in a publication accepted at the AAAI Conference on Artificial Intelligence, marking a major milestone in my research journey."
-		},
-		{
-			title: "AMD — Software Engineering Intern",
+			title: "Software Engineering Intern",
 			location: "Austin, TX",
-			dateText: "2024",
+			dateText: "Jan'24 - May'24",
 			logo: "/logos/amd.png",
 			description: "Developed developer productivity and automation tooling used across engineering teams at AMD. Built real-time workflow tracking systems with Kafka, FastAPI, and Python while reducing execution times from minutes to seconds."
 		},
 		{
-			title: "UT Arlington — B.S. Computer Science",
+			title: "UT Arlington",
 			location: "Arlington, TX",
 			dateText: "2024",
+			logo: "/logos/uta2.png",
 			description: "Graduated Magna Cum Laude with a Bachelor of Science in Computer Science. Earned recognition including Freshman Distinction Roll and multiple Dean's List honors throughout my academic career."
 		},
 		{
-			title: "IDIR Lab — Undergraduate Research Assistant",
+			title: "Undergraduate Research Assistant",
 			location: "Arlington, TX",
 			dateText: "2023-2024",
+			logo: "/logos/idir.png",
 			description: "Helped build the backend infrastructure and data pipelines powering GeneSieve. Applied machine learning, feature engineering, and statistical analysis to improve biological search systems and accelerate scientific discovery."
 		},
 		{
-			title: "Learning Assistant Center — Tutor",
+			title: "Learning Access Center — Tutor",
 			location: "Arlington, TX",
 			dateText: "2023",
 			description: "Tutored students with mental disabilities across mathematics and finance courses. Developed a passion for mentoring while helping students strengthen academic skills and confidence."
 		},
 		{
-			title: "UTA College of Engineering — Research Assistant",
+			title: "Undergraduate Research Assistant",
 			location: "Arlington, TX",
 			dateText: "2022-2023",
-			description: "Conducted bioinformatics and machine learning research on CRISPR-CAS proteins. Contributed to classifier and generative model development achieving over 96% prediction accuracy, leading to a research publication."
+			logo: "/logos/uta2.png",
+			description: "Conducted bioinformatics and machine learning research on CRISPR-CAS proteins. Contributed to classifier and generative model development achieving over 96% prediction accuracy, leading to a research publication.\n\nPublished a research paper on the topic in a peer-reviewed journal.\n\nWon the scholarship for this REU 2000$"
 		},
 		{
 			title: "Mathematics Tutor",
@@ -327,6 +312,7 @@ function _page($$renderer) {
 			title: "Dean's Office Student Assistant",
 			location: "Arlington, TX",
 			dateText: "2021-2022",
+			logo: "/logos/uta2.png",
 			description: "Supported operations within the UT Arlington College of Engineering Dean's Office. Assisted with events, technology systems, inventory management, and administrative coordination while developing professional communication skills."
 		}
 	].map((d) => ({
