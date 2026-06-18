@@ -1,6 +1,6 @@
-import { L as readable, R as writable, gt as __commonJSMin } from "./chunks/index-server.js";
-import { _ as text_encoder, a as split_remote_key, g as get_relative_path, h as base64_encode, i as parse_remote_arg, m as normalize_error, n as TRAILING_SLASH_PARAM, o as stringify, p as get_status, r as create_remote_key, t as INVALIDATED_PARAM, v as noop, y as once } from "./chunks/shared.js";
-import { c as set_public_env, d as base, f as override, l as app_dir, o as public_env, p as reset, s as set_private_env, u as assets } from "./chunks/environment.js";
+import { R as readable, _t as __commonJSMin, z as writable } from "./chunks/index-server.js";
+import { _ as text_encoder, a as split_remote_key, h as base64_encode, i as parse_remote_arg, m as normalize_error, n as TRAILING_SLASH_PARAM, o as stringify, p as get_status, r as create_remote_key, t as INVALIDATED_PARAM, v as noop, y as once } from "./chunks/shared.js";
+import { c as set_public_env, d as base, l as app_dir, o as public_env, p as reset, s as set_private_env, u as assets } from "./chunks/environment.js";
 import { E as PAGE_METHODS, a as get_node_type, c as has_prerendered_path, d as serialize_uses, f as static_error_page, g as negotiate, h as is_form_content_type, i as get_global_name, l as method_not_allowed, m as s, o as handle_error_and_jsonify, p as escape_html, r as format_server_error, s as handle_fatal_error, t as clarify_devalue_error, u as redirect_response, w as ENDPOINT_METHODS, y as deserialize_binary_form } from "./chunks/utils.js";
 import { _ as has_data_suffix, b as strip_resolution_suffix, d as make_trackable, f as normalize_path, g as add_resolution_suffix, h as add_data_suffix, i as validate_page_server_exports, l as decode_pathname, m as noop_span, n as validate_layout_server_exports, o as find_route, p as resolve, r as validate_page_exports, s as hash, t as validate_layout_exports, u as disable_search, v as has_resolution_suffix, x as compact, y as strip_data_suffix } from "./chunks/exports.js";
 import "./chunks/index-server2.js";
@@ -1232,9 +1232,7 @@ function create_client_import(import_path, url) {
 	if (!import_path) return "Promise.resolve({})";
 	if (import_path[0] === "/") return `import('${import_path}')`;
 	if (assets !== "") return `import('${assets}/${import_path}')`;
-	let path = get_relative_path(url.pathname, `${base}/${import_path}`);
-	if (path[0] !== ".") path = `./${path}`;
-	return `import('${path}')`;
+	return `import('${base}/${import_path}')`;
 }
 /**
 * @param {string} resolved_path
@@ -1349,11 +1347,6 @@ async function render_response({ branch, fetched, options, manifest, state, page
 	*/
 	let base_expression = s(base);
 	const csp = new Csp(options.csp, { prerender: !!state.prerendering });
-	if (!state.prerendering?.fallback) {
-		base$1 = event.url.pathname.slice(base.length).split("/").slice(2).map(() => "..").join("/") || ".";
-		base_expression = `new URL(${s(base$1)}, location).pathname.slice(0, -1)`;
-		if (!assets || assets[0] === "/" && assets !== "/_svelte_kit_assets") assets$1 = base$1;
-	} else if (options.hash_routing) base_expression = "new URL('.', location).pathname.slice(0, -1)";
 	if (page_config.ssr) {
 		/** @type {Record<string, any>} */
 		const props = {
@@ -1410,10 +1403,6 @@ async function render_response({ branch, fetched, options, manifest, state, page
 					is_in_render: true
 				}
 			}, async () => {
-				override({
-					base: base$1,
-					assets: assets$1
-				});
 				const maybe_promise = options.root.render(props, render_opts);
 				const rendered = options.async && "then" in maybe_promise ? maybe_promise.then((r) => r) : maybe_promise;
 				if (options.async) reset();

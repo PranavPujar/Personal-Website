@@ -1,6 +1,7 @@
 import { c as derived, g as unsubscribe_stores, m as store_get, p as spread_props } from "./index-server.js";
 import { n as motion, s as theme } from "./dist.js";
 import { clsx } from "clsx";
+import posthog from "posthog-js";
 import { twMerge } from "tailwind-merge";
 //#region src/lib/utils.js
 function cn(...inputs) {
@@ -113,26 +114,36 @@ function Underline_to_background($$renderer, $$props) {
 //#endregion
 //#region src/lib/HoverLink.svelte
 function HoverLink($$renderer, $$props) {
-	var $$store_subs;
-	let { href, variant = "default", children } = $$props;
-	const targetTextColor = derived(() => variant === "default" ? store_get($$store_subs ??= {}, "$theme", theme) === "light" ? "#ffffff" : "#040d21" : "#ffffff");
-	const cls = derived(() => variant === "default" ? "hover-link" : `hover-link hover-link-${variant}`);
-	$$renderer.push(`<!---->`);
-	Underline_to_background($$renderer, {
-		as: "a",
-		class: cls(),
-		href,
-		targetTextColor: targetTextColor(),
-		target: "_blank",
-		rel: "noopener noreferrer",
-		children: ($$renderer) => {
-			children?.($$renderer);
-			$$renderer.push(`<!---->`);
-		},
-		$$slots: { default: true }
+	$$renderer.component(($$renderer) => {
+		var $$store_subs;
+		let { href, variant = "default", children, onclick: onclickProp } = $$props;
+		function handleClick() {
+			posthog.capture("external_link_clicked", {
+				href,
+				variant
+			});
+			onclickProp?.();
+		}
+		const targetTextColor = derived(() => variant === "default" ? store_get($$store_subs ??= {}, "$theme", theme) === "light" ? "#ffffff" : "#040d21" : "#ffffff");
+		const cls = derived(() => variant === "default" ? "hover-link" : `hover-link hover-link-${variant}`);
+		$$renderer.push(`<!---->`);
+		Underline_to_background($$renderer, {
+			as: "a",
+			class: cls(),
+			href,
+			targetTextColor: targetTextColor(),
+			target: "_blank",
+			rel: "noopener noreferrer",
+			onclick: handleClick,
+			children: ($$renderer) => {
+				children?.($$renderer);
+				$$renderer.push(`<!---->`);
+			},
+			$$slots: { default: true }
+		});
+		$$renderer.push(`<!---->`);
+		if ($$store_subs) unsubscribe_stores($$store_subs);
 	});
-	$$renderer.push(`<!---->`);
-	if ($$store_subs) unsubscribe_stores($$store_subs);
 }
 //#endregion
 export { HoverLink as t };

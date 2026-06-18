@@ -1,6 +1,7 @@
-import { R as writable, c as derived, ft as run, ht as setContext, l as element, mt as hasContext, o as attributes, p as spread_props, pt as getContext, s as bind_props, tt as ATTACHMENT_KEY, ut as noop$2 } from "./index-server.js";
+import { c as derived, dt as noop$2, gt as setContext, ht as hasContext, l as element, mt as getContext, nt as ATTACHMENT_KEY, o as attributes, p as spread_props, pt as run, s as bind_props, z as writable } from "./index-server.js";
 import "./index-server2.js";
 import "./legacy-client.js";
+import "posthog-js";
 import { cancelFrame, clamp, complex, distance2D, frame, frameData, hover, inView, isCSSVariableName, isMotionValue, millisecondsToSeconds, mixNumber, motionValue as useMotionValue, noop, percent, pipe, press, progress, px, secondsToMilliseconds } from "framer-motion/dom";
 import { AsyncMotionValueAnimation, DOMKeyframesResolver, JSAnimation, KeyframeResolver, activeAnimations, cancelFrame as cancelFrame$1, complex as complex$1, defaultTransformValue, findValueType, frame as frame$1, frameData as frameData$1, frameSteps, getAnimatableNone, getDefaultValueType, getValueAsType, getValueTransition, isCSSVariableName as isCSSVariableName$1, isMotionValue as isMotionValue$1, isSVGElement, isSVGSVGElement, makeAnimationInstant, microtask, mixNumber as mixNumber$1, motionValue as motionValue$1, numberValueTypes, percent as percent$1, positionalKeys, px as px$1, readTransformValue, statsBuffer, time, transformPropOrder, transformProps } from "motion-dom";
 import { MotionGlobalConfig, SubscriptionManager, addUniqueItem, circOut, clamp as clamp$1, isNumericalString, isZeroValueString, noop as noop$1, progress as progress$1, removeItem, secondsToMilliseconds as secondsToMilliseconds$1, warnOnce } from "motion-utils";

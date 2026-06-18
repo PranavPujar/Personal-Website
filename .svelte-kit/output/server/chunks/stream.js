@@ -1,4 +1,4 @@
-import { R as writable } from "./index-server.js";
+import { z as writable } from "./index-server.js";
 import "./index-server2.js";
 //#region src/lib/stores/app.js
 var appReady = writable(false);

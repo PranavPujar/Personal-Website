@@ -3,7 +3,8 @@
   import { page } from '$app/stores';
   import { beforeNavigate } from '$app/navigation';
 
-  import { Analytics } from '@vercel/analytics/sveltekit';
+  import { dev } from '$app/environment';
+  import { injectAnalytics } from '@vercel/analytics/sveltekit';
 
   import Nav from '$lib/Nav.svelte';
   import Footer from '$lib/Footer.svelte';
@@ -16,6 +17,7 @@
   let lenis;
 
   theme.init();
+  injectAnalytics({ mode: dev ? 'development' : 'production' });
 
   beforeNavigate(() => {
     cancelStream();
@@ -50,8 +52,6 @@
 </script>
 
 <Nav ready={$appReady} />
-
-<Analytics />
 
 <main
   id="scroll-container"

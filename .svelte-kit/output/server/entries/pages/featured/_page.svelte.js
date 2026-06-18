@@ -1,5 +1,6 @@
 import { d as head } from "../../../chunks/index-server.js";
 import { t as Streamer } from "../../../chunks/Streamer.js";
+import "posthog-js";
 //#region src/routes/featured/+page.svelte
 function _page($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {

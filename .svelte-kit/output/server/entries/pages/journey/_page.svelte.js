@@ -1,8 +1,10 @@
-import { Q as attr, R as writable, a as attr_style, d as head, et as escape_html, g as unsubscribe_stores, h as stringify, i as attr_class, lt as fallback, m as store_get, s as bind_props, u as ensure_array_like } from "../../../chunks/index-server.js";
+import { $ as attr, _ as html, a as attr_style, d as head, g as unsubscribe_stores, h as stringify, i as attr_class, m as store_get, s as bind_props, tt as escape_html, u as ensure_array_like, ut as fallback, z as writable } from "../../../chunks/index-server.js";
 import "../../../chunks/index-server2.js";
 import { i as raf, r as loop, s as theme } from "../../../chunks/dist.js";
+import { t as AnimatedThemeToggler } from "../../../chunks/AnimatedThemeToggler.js";
 import "../../../chunks/stream.js";
 import { t as HoverLink } from "../../../chunks/HoverLink.js";
+import posthog from "posthog-js";
 globalThis.Date;
 globalThis.Set;
 globalThis.Map;
@@ -165,10 +167,10 @@ function Timeline($$renderer, $$props) {
 			return typeof logo === "string" ? logo : mode === "light" ? logo.light : logo.dark;
 		}
 		const LOGO_WIDTHS = {
-			adobe: 200,
-			amd: 200,
-			idir: 200,
-			uta: 200,
+			adobe: 290,
+			amd: 280,
+			idir: 260,
+			uta: 260,
 			default: 200
 		};
 		function logoKey(logo) {
@@ -198,6 +200,7 @@ function Timeline($$renderer, $$props) {
 		HoverLink($$renderer, {
 			href: "/resume.pdf",
 			variant: "adobe",
+			onclick: () => posthog.capture("resume_viewed"),
 			children: ($$renderer) => {
 				$$renderer.push(`<!---->resume`);
 			},
@@ -225,7 +228,7 @@ function Timeline($$renderer, $$props) {
 			$$renderer.push(`<!--]--> `);
 			if (item.logo) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<img${attr("src", logoSrc(item.logo, store_get($$store_subs ??= {}, "$theme", theme)))} alt=""${attr_style(`width: ${stringify(logoWidth(item.logo))}px`)} class="journey-logo mt-4 svelte-1b7kgsg"/>`);
+				$$renderer.push(`<img${attr("src", logoSrc(item.logo, store_get($$store_subs ??= {}, "$theme", theme)))} alt=""${attr_style(`--logo-w: ${stringify(logoWidth(item.logo))}px`)} class="journey-logo mt-4 svelte-1b7kgsg"/>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div></div> <div class="relative pl-20 pr-4 md:pl-4 w-full"><div class="md:hidden mb-4"><h3 class="journey-role svelte-1b7kgsg">${escape_html(item.title)}</h3> `);
 			if (item.year || item.location) {
@@ -245,12 +248,12 @@ function Timeline($$renderer, $$props) {
 			$$renderer.push(`<!--]--> `);
 			if (item.logo) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<img${attr("src", logoSrc(item.logo, store_get($$store_subs ??= {}, "$theme", theme)))} alt=""${attr_style(`width: ${stringify(logoWidth(item.logo))}px`)} class="journey-logo block mt-3 svelte-1b7kgsg"/>`);
+				$$renderer.push(`<img${attr("src", logoSrc(item.logo, store_get($$store_subs ??= {}, "$theme", theme)))} alt=""${attr_style(`--logo-w: ${stringify(logoWidth(item.logo))}px`)} class="journey-logo block mt-3 svelte-1b7kgsg"/>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div> `);
 			if (typeof item.content === "string") {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<p class="journey-desc svelte-1b7kgsg">${escape_html(item.content)}</p>`);
+				$$renderer.push(`<p class="journey-desc svelte-1b7kgsg">${html(item.content)}</p>`);
 			} else {
 				$$renderer.push("<!--[-1-->");
 				if (item.content) {
@@ -270,6 +273,15 @@ function Timeline($$renderer, $$props) {
 	});
 }
 //#endregion
+//#region src/lib/JourneyTopNav.svelte
+function JourneyTopNav($$renderer, $$props) {
+	$$renderer.component(($$renderer) => {
+		$$renderer.push(`<div${attr_class("journey-topnav", void 0, { "visible": false })}${attr("aria-hidden", true)}${attr("inert", true, true)}><ul class="nav-links"><li><a href="/" class="nav-link">About</a></li> <li><a href="/featured" class="nav-link">Featured</a></li> <li><a href="/blog" class="nav-link">Blog</a></li></ul> <div class="journey-topnav-toggle">`);
+		AnimatedThemeToggler($$renderer, {});
+		$$renderer.push(`<!----></div></div>`);
+	});
+}
+//#endregion
 //#region src/routes/journey/+page.svelte
 function _page($$renderer) {
 	const utaLogo = {
@@ -282,26 +294,26 @@ function _page($$renderer) {
 			location: "San Jose, CA",
 			dateText: "Aug '26",
 			logo: "/logos/adobe.png",
-			description: "Two months away from joining Adobe!\nAgentic AI @ Adobe Experience Platform (AEP)."
+			description: "Two months away from joining Adobe!\nAgentic AI @ <a class='journey-link' href='https://business.adobe.com/products/experience-platform/adobe-experience-platform.html' target='_blank' rel='noopener noreferrer'>Adobe Experience Platform</a>."
 		},
 		{
 			title: "M.S. in Computer Science (Thesis)",
 			dateText: "Aug '26",
 			logo: utaLogo,
-			description: "Outstanding Masters Student of the Year - 2026.\n\nWon the Lonestar Scholarship, a prestigious award given to top-performing graduate students. The scholarship granted me in-state tuition eligibility, resulting in over $20,000 in tuition savings.\n\nOn track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research & Applications in Bioinformatics. Defending July 29."
+			description: "Outstanding Masters Student of the Year - 2026.\n\nWon the Lonestar Scholarship, a prestigious award given to top-performing graduate students. The scholarship granted me in-state tuition eligibility, resulting in over $20,000 in tuition savings.\n\nOn track to earn my fully-funded M.S. in Computer Science in just one year, with a Thesis on Machine Learning Research &amp; Applications in Bioinformatics. Defending July 29."
 		},
 		{
 			title: "Graduate ML Research Assistant",
 			dateText: "Aug '25 - Jul '26",
 			logo: "/logos/idir.png",
-			description: "Developed software for an NSF-funded project focused on reducing hurricane-related residential damage. \n\nArchitected and developed a custom PyTorch-based Graph Neural Network for gene ranking in GeneSieve, successfully placing the true gene within the top 40% of candidates in ~92% of test cases. \n\nPublished a research paper for GeneSieve to PLoS Computational Biology. \n\nPlaced #3 in the IDIR Chess Tournament that I organized!"
+			description: "Developed software for an NSF-funded project focused on reducing hurricane-related residential damage. \n\nArchitected and developed a custom PyTorch-based Graph Neural Network for gene ranking in GeneSieve, successfully placing the true gene within the top 40% of candidates in ~92% of test cases. \n\nPublished GeneSieve research paper in <a class='journey-link' href='https://journals.plos.org/ploscompbiol/' target='_blank' rel='noopener noreferrer'>PLoS Computational Biology</a>. \n\nPlaced #3 in the IDIR Chess Tournament that I organized!"
 		},
 		{
 			title: "Software Engineering Intern",
 			location: "San Jose, CA",
 			dateText: "May '25-Aug '25",
 			logo: "/logos/adobe.png",
-			description: "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform (AEP).\n\nDeveloped & deployed Knowledge Graph querying APIs into production. Worked with Software Engineering and ML teams to create the data flow pipeline integrating these APIs into the Proactive Monitoring Agent."
+			description: "Built AI-powered monitoring systems that proactively detected customer journey failures across Adobe Experience Platform (AEP).\n\nDeveloped &amp; deployed Knowledge Graph querying APIs into production. Worked with Software Engineering and ML teams to create the data flow pipeline integrating these APIs into the Proactive Monitoring Agent."
 		},
 		{
 			title: "Software Engineering Intern",
@@ -338,13 +350,13 @@ function _page($$renderer) {
 			title: "Math Tutor",
 			dateText: "2022-2023",
 			logo: utaLogo,
-			description: "Tutored students in Calculus I & II, Linear Algebra, Algebra, and related mathematics courses. Focused on building strong problem-solving skills and quantitative reasoning foundations."
+			description: "Tutored college freshmen in Calculus I &amp; II, Linear Algebra, Algebra."
 		},
 		{
 			title: "Dean's Office Student Assistant",
 			dateText: "2021-2022",
 			logo: utaLogo,
-			description: "Supported operations within the UT Arlington College of Engineering Dean's Office. Assisted with events, technology systems, inventory management, and administrative coordination while developing professional communication skills."
+			description: "Supported event planning and handled calls within the Dean of Engineering's Office. \n\nMostly just replaced coffee and did some admin stuff tbh. Met a guy who knew a guy, and thats how I got into my first research opportunity!"
 		}
 	].map((d) => ({
 		title: d.title,
@@ -358,7 +370,10 @@ function _page($$renderer) {
 			$$renderer.push(`<title>Journey — Pranav Pujar</title>`);
 		});
 	});
+	JourneyTopNav($$renderer, {});
+	$$renderer.push(`<!----> `);
 	Timeline($$renderer, { timelineData });
+	$$renderer.push(`<!---->`);
 }
 //#endregion
 export { _page as default };

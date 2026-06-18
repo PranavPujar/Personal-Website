@@ -6,12 +6,10 @@ import { t as HoverLink } from "../../chunks/HoverLink.js";
 import "three-globe";
 import { Color } from "three";
 import "three/examples/jsm/controls/OrbitControls.js";
-//#endregion
-//#region src/lib/Globe.svelte
+new Color("#040d21");
+new Color("#ffffff");
 function Globe($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
-		new Color("#040d21");
-		new Color("#ffffff");
 		$$renderer.push(`<div id="globe-container"></div>`);
 	});
 }

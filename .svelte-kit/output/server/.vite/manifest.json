@@ -9,6 +9,14 @@
       "_internal.js"
     ]
   },
+  "_AnimatedThemeToggler.js": {
+    "file": "chunks/AnimatedThemeToggler.js",
+    "name": "AnimatedThemeToggler",
+    "imports": [
+      "_index-server.js",
+      "_dist.js"
+    ]
+  },
   "_HoverLink.js": {
     "file": "chunks/HoverLink.js",
     "name": "HoverLink",
@@ -164,10 +172,11 @@
       "_index-server.js",
       "_client.js",
       "_dist.js",
+      "_AnimatedThemeToggler.js",
       "_stream.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.C6HFE2LO.css"
+      "_app/immutable/assets/_layout.Bbtu4f3P.css"
     ],
     "assets": [
       "_app/immutable/assets/figtree-latin-ext-wght-normal.DCwSJGxG.woff2",
@@ -229,11 +238,12 @@
       "_index-server.js",
       "_dist.js",
       "_index-server2.js",
+      "_AnimatedThemeToggler.js",
       "_HoverLink.js",
       "_stream.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.k-B3prYH.css"
+      "_app/immutable/assets/_page.6t_Di-hn.css"
     ]
   }
 }
