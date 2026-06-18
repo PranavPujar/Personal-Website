@@ -105,3 +105,11 @@ dist/*
 
 # the resume directory is for me to iterate on
 resume/*.DS_Store
+
+# SvelteKit / Vite generated output
+build/
+.svelte-kit/
+.vercel/
+
+# macOS
+.DS_Store
