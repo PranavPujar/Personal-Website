@@ -280,6 +280,7 @@
     column-gap: 0.7rem;
     margin-top: 0.4rem;
   }
+  
   .journey-logo {
     /* per-logo width comes from the inline --logo-w var (see LOGO_WIDTHS). */
     width: var(--logo-w);
