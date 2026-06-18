@@ -1,5 +1,7 @@
 <script>
   import { onMount } from 'svelte';
+  import { Analytics } from '@vercel/analytics/sveltekit';
+
   import { page } from '$app/stores';
   import { beforeNavigate } from '$app/navigation';
   import Nav from '$lib/Nav.svelte';
@@ -7,11 +9,7 @@
   import { appReady } from '$lib/stores/app.js';
   import { theme } from '$lib/stores/theme.js';
   import { cancelStream } from '$lib/stream.js';
-  import { dev } from '$app/environment';
-  import { injectAnalytics } from '@vercel/analytics/sveltekit';
   import '../app.css';
-
-  injectAnalytics({ mode: dev ? 'development' : 'production' });
 
   let { children } = $props();
   let lenis;
@@ -51,6 +49,8 @@
 </script>
 
 <Nav ready={$appReady} />
+
+<Analytics />
 
 <main id="scroll-container" class:ready={$appReady} data-route={$page.url.pathname}>
   {@render children()}
