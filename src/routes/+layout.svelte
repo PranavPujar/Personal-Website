@@ -1,9 +1,10 @@
 <script>
   import { onMount } from 'svelte';
-  import { Analytics } from '@vercel/analytics/sveltekit';
-
   import { page } from '$app/stores';
   import { beforeNavigate } from '$app/navigation';
+
+  import { Analytics } from '@vercel/analytics/sveltekit';
+
   import Nav from '$lib/Nav.svelte';
   import Footer from '$lib/Footer.svelte';
   import { appReady } from '$lib/stores/app.js';
@@ -21,7 +22,7 @@
     if (lenis) lenis.scrollTo(0, { immediate: true });
   });
 
-  onMount(() => {
+  onMount(async () => {
     const timer = setTimeout(async () => {
       appReady.set(true);
 
@@ -52,7 +53,11 @@
 
 <Analytics />
 
-<main id="scroll-container" class:ready={$appReady} data-route={$page.url.pathname}>
+<main
+  id="scroll-container"
+  class:ready={$appReady}
+  data-route={$page.url.pathname}
+>
   {@render children()}
   <Footer />
 </main>
