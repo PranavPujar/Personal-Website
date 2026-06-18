@@ -7,7 +7,11 @@
   import { appReady } from '$lib/stores/app.js';
   import { theme } from '$lib/stores/theme.js';
   import { cancelStream } from '$lib/stream.js';
+  import { dev } from '$app/environment';
+  import { injectAnalytics } from '@vercel/analytics/sveltekit';
   import '../app.css';
+
+  injectAnalytics({ mode: dev ? 'development' : 'production' });
 
   let { children } = $props();
   let lenis;

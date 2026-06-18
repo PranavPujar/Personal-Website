@@ -574,7 +574,7 @@ main {
   font-weight: 300;
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  text-align: justify;
+  text-align: left;
 }
 
 /* ── HOVER LINKS (underline-to-background effect, src/lib/HoverLink.svelte) ──
@@ -1100,10 +1100,6 @@ canvas {
   .nav-right { margin-top: 0.5rem; justify-content: center; }
   /* Bigger separator dots on non-laptop viewports. */
   .nav-links li + li::before { font-size: 1.45em; }
-  .bio p {
-    hyphens: auto;
-    text-justify: inter-word;
-  }
   #theme-toggle {
     position: absolute;
     top: calc(6rem + clamp(1.6rem, 0.4rem + 2.8vw, 2.8rem) - 1.125rem);

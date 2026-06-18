@@ -5,8 +5,14 @@
   // stream.js treats <a> as a single reveal unit.
   import { UnderlineToBackground } from "$lib/components/fancy/underline-to-background";
   import { theme } from "$lib/stores/theme.js";
+  import posthog from 'posthog-js';
 
-  let { href, variant = "default", children } = $props();
+  let { href, variant = "default", children, onclick: onclickProp } = $props();
+
+  function handleClick() {
+    posthog.capture('external_link_clicked', { href, variant });
+    onclickProp?.();
+  }
 
   // Colour the word morphs to as the highlight fills in. Branded links (red/
   // blue fill) read best with white text; the default links use the page
@@ -30,6 +36,7 @@
     {targetTextColor}
     target="_blank"
     rel="noopener noreferrer"
+    onclick={handleClick}
   >
     {@render children?.()}
   </UnderlineToBackground>

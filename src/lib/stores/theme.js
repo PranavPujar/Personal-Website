@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
+import posthog from 'posthog-js';
 
 function storageKey() {
   return window.innerWidth < 700 ? 'theme-mobile' : 'theme';
@@ -31,6 +32,7 @@ function createTheme() {
           requestAnimationFrame(() => requestAnimationFrame(() => {
             document.body.classList.remove('theme-switching');
           }));
+          posthog.capture('theme_toggled', { theme: next });
         }
         return next;
       });

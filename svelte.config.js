@@ -12,6 +12,9 @@ const config = {
     }),
     files: {
       assets: 'assets'
+    },
+    paths: {
+      relative: false
     }
   }
 };

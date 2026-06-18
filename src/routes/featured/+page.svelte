@@ -1,5 +1,6 @@
 <script>
   import Streamer from '$lib/Streamer.svelte';
+  import posthog from 'posthog-js';
 
   const VIDEO_ID = 'Wk0nP-3bYaQ';
   let playing = $state(false);
@@ -15,6 +16,7 @@
   const open = () => {
     measure();
     playing = true;
+    posthog.capture('interview_video_played', { video_id: VIDEO_ID, title: 'Outstanding Masters Student 2026' });
   };
   const close = () => (playing = false);
 

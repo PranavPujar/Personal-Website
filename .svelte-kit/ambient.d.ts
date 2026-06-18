@@ -168,7 +168,8 @@ declare module '$env/static/private' {
  * The above values will be the same _even if_ different values for `ENVIRONMENT` or `PUBLIC_BASE_URL` are set at runtime, as they are statically replaced in your code with their build time values.
  */
 declare module '$env/static/public' {
-	
+	export const PUBLIC_POSTHOG_HOST: string;
+	export const PUBLIC_POSTHOG_PROJECT_TOKEN: string;
 }
 
 /**
@@ -367,6 +368,8 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
+		PUBLIC_POSTHOG_HOST: string;
+		PUBLIC_POSTHOG_PROJECT_TOKEN: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }
