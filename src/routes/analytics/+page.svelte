@@ -14,11 +14,11 @@
   let clicksSort = $state({ key: 'date', dir: 'desc' });
   let thresholdMin = $state(2);
 
-  // AI assistant
-  let aiQuestion = $state('');
-  let aiAnswer = $state('');
-  let aiError = $state('');
-  let aiLoading = $state(false);
+  // SQL query
+  let sqlQuery = $state('');
+  let sqlRows = $state(null);
+  let sqlError = $state('');
+  let sqlLoading = $state(false);
 
   function authHeaders() {
     return { 'x-analytics-password': password };
@@ -143,27 +143,35 @@
     return m ? `${m}m ${s}s` : `${s}s`;
   }
 
-  // ── Section 7: AI assistant ──
-  async function askAI(e) {
+  // ── Section 7: SQL query ──
+  const sqlColumns = $derived(sqlRows && sqlRows.length ? Object.keys(sqlRows[0]) : []);
+
+  function formatCell(v) {
+    if (v == null) return '';
+    if (typeof v === 'object') return JSON.stringify(v);
+    return String(v);
+  }
+
+  async function runQuery(e) {
     e?.preventDefault();
-    if (!aiQuestion.trim()) return;
-    aiLoading = true;
-    aiAnswer = '';
-    aiError = '';
+    if (!sqlQuery.trim()) return;
+    sqlLoading = true;
+    sqlRows = null;
+    sqlError = '';
     try {
-      const res = await fetch('/api/ai-query', {
+      const res = await fetch('/api/sql-query', {
         method: 'POST',
         headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: aiQuestion })
+        body: JSON.stringify({ query: sqlQuery })
       });
-      if (res.status === 401) { aiError = 'Unauthorized'; return; }
-      if (!res.ok) { aiError = 'Request failed'; return; }
-      const j = await res.json();
-      aiAnswer = j.answer || '(no answer)';
+      const j = await res.json().catch(() => ({}));
+      if (res.status === 401) { sqlError = 'Unauthorized'; return; }
+      if (!res.ok) { sqlError = j.error || 'Query failed'; return; }
+      sqlRows = j.rows ?? [];
     } catch {
-      aiError = 'Network error';
+      sqlError = 'Network error';
     } finally {
-      aiLoading = false;
+      sqlLoading = false;
     }
   }
 </script>
@@ -344,24 +352,41 @@
       {/if}
     </section>
 
-    <!-- 7. AI assistant -->
+    <!-- 7. SQL query -->
     <section class="panel">
-      <h2>AI assistant</h2>
-      <form class="ai-form" onsubmit={askAI}>
-        <input
-          type="text"
-          bind:value={aiQuestion}
-          placeholder="Ask about your analytics…"
-          aria-label="Ask the analytics assistant"
-        />
-        <button type="submit" disabled={aiLoading}>{aiLoading ? 'Thinking…' : 'Ask'}</button>
+      <h2>SQL query</h2>
+      <form class="sql-form" onsubmit={runQuery}>
+        <textarea
+          bind:value={sqlQuery}
+          placeholder="SELECT * FROM sessions ORDER BY started_at DESC LIMIT 20;"
+          aria-label="SQL query"
+          rows="3"
+          spellcheck="false"
+        ></textarea>
+        <button type="submit" disabled={sqlLoading}>{sqlLoading ? 'Running…' : 'Run'}</button>
       </form>
-      {#if aiLoading}
-        <div class="ai-answer loading"><span class="spinner" aria-label="Loading"></span></div>
-      {:else if aiError}
-        <div class="ai-answer error">{aiError}</div>
-      {:else if aiAnswer}
-        <div class="ai-answer">{aiAnswer}</div>
+      {#if sqlLoading}
+        <div class="sql-result loading"><span class="spinner" aria-label="Loading"></span></div>
+      {:else if sqlError}
+        <div class="sql-result error">{sqlError}</div>
+      {:else if sqlRows}
+        {#if sqlRows.length}
+          <div class="sql-table">
+            <table>
+              <thead>
+                <tr>{#each sqlColumns as col}<th>{col}</th>{/each}</tr>
+              </thead>
+              <tbody>
+                {#each sqlRows as row}
+                  <tr>{#each sqlColumns as col}<td>{formatCell(row[col])}</td>{/each}</tr>
+                {/each}
+              </tbody>
+            </table>
+          </div>
+          <p class="sql-meta">{sqlRows.length} row{sqlRows.length === 1 ? '' : 's'}</p>
+        {:else}
+          <div class="sql-result">Query ran successfully — 0 rows returned.</div>
+        {/if}
       {/if}
     </section>
   </div>
@@ -424,7 +449,7 @@
 
   .range { display: flex; gap: 0.25rem; }
   .range button,
-  .ai-form button,
+  .sql-form button,
   .gate-card button {
     cursor: pointer;
     border: 1px solid var(--border);
@@ -438,7 +463,7 @@
   .range button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
   .gate-card button { padding: 0.6rem; font-weight: 600; }
   .gate-card button:hover,
-  .ai-form button:hover:not(:disabled),
+  .sql-form button:hover:not(:disabled),
   .range button:hover { border-color: var(--accent); }
 
   input {
@@ -482,10 +507,26 @@
   .threshold { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; margin-bottom: 1rem; }
   .threshold input { width: 70px; }
 
-  .ai-form { display: flex; gap: 0.5rem; }
-  .ai-form input { flex: 1; }
-  .ai-form button { padding: 0.55rem 1rem; font-weight: 600; }
-  .ai-answer {
+  .sql-form { display: flex; flex-direction: column; gap: 0.5rem; }
+  .sql-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.7rem;
+    outline: none;
+    resize: vertical;
+  }
+  .sql-form textarea:focus { border-color: var(--accent); }
+  .sql-form button { align-self: flex-start; padding: 0.55rem 1.1rem; font-weight: 600; }
+  .sql-table { margin-top: 1rem; overflow-x: auto; }
+  .sql-table td { font-family: 'DM Mono', ui-monospace, monospace; font-size: 0.8rem; white-space: nowrap; }
+  .sql-meta { margin: 0.6rem 0 0; font-size: 0.75rem; opacity: 0.55; }
+  .sql-result {
     margin-top: 1rem;
     padding: 1rem;
     border: 1px solid var(--border);
@@ -495,8 +536,8 @@
     line-height: 1.55;
     font-size: 0.9rem;
   }
-  .ai-answer.error { color: #e0533d; }
-  .ai-answer.loading { display: flex; justify-content: center; }
+  .sql-result.error { color: #e0533d; }
+  .sql-result.loading { display: flex; justify-content: center; }
 
   .spinner {
     width: 20px; height: 20px;

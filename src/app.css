@@ -577,16 +577,36 @@ main {
   text-align: left;
 }
 
-/* ── HOVER LINKS (underline-to-background effect, src/lib/HoverLink.svelte) ──
-   `a.` so the branded colour wins over the component's `text-current`; no
-   text-decoration since the effect renders its own growing underline/fill. */
+/* ── HOVER LINKS (underline grows into a background highlight, src/lib/HoverLink.svelte) ──
+   A thin underline (a bottom-anchored background gradient) grows to a full-height
+   fill on hover while the text flips to a contrasting colour. Built from a
+   background gradient + `box-decoration-break: clone` (not an absolutely-
+   positioned bar), so the link is a normal inline element: long phrases wrap
+   across lines and the highlight follows each wrapped line.
+   Per-variant: --hl-fill = the underline/fill colour, --hl-flip = the text
+   colour once the fill covers the word. */
 a.hover-link {
+  --hl-fill: var(--text);
+  --hl-flip: var(--bg);
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
+  background-image: linear-gradient(var(--hl-fill), var(--hl-fill));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0.1em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.3s ease, color 0.3s ease;
 }
-a.hover-link-uta { color: #6ab4f5; }
-a.hover-link-adobe { color: #e53e3e; }
-html.light-mode a.hover-link-uta { color: #2b7bb9; }
+a.hover-link:hover,
+a.hover-link:focus-visible {
+  background-size: 100% 100%;
+  color: var(--hl-flip);
+}
+a.hover-link-uta { --hl-fill: #6ab4f5; --hl-flip: #ffffff; color: #6ab4f5; }
+a.hover-link-adobe { --hl-fill: #e53e3e; --hl-flip: #ffffff; color: #e53e3e; }
+html.light-mode a.hover-link-uta { --hl-fill: #2b7bb9; color: #2b7bb9; }
 
 /* Same underline→highlight hover as the resume HoverLink, but with NO brand
    colour. Used for inline links inside {@html} timeline descriptions, so it
@@ -693,6 +713,7 @@ html.light-mode .text-link-uta:hover {
   width: 100%;
   height: clamp(500px, 350px + 31.25vw, 600px);
   margin-top: -6rem;
+  margin-bottom: -60px;
   position: relative;
   background: transparent;
   display: block !important;

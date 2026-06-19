@@ -1,5 +1,5 @@
 // Shared analytics queries + auth check, reused by /api/analytics-data and
-// /api/ai-query. Server-only ($lib/server).
+// /api/sql-query. Server-only ($lib/server).
 import { env } from '$env/dynamic/private';
 import { getSql } from './db.js';
 

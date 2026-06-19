@@ -8,10 +8,13 @@ let _sql;
 /** Lazily create the Neon HTTP query function (so import doesn't throw when env is absent). */
 export function getSql() {
   if (!_sql) {
-    if (!env.DATABASE_URL) {
-      throw new Error('DATABASE_URL is not set');
+    // Vercel's Neon integration prefixes its env vars with `neondb_`; fall back
+    // to an unprefixed DATABASE_URL for other setups.
+    const url = env.neondb_DATABASE_URL ?? env.DATABASE_URL;
+    if (!url) {
+      throw new Error('neondb_DATABASE_URL (or DATABASE_URL) is not set');
     }
-    _sql = neon(env.DATABASE_URL);
+    _sql = neon(url);
   }
   return _sql;
 }
