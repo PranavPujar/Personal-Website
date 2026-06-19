@@ -7,7 +7,6 @@
   import { theme } from "$lib/stores/theme.js";
   import { streamOnScroll } from "$lib/stream.js";
   import HoverLink from "$lib/HoverLink.svelte";
-  import posthog from 'posthog-js';
 
   type ThemedLogo = { light: string; dark: string };
   type TimelineItem = {
@@ -138,8 +137,7 @@
       A timeline of the roles I've held, and milestones I've achieved over the
       years. Browse my journey below, or check out a concise <HoverLink
         href="/resume.pdf"
-        variant="adobe"
-        onclick={() => posthog.capture('resume_viewed')}>resume</HoverLink
+        variant="adobe">resume</HoverLink
       >.
     </p>
   </div>

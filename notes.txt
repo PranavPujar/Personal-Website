@@ -1,5 +1,4 @@
-SEO 
-posthog etc for observability 
+SEO
 add resume to journey
 journey section needs to finish 
 add more deets to featured 
