@@ -59,14 +59,18 @@
       dateText: "Jan '24 - May '24",
       logo: "/logos/amd.png",
       description:
-        "Developed developer productivity and automation tooling used across engineering teams at AMD. Built real-time workflow tracking systems with Kafka, FastAPI, and Python while reducing execution times from minutes to seconds.",
+      "Enhanced AMD EPYC™ server CPU internal automation tools using Apache Kafka &amp FastAPI. This drove internal tool adoption by 140 users across 20 teams. Saved time, cut costs.\n\n" +
+      "Made register control scripts 27× faster (54s → 2s), saving thousands of billable engineering hours."
     },
     {
       title: "B.S. in Computer Science",
       dateText: "2024",
       logo: utaLogo,
       description:
-        "Magna Cum Laude. Freshman Distinction Roll. Dean's List: Spring'22, Spring'23, Spring'24, Fall'24. won REU award from Dean of Eng given to 7 students. Maverick Academic Scholarship worth $8000/yr plus in state. ",
+        "Won the Maverick Academic Scholarship, providing $88,000 in tuition support across four years.\n\n" +
+        "Magna Cum Laude.\n" +
+        "Freshman Distinction Roll.\n" +
+        "Dean's List: <a class='journey-link' href='https://www.uta.edu/academics/schools-colleges/engineering/students/deans-list/2022-spring-deans-list' target='_blank' rel='noopener noreferrer'>Spring'22</a>, <a class='journey-link' href='https://www.uta.edu/academics/schools-colleges/engineering/students/deans-list/2023-spring-deans-list' target='_blank' rel='noopener noreferrer'>Spring'23</a>, <a class='journey-link' href='https://www.uta.edu/academics/schools-colleges/engineering/students/deans-list/2024-spring-deans-list' target='_blank' rel='noopener noreferrer'>Spring'24</a>, <a class='journey-link' href='https://www.uta.edu/academics/schools-colleges/engineering/students/deans-list/2024-fall-deans-list' target='_blank' rel='noopener noreferrer'>Fall'24</a>."
     },
     {
       title: "Undergraduate Research Assistant",
@@ -80,30 +84,30 @@
       dateText: "2023",
       logo: utaLogo,
       description:
-        "Tutored students with mental disabilities across mathematics and finance courses. Developed a passion for mentoring while helping students strengthen academic skills and confidence.",
+        "Tutored students with mental disabilities across mathematics and finance courses. Very fulfilling role, and not an easy job.",
     },
     {
       title: "Undergraduate Research Assistant",
       dateText: "2022-2023",
       logo: utaLogo,
       description:
-        "Conducted bioinformatics and machine learning research on CRISPR-CAS proteins. Contributed to classifier and generative model development achieving over 96% prediction accuracy, leading to a research publication.\n\n" +
-        "Published a research paper on the topic in a peer-reviewed journal.\n\n" +
-        "Won the scholarship for this REU 2000$",
+        "Met <a class='journey-link' href='https://www.uta.edu/academics/faculty/profile?user=shouyiw' target='_blank' rel='noopener noreferrer'>Dr. Wang</a> through a connection from the Dean's Office, won a competitive research award with his support and found myself in my first research opportunity.\n\n"+
+        "Bioinformatics &amp machine learning research on CRISPR-CAS proteins. Developed a classifier and generative model achieving over 96% prediction accuracy.\n\n" +
+        "Published a <a class='journey-link' href='https://scholar.google.com/citations?view_op=view_citation&hl=en&user=b5yGCz8AAAAJ&citation_for_view=b5yGCz8AAAAJ:d1gkVwhDpl0C' target='_blank' rel='noopener noreferrer'>research paper</a> on the topic in a peer-reviewed journal."
     },
     {
       title: "Math Tutor",
       dateText: "2022-2023",
       logo: utaLogo,
       description:
-        "Tutored college freshmen in Calculus I &amp; II, Linear Algebra, Algebra.",
+        "Enjoyed tutoring college freshmen in Calculus I &amp; II, Linear Algebra, Statistics.",
     },
     {
       title: "Dean's Office Student Assistant",
       dateText: "2021-2022",
       logo: utaLogo,
       description:
-        "Supported event planning and handled calls within the Dean of Engineering's Office. \n\n" +
+        "Supported event planning and handled hundreds of calls within the Dean of Engineering's Office. \n\n" +
         "Mostly just replaced coffee and did some admin stuff tbh. Met a guy who knew a guy, and thats how I got into my first research opportunity!",
     },
   ];

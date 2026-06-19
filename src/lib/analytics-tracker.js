@@ -4,9 +4,24 @@
 // coarse geo (city / region / country / timezone) from ipapi.co, and any error
 // fetching it is swallowed silently. One session = one full page load (the SPA
 // keeps a single session across client-side route changes).
-import { browser } from '$app/environment';
+import { browser, dev } from '$app/environment';
 
 const ENDPOINT = '/api/track';
+
+// Tracking is PROD-ONLY. Never record sessions/clicks while developing or
+// previewing locally — only the deployed site writes to Neon. Blocks the dev
+// server (`dev`) as well as any local prod build/preview served over localhost.
+function isLocal() {
+  if (dev) return true;
+  const h = window.location.hostname;
+  return (
+    h === 'localhost' ||
+    h === '127.0.0.1' ||
+    h === '[::1]' ||
+    h === '::1' ||
+    h.endsWith('.local')
+  );
+}
 
 let initialized = false;
 let sessionId;
@@ -122,6 +137,7 @@ function handleClick(e) {
 
 export function initAnalytics() {
   if (!browser || initialized) return;
+  if (isLocal()) return; // PROD-only: no localhost/dev tracking
   initialized = true;
 
   sessionId = crypto.randomUUID();
