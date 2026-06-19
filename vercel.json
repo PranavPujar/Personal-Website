@@ -1,9 +1,5 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "installCommand": "npm install",
   "framework": "sveltekit",
-  "routes": [
-    { "src": "/[^.]+", "dest": "/index.html" }
-  ]
+  "buildCommand": "npm run build",
+  "installCommand": "npm install"
 }

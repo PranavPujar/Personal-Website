@@ -11,6 +11,7 @@
   import { appReady } from '$lib/stores/app.js';
   import { theme } from '$lib/stores/theme.js';
   import { cancelStream } from '$lib/stream.js';
+  import { initAnalytics } from '$lib/analytics-tracker.js';
   import '../app.css';
 
   let { children } = $props();
@@ -25,6 +26,8 @@
   });
 
   onMount(async () => {
+    initAnalytics();
+
     const timer = setTimeout(async () => {
       appReady.set(true);
 
